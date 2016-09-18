@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">洗车</string>
+    <string name="login">登&#160;&#160;录</string>
+    <string name="login_register">注册成为车主></string>
+    <string name="login_forget">忘记密码</string>
+    <string name="login_phone_hint">请输入手机号</string>
+    <string name="login_pwd_hint">请输入密码</string>
+</resources>

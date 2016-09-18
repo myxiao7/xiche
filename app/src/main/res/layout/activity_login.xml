@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/login_bg2"
+    >
+
+    <View
+        android:id="@+id/login_base_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true"
+        />
+    <LinearLayout
+        android:layout_above="@id/login_base_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        >
+        <EditText
+            style="@style/base_edit"
+            android:hint="@string/login_phone_hint"
+            android:drawableLeft="@mipmap/ic_phone2"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            android:layout_marginTop="2dp"
+            />
+        <EditText
+            style="@style/base_edit"
+            android:layout_marginTop="10dp"
+            android:hint="@string/login_pwd_hint"
+            android:drawableLeft="@mipmap/ic_pwd"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            android:layout_marginTop="2dp"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/login_login_btn"
+        android:layout_below="@id/login_base_view"
+        style="@style/base_btn"
+        android:text="@string/login"
+        />
+
+    <TextView
+        android:layout_below="@id/login_login_btn"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/sp16"
+        android:text="@string/login_register"
+        android:textColor="@color/white"
+        />
+</RelativeLayout>
