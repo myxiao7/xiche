@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -37,22 +38,57 @@ public class RegisterActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.register_banner)
     ConvenientBanner registerBanner;
-    @Bind(R.id.register_name_txt)
-    EditText registerNameTxt;
-    @Bind(R.id.register_pwd_txt)
-    EditText registerPwdTxt;
-    @Bind(R.id.register_code_txt)
-    EditText registerCodeTxt;
     @Bind(R.id.register_checkBox)
     CheckBox registerCheckBox;
     @Bind(R.id.register_registe_btn)
     Button registerRegisteBtn;
+    @Bind(R.id.register_name_edit)
+    EditText registerNameEdit;
+    @Bind(R.id.register_pwd_edit)
+    EditText registerPwdEdit;
+    @Bind(R.id.register_code_edit)
+    EditText registerCodeEdit;
+    @Bind(R.id.register_getcode_txt)
+    TextView registerGetcodeTxt;
 
     private List<String> urls = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        init();
+        initBanner();
+
+    }
+
+    /**
+     * 初始化轮播
+     */
+    private void initBanner() {
+        urls.add(0, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_37/61364_1929700_451247.jpg");
+        urls.add(1, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932867_482144.jpg");
+        urls.add(2, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932872_251055.jpg");
+        urls.add(3, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932867_482144.jpg");
+        registerBanner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
+            @Override
+            public LocalImageHolderView createHolder() {
+                return new LocalImageHolderView();
+            }
+        }, urls)
+                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                .setPageIndicator(new int[]{R.mipmap.ic_dot_default, R.mipmap.ic_dot_selected})
+                //设置指示器的方向
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT).setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                ToastUtil.showShort(urls.get(position));
+            }
+        })
+                .startTurning(2500);
+    }
+
+    private void init() {
         ButterKnife.bind(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -64,27 +100,7 @@ public class RegisterActivity extends BaseActivity {
             }
         });
         toolbarTv.setText("注册");
-
-        urls.add(0,"http://www.sinaimg.cn/dy/slidenews/2_img/2016_37/61364_1929700_451247.jpg");
-        urls.add(1,"http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932867_482144.jpg");
-        urls.add(2,"http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932872_251055.jpg");
-        urls.add(3,"http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932867_482144.jpg");
-        registerBanner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
-            @Override
-            public LocalImageHolderView  createHolder() {
-                return  new  LocalImageHolderView();
-            }
-        },urls)
-        //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
-        .setPageIndicator(new int[]{R.mipmap.ic_dot_default, R.mipmap.ic_dot_selected})
-        //设置指示器的方向
-        .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT).setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                ToastUtil.showShort(urls.get(position));
-            }
-        })
-        .startTurning(2500);
+        registerCheckBox.setText(Html.fromHtml(getResources().getString(R.string.register_check)));
     }
 
     @OnClick(R.id.register_registe_btn)
@@ -95,6 +111,7 @@ public class RegisterActivity extends BaseActivity {
 
     public class LocalImageHolderView implements Holder<String> {
         private ImageView imageView;
+
         @Override
         public View createView(Context context) {
             imageView = new ImageView(context);
@@ -106,5 +123,11 @@ public class RegisterActivity extends BaseActivity {
         public void UpdateUI(Context context, final int position, String data) {
             ImageLoaderHelper.getInstance().loadPic(imageView, data);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 }

@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
-import com.zh.xiche.utils.ToastUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,12 +23,16 @@ public class LoginActivity extends BaseActivity {
     EditText loginNameTxt;
     @Bind(R.id.login_pwd_txt)
     EditText loginPwdTxt;
+    @Bind(R.id.login_getcode_txt)
+    TextView loginGetcodeTxt;
     @Bind(R.id.login_login_btn)
     Button loginLoginBtn;
     @Bind(R.id.login_register_txt)
     TextView loginRegisterTxt;
 
     private static final int REGISTERCODE = 0x1001;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,7 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.login_login_btn, R.id.login_register_txt})
+    @OnClick({R.id.login_login_btn, R.id.login_register_txt, R.id.login_getcode_txt})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_login_btn:
@@ -46,15 +49,25 @@ public class LoginActivity extends BaseActivity {
                 Intent intent = new Intent(activity, RegisterActivity.class);
                 startActivityForResult(intent, REGISTERCODE);
                 break;
+            case R.id.login_getcode_txt:
+                Intent intent2 = new Intent(activity, ForgetActivity.class);
+                startActivityForResult(intent2, REGISTERCODE);
+                break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REGISTERCODE && resultCode == RESULT_OK && data != null){
+        if (requestCode == REGISTERCODE && resultCode == RESULT_OK && data != null) {
             loginNameTxt.setText(data.getStringExtra("userName"));
             loginPwdTxt.setText(data.getStringExtra("userPwd"));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 }

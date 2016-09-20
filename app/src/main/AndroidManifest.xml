@@ -20,8 +20,17 @@
             </intent-filter>
         </activity>
 
+        <!--注册-->
         <activity
-            android:name=".ui.RegisterActivity"/>
+            android:name=".ui.RegisterActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            />
+
+        <!--忘记密码-->
+        <activity
+            android:name=".ui.ForgetActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            />
 
     </application>
 

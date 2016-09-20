@@ -29,6 +29,7 @@
                 android:textSize="20sp" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,32 +37,20 @@
         android:orientation="vertical"
         android:background="@color/page_bg_gray"
         >
-        <com.bigkoo.convenientbanner.ConvenientBanner
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/register_banner"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            app:canLoop="true"
-        />
         <EditText
-            android:id="@+id/register_name_edit"
+            android:id="@+id/forget_name_edit"
             style="@style/register_edit"
             android:hint="@string/login_phone_hint"
             android:inputType="number"
             />
-        <EditText
-            android:id="@+id/register_pwd_edit"
-            style="@style/register_edit"
-            android:hint="@string/login_pwd_hint"
-            android:inputType="textPassword"
-            />
+
         <LinearLayout
             style="@style/register_edit"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             >
             <EditText
-                android:id="@+id/register_code_edit"
+                android:id="@+id/forget_code_edit"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -70,27 +59,28 @@
                 android:inputType="number"
                 />
             <TextView
-                android:id="@+id/register_getcode_txt"
+                android:id="@+id/forget_getcode_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/code_get"
                 android:textColor="@color/orange"
                 />
         </LinearLayout>
-
-
-        <CheckBox
-            android:id="@+id/register_checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:checked="true"
-            android:text="@string/register_check"
-             />
+        <EditText
+            android:id="@+id/forget_pwd_edit"
+            style="@style/register_edit"
+            android:hint="@string/forget_pwd_hint"
+            android:inputType="textPassword"
+            />
+        <EditText
+            android:id="@+id/forget_pwd2_edit"
+            style="@style/register_edit"
+            android:hint="@string/forget_pwd_hint2"
+            android:inputType="textPassword"
+            />
         <Button
-            android:id="@+id/register_registe_btn"
+            android:id="@+id/forget_btn"
             style="@style/base_btn"
-            android:text="@string/register" />
+            android:text="@string/submit" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
