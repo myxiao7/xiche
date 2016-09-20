@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zh.xiche">
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -19,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.RegisterActivity"/>
+
     </application>
 
 </manifest>
