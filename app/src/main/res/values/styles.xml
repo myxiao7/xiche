@@ -18,6 +18,26 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!--主界面Tab样式-->
+    <style name="main_tab">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:drawablePadding">3dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/color_black_green</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <!--Tablayout字体大小-->
+    <style name="tablayoyt_text">
+        <item name="android:textSize">@dimen/sp18</item>
+    </style>
+
 <!--基础按钮-->
     <style name="base_btn">
         <item name="android:layout_height">wrap_content</item>

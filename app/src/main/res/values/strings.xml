@@ -19,4 +19,7 @@
     <string name="register">注册成为车主</string>
     <string name="register_check"><Data><![CDATA[同意<font color="#4F94CD">"服务条款"</font>和<font color="#4F94CD">"网络隐私保护权利"</font>]]></Data></string>
 
+    <string name="main_tab01">首页</string>
+    <string name="main_tab02">我的</string>
+
 </resources>

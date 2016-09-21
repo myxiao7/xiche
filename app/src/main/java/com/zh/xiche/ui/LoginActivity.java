@@ -44,14 +44,16 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_login_btn:
+                Intent intent = new Intent(activity, MainActivity.class);
+                startActivity(intent);
                 break;
             case R.id.login_register_txt:
-                Intent intent = new Intent(activity, RegisterActivity.class);
-                startActivityForResult(intent, REGISTERCODE);
+                Intent intent2 = new Intent(activity, RegisterActivity.class);
+                startActivityForResult(intent2, REGISTERCODE);
                 break;
             case R.id.login_getcode_txt:
-                Intent intent2 = new Intent(activity, ForgetActivity.class);
-                startActivityForResult(intent2, REGISTERCODE);
+                Intent intent3 = new Intent(activity, ForgetActivity.class);
+                startActivityForResult(intent3, REGISTERCODE);
                 break;
         }
     }

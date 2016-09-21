@@ -32,6 +32,11 @@
             android:windowSoftInputMode="stateHidden|adjustResize"
             />
 
+        <!--主界面-->
+        <activity
+            android:name=".ui.MainActivity"
+            />
+
     </application>
 
 </manifest>
