@@ -22,4 +22,13 @@
     <string name="main_tab01">首页</string>
     <string name="main_tab02">我的</string>
 
+    <string name="today_order">今日接单</string>
+    <string name="today_money">今日车费</string>
+
+    <string name="per_account">帐号管理</string>
+    <string name="per_order">我的订单</string>
+    <string name="per_bill">我的账单</string>
+    <string name="per_setting">设置</string>
+
+
 </resources>

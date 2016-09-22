@@ -75,4 +75,29 @@
         <item name="android:background">@drawable/border_white</item>
     </style>
 
+    <!--个人选项-->
+ <style name="per_list_text">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:drawablePadding">15dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/sp18</item>
+        <item name="android:drawableRight">@mipmap/ic_next</item>
+    </style>
+
+ <!--订单列表-->
+ <style name="order_list_lin">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:drawablePadding">15dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+
 </resources>

@@ -37,6 +37,11 @@
             android:name=".ui.MainActivity"
             />
 
+        <!--我的订单-->
+        <activity
+            android:name=".ui.myorder.MyOrderSwitch"
+            />
+
     </application>
 
 </manifest>

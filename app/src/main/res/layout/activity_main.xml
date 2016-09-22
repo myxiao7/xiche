@@ -63,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/tab01_bg"
                 android:text="@string/main_tab01"
+                android:checked="true"
                 />
             <View
                 android:layout_width="1dp"
