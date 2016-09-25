@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.baidu.mapapi.map.MapView
-        android:id="@+id/bmapView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:clickable="true" />
+    <com.zh.xiche.xlistview.XListView
+        android:id="@+id/xlistview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.zh.xiche.xlistview.XListView>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.zh.xiche.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -101,6 +102,24 @@ public class RegisterActivity extends BaseActivity {
         });
         toolbarTv.setText("注册");
         registerCheckBox.setText(Html.fromHtml(getResources().getString(R.string.register_check)));
+        registerGetcodeTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new CountDownTimer(60 * 1000, 1000){
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        registerGetcodeTxt.setClickable(false);
+                        registerGetcodeTxt.setText(String.format(getResources().getString(R.string.code_wait), (millisUntilFinished/1000)+""));
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        registerGetcodeTxt.setClickable(true);
+                        registerGetcodeTxt.setText(R.string.code_get);
+                    }
+                }.start();
+            }
+        });
     }
 
     @OnClick(R.id.register_registe_btn)

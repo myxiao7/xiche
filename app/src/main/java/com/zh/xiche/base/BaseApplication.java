@@ -2,6 +2,8 @@ package com.zh.xiche.base;
 
 import android.app.Application;
 
+import com.baidu.mapapi.SDKInitializer;
+
 import org.xutils.x;
 
 /**
@@ -18,6 +20,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         application = this;
+        SDKInitializer.initialize(this);
         x.Ext.init(this);
         x.Ext.setDebug(true); // 是否输出debug日志
         //全局异常捕获

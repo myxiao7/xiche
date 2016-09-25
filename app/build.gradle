@@ -22,6 +22,11 @@ android {
             maven { url "https://jitpack.io" }
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+    }
 }
 
 dependencies {
@@ -37,4 +42,11 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.android.support:design:24.2.1'
     compile 'com.bigkoo:convenientbanner:2.0.5'
+    compile files('libs/baidumapapi_base_v4_0_0.jar')
+    compile files('libs/baidumapapi_cloud_v4_0_0.jar')
+    compile files('libs/baidumapapi_map_v4_0_0.jar')
+    compile files('libs/baidumapapi_radar_v4_0_0.jar')
+    compile files('libs/baidumapapi_search_v4_0_0.jar')
+    compile files('libs/baidumapapi_util_v4_0_0.jar')
+    compile files('libs/locSDK_6.13.jar')
 }

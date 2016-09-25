@@ -7,6 +7,7 @@
     <LinearLayout
         style="@style/order_list_lin">
     <TextView
+        android:id="@+id/order_list_item_type_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="精致洗车"
@@ -25,6 +26,7 @@
             android:layout_marginRight="5dp"
             />
         <TextView
+            android:id="@+id/order_list_item_add_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="北京市曹阳去经之路"
@@ -43,23 +45,36 @@
             android:layout_marginRight="5dp"
             />
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/order_list_item_time_tv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="今天8:00—12:00"
             android:textColor="@color/black"
             android:textSize="@dimen/sp18"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="立即抢单"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/sp18"
+            android:drawableRight="@mipmap/ic_next"
             />
     </LinearLayout>
     <LinearLayout
         style="@style/order_list_lin"
         >
         <ImageView
+            android:id="@+id/order_list_item_car_img"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@mipmap/ic_car"
             android:layout_marginRight="5dp"
             />
         <TextView
+            android:id="@+id/order_list_item_car_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="大众迈腾"
@@ -78,6 +93,7 @@
             android:layout_marginRight="5dp"
             />
         <TextView
+            android:id="@+id/order_list_item_price_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="321"
