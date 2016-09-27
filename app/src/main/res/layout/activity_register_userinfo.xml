@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:layout_gravity="center"
+            >
+            <TextView
+                android:id="@+id/toolbar_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical"
+        android:background="@color/page_bg_gray"
+        >
+        <TextView
+            android:id="@+id/register_notice_tv"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:text="@string/register_userinfo_notice"
+            android:textColor="@color/black"
+            android:background="@color/white"
+            />
+        <TextView
+            android:id="@+id/register_citv_tv"
+            style="@style/register_edit"
+            android:hint="@string/register_userinfo_city"
+            android:inputType="number"
+            android:drawableRight="@mipmap/ic_next"
+            />
+        <EditText
+            android:id="@+id/register_name_edit"
+            style="@style/register_edit"
+            android:hint="@string/register_userinfo_name"
+            android:inputType="textPassword"
+            />
+        <EditText
+            android:id="@+id/register_card_edit"
+            style="@style/register_edit"
+            android:hint="@string/register_userinfo_card"
+            android:inputType="textPassword"
+            />
+        <Button
+            android:id="@+id/register_registe_btn"
+            style="@style/base_btn"
+            android:text="@string/finish" />
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,4 +1,4 @@
-package com.zh.xiche.xlistview;
+package com.zh.xiche.view.xlistview;
 
 import android.view.View;
 

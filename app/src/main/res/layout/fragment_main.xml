@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:clickable="true" />
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/frag_main_list_tv"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:drawableTop="@mipmap/ic_list"
+        android:text="订单"
+        android:background="@drawable/circle_white"
+        android:layout_gravity="left|bottom"
+        android:layout_margin="25dp"
+        />
+    <TextView
+        android:id="@+id/frag_main_list2_tv"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:drawableTop="@mipmap/ic_list"
+        android:text="接单"
+        android:background="@drawable/circle_white"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="25dp"
+        />
+</FrameLayout>

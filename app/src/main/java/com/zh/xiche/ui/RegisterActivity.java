@@ -1,6 +1,7 @@
 package com.zh.xiche.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -124,7 +125,8 @@ public class RegisterActivity extends BaseActivity {
 
     @OnClick(R.id.register_registe_btn)
     public void onClick() {
-
+        Intent intent = new Intent(activity, RegisterUserInfoActivity.class);
+        startActivity(intent);
     }
 
 

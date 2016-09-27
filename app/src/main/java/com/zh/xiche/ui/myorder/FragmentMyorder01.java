@@ -10,11 +10,10 @@ import com.zh.xiche.OrderEntity;
 import com.zh.xiche.R;
 import com.zh.xiche.adapter.MyOrderAdapter;
 import com.zh.xiche.base.BaseFragment;
-import com.zh.xiche.xlistview.XListView;
+import com.zh.xiche.view.xlistview.XListView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

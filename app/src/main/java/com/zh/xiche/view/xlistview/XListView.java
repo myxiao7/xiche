@@ -10,7 +10,7 @@
  * bugfix: item 数目不满一屏幕的时候不显示更多加载按钮
  * improvement: 正在刷新,或者加载更多的时候不应该可以继续拉
  */
-package com.zh.xiche.xlistview;
+package com.zh.xiche.view.xlistview;
 
 
 import android.content.Context;

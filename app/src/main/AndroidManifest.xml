@@ -44,6 +44,16 @@
             android:name=".ui.RegisterActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             />
+        <!--注册 用户信息-->
+        <activity
+            android:name=".ui.RegisterUserInfoActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            />
+
+     <!--注册 用户信息-->
+        <activity
+            android:name=".ui.SelectCityActivy"
+            />
 
         <!--忘记密码-->
         <activity
