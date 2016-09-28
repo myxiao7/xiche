@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.zh.xiche.R;
@@ -17,30 +16,25 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 填写用户信息
+ * 注册结果
  * Created by win7 on 2016/9/27.
  */
 
-public class RegisterUserInfoActivity extends BaseActivity {
+public class RegisterResultActivity extends BaseActivity {
+
+
     @Bind(R.id.toolbar_tv)
     TextView toolbarTv;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.register_notice_tv)
-    TextView registerNoticeTv;
-    @Bind(R.id.register_citv_tv)
-    TextView registerCitvTv;
-    @Bind(R.id.register_name_edit)
-    EditText registerNameEdit;
-    @Bind(R.id.register_card_edit)
-    EditText registerCardEdit;
-    @Bind(R.id.register_registe_btn)
-    Button registerRegisteBtn;
+    @Bind(R.id.register_result_btn)
+    Button registerResultBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_userinfo);
+        setContentView(R.layout.activity_register_result);
+        ButterKnife.bind(this);
         init();
     }
 
@@ -55,27 +49,19 @@ public class RegisterUserInfoActivity extends BaseActivity {
                 activity.finish();
             }
         });
-        toolbarTv.setText("注册完成");
+        toolbarTv.setText("用户信息");
     }
 
-    @OnClick({R.id.register_citv_tv, R.id.register_registe_btn})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.register_citv_tv:
-                Intent intent = new Intent(activity, SelectCityActivy.class);
-                startActivity(intent);
-                break;
-
-            case R.id.register_registe_btn:
-                Intent intent2 = new Intent(activity, RegisterResultActivity.class);
-                startActivity(intent2);
-                break;
-        }
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.register_result_btn)
+    public void onClick() {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        startActivity(intent);
     }
 }

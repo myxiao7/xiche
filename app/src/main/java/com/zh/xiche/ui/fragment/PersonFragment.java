@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseFragment;
+import com.zh.xiche.ui.GetOrderActivity;
 import com.zh.xiche.ui.myorder.MyOrderSwitch;
 import com.zh.xiche.utils.ToastUtil;
 
@@ -82,6 +83,8 @@ public class PersonFragment extends BaseFragment {
                 break;
             case R.id.per_mybill_tv:
                 ToastUtil.showShort(R.string.per_bill);
+                Intent intent2 = new Intent(activity, GetOrderActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.per_setting_tv:
                 ToastUtil.showShort(R.string.per_setting);

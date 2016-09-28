@@ -26,6 +26,10 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />
+        <service android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+        </service>
 
         <activity
             android:name=".ui.LoginActivity"
@@ -49,6 +53,10 @@
             android:name=".ui.RegisterUserInfoActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             />
+        <!--注册 用户信息-->
+        <activity
+            android:name=".ui.RegisterResultActivity"
+            />
 
      <!--注册 用户信息-->
         <activity
@@ -69,6 +77,11 @@
         <!--我的订单-->
         <activity
             android:name=".ui.myorder.MyOrderSwitch"
+            />
+
+        <!--抢单-->
+        <activity
+            android:name=".ui.GetOrderActivity"
             />
 
     </application>
