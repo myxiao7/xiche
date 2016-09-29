@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -27,9 +28,25 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.RouteLine;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.route.BikingRouteResult;
+import com.baidu.mapapi.search.route.DrivingRouteLine;
+import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
+import com.zh.xiche.utils.DialogUtil;
+import com.zh.xiche.utils.DrivingRouteOverlay;
+import com.zh.xiche.utils.OverlayManager;
 import com.zh.xiche.utils.ToastUtil;
+
+import org.xutils.common.util.LogUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,7 +58,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by win7 on 2016/9/28.
  */
 
-public class GetOrderActivity extends BaseActivity {
+public class GetOrderActivity extends BaseActivity implements OnGetRoutePlanResultListener {
     @Bind(R.id.toolbar_tv)
     TextView toolbarTv;
     @Bind(R.id.toolbar)
@@ -77,21 +94,16 @@ public class GetOrderActivity extends BaseActivity {
     private LocationMode mCurrentMode;
     BitmapDescriptor mCurrentMarker;
 
+    // 搜索相关
+    RoutePlanSearch mSearch = null;    // 搜索模块，也可去掉地图模块独立使用
+    RouteLine route = null;
+    OverlayManager routeOverlay = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_getorder);
-        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-       /* if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-        {
-            // 未打开位置开关，可能导致定位失败或定位不准，提示用户或做相应处理
-            ToastUtil.showShort("未打开位置开关");
-        }else{
-            ToastUtil.showShort("位置开关");
-        }*/
         init();
-
         int checkPermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
         if (checkPermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
@@ -100,9 +112,13 @@ public class GetOrderActivity extends BaseActivity {
         } else {
             initLocaticon();
         }
-
     }
 
+
+
+    /**
+     * 初始化定位
+     */
     private void initLocaticon() {
         mMapView = (MapView) findViewById(R.id.mapView);
         // 地图初始化
@@ -115,12 +131,15 @@ public class GetOrderActivity extends BaseActivity {
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000);
+        option.setScanSpan(60*60*1000);
         mLocClient.setLocOption(option);
         mLocClient.start();
         /*mCurrentMode = LocationMode.FOLLOWING;
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                         mCurrentMode, true, mCurrentMarker));*/
+        mSearch = RoutePlanSearch.newInstance();
+        mSearch.setOnGetRoutePlanResultListener(this);
+
     }
 
     private void init() {
@@ -141,6 +160,64 @@ public class GetOrderActivity extends BaseActivity {
     @OnClick(R.id.getorder_get_btn)
     public void onClick() {
     }
+
+    @Override
+    public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
+
+    }
+
+    @Override
+    public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+
+    }
+
+    @Override
+    public void onGetDrivingRouteResult(DrivingRouteResult result) {
+        DialogUtil.stopProgress(activity);
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            ToastUtil.showShort(R.string.route_failt);
+        }
+        if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+            // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
+            // result.getSuggestAddrInfo()
+            return;
+        }
+        //
+        if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+            route = result.getRouteLines().get(0);
+            DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
+            routeOverlay = overlay;
+            mBaiduMap.setOnMarkerClickListener(overlay);
+            overlay.setData(result.getRouteLines().get(0));
+            overlay.addToMap();
+            overlay.zoomToSpan();
+        }
+    }
+
+    @Override
+    public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+
+    }
+
+
+    // 定制RouteOverly
+    private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
+
+        public MyDrivingRouteOverlay(BaiduMap baiduMap) {
+            super(baiduMap);
+        }
+
+        @Override
+        public BitmapDescriptor getStartMarker() {
+                return BitmapDescriptorFactory.fromResource(R.mipmap.icon_st);
+        }
+
+        @Override
+        public BitmapDescriptor getTerminalMarker() {
+                return BitmapDescriptorFactory.fromResource(R.mipmap.icon_en);
+        }
+    }
+
     /**
     * 定位SDK监听函数
     */
@@ -153,6 +230,7 @@ public class GetOrderActivity extends BaseActivity {
             if (location == null || mMapView == null) {
                 return;
             }
+            DialogUtil.showProgress(activity);
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360
@@ -164,6 +242,15 @@ public class GetOrderActivity extends BaseActivity {
             MapStatus.Builder builder = new MapStatus.Builder();
             builder.target(ll).zoom(18.0f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            //设置起点和终点
+            /*PlanNode stNode = PlanNode.withCityNameAndPlaceName("北京", "龙泽");
+            PlanNode enNode = PlanNode.withCityNameAndPlaceName("北京", "西单");*/
+            PlanNode stNode = PlanNode.withLocation(ll);
+            PlanNode enNode = PlanNode.withLocation(new LatLng(36.08246,120.417519));
+            //绘制路线
+            mSearch.drivingSearch((new DrivingRoutePlanOption())
+                    .from(stNode)
+                    .to(enNode));
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
@@ -185,6 +272,7 @@ public class GetOrderActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         ButterKnife.unbind(this);
+        mSearch.destroy();
         // 退出时销毁定位
         mLocClient.stop();
         // 关闭定位图层

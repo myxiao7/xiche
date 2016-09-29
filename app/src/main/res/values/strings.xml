@@ -41,6 +41,8 @@
     <string name="per_bill">我的账单</string>
     <string name="per_setting">设置</string>
 
+    <string name="route_failt">生成路线失败</string>
+
 
     <!--xlistview-->
     <string name="xlistview_header_hint_normal">下拉刷新</string>
