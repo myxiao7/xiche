@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
+import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.ui.fragment.MainFragment;
 import com.zh.xiche.ui.fragment.PersonFragment;
+import com.zh.xiche.utils.DbUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,7 @@ public class MainActivity extends BaseActivity {
     RadioGroup mainRadiogroup;
     private List<Fragment> list = new ArrayList<>();
 
+    private UserInfoEntity entity;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,7 @@ public class MainActivity extends BaseActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         toolbarTv.setText(R.string.app_name);
+        entity = DbUtils.getInstance().getPersonInfo();
         Fragment fragment01 = MainFragment.newInstance();
         Fragment fragment02 = PersonFragment.newInstance();
         list.add(fragment01);

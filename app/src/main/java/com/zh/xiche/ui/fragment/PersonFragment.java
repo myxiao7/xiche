@@ -6,19 +6,22 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseFragment;
+import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.ui.GetOrderActivity;
 import com.zh.xiche.ui.myorder.MyOrderSwitch;
+import com.zh.xiche.utils.DbUtils;
+import com.zh.xiche.utils.ImageLoaderHelper;
 import com.zh.xiche.utils.ToastUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 个人中心
@@ -26,8 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class PersonFragment extends BaseFragment {
-    @Bind(R.id.per_icon_img)
-    CircleImageView perIconImg;
+
     @Bind(R.id.per_username_tv)
     TextView perUsernameTv;
     @Bind(R.id.per_account_tv)
@@ -44,7 +46,11 @@ public class PersonFragment extends BaseFragment {
     TextView perMybillTv;
     @Bind(R.id.per_setting_tv)
     View perSettingTv;
+    @Bind(R.id.per_icon_img)
+    ImageView perIconImg;
     private View mView;
+
+    private UserInfoEntity entity;
 
     public static PersonFragment newInstance() {
         PersonFragment fragment = new PersonFragment();
@@ -61,6 +67,9 @@ public class PersonFragment extends BaseFragment {
             mView = inflater.inflate(R.layout.fragment_person, container, false);
         }
         ButterKnife.bind(this, mView);
+        entity = DbUtils.getInstance().getPersonInfo();
+        perUsernameTv.setText(entity.getMobile());
+        ImageLoaderHelper.getInstance().loadPic(perIconImg, entity.getId());
         return mView;
     }
 

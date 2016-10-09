@@ -3,13 +3,30 @@ package com.zh.xiche.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
+import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.entity.ResultEntity;
+import com.zh.xiche.http.HttpUtil;
+import com.zh.xiche.http.RequestCallBack;
+import com.zh.xiche.utils.CommonCheck;
+import com.zh.xiche.utils.DbUtils;
+import com.zh.xiche.utils.DialogUtil;
+import com.zh.xiche.utils.DialogUtils;
+import com.zh.xiche.utils.GsonUtil;
+import com.zh.xiche.utils.ToastUtil;
+
+import org.xutils.common.util.LogUtil;
+import org.xutils.http.RequestParams;
+
+import java.lang.reflect.Type;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,14 +40,15 @@ public class LoginActivity extends BaseActivity {
     EditText loginNameTxt;
     @Bind(R.id.login_pwd_txt)
     EditText loginPwdTxt;
-    @Bind(R.id.login_getcode_txt)
-    TextView loginGetcodeTxt;
+    @Bind(R.id.login_forget_txt)
+    TextView loginForgetTxt;
     @Bind(R.id.login_login_btn)
     Button loginLoginBtn;
     @Bind(R.id.login_register_txt)
     TextView loginRegisterTxt;
 
     private static final int REGISTERCODE = 0x1001;
+
 
 
     @Override
@@ -40,22 +58,76 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.login_login_btn, R.id.login_register_txt, R.id.login_getcode_txt})
+    @OnClick({R.id.login_login_btn, R.id.login_register_txt, R.id.login_forget_txt})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_login_btn:
-                Intent intent = new Intent(activity, MainActivity.class);
-                startActivity(intent);
+                if(TextUtils.isEmpty(loginNameTxt.getText().toString())){
+                    ToastUtil.showShort(R.string.login_phone_hint);
+                    return;
+                }
+                if(!CommonCheck.isMobile(loginNameTxt.getText().toString())){
+                    ToastUtil.showShort(R.string.login_vai_hint);
+                    return;
+                }
+
+                if(TextUtils.isEmpty(loginPwdTxt.getText().toString())){
+                    ToastUtil.showShort(R.string.login_pwd_hint);
+                    return;
+                }
+
+                DialogUtils.showProgress(activity);
+                login();
                 break;
             case R.id.login_register_txt:
                 Intent intent2 = new Intent(activity, RegisterActivity.class);
                 startActivityForResult(intent2, REGISTERCODE);
                 break;
-            case R.id.login_getcode_txt:
+            case R.id.login_forget_txt:
                 Intent intent3 = new Intent(activity, ForgetActivity.class);
-                startActivityForResult(intent3, REGISTERCODE);
+                startActivity(intent3);
                 break;
         }
+    }
+
+    /**
+     * 登录
+     */
+    private void login() {
+        String url = HttpPath.getPath(HttpPath.LOGIN);
+        RequestParams params = HttpUtil.params(url);
+        params.addBodyParameter("mobile", loginNameTxt.getText().toString());
+        params.addBodyParameter("password", loginPwdTxt.getText().toString());
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity) {
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                DialogUtils.stopProgress(activity);
+                LogUtil.d(result);
+                Type type = new TypeToken<ResultEntity>() {
+                }.getType();
+                ResultEntity entity = GsonUtil.GsonToBean(result, type);
+                if (entity.isSuccee()) {
+                    ToastUtil.showShort("登录成功");
+                    //保存用户信息
+                    DbUtils.getInstance().clearPersonInfo();
+                    DbUtils.getInstance().savePersonInfo(entity.getOperatorDTO());
+                    //去首页
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.showShort("登录失败");
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+                DialogUtils.stopProgress(activity);
+                ToastUtil.showShort(ex.getMessage());
+            }
+        });
+
     }
 
     @Override

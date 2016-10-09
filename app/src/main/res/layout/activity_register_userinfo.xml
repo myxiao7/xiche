@@ -48,8 +48,7 @@
         <TextView
             android:id="@+id/register_citv_tv"
             style="@style/register_edit"
-            android:hint="@string/register_userinfo_city"
-            android:inputType="number"
+            android:hint="@string/register_locing"
             android:drawableRight="@mipmap/ic_next"
             />
         <EditText

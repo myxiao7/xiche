@@ -54,7 +54,7 @@
                 android:inputType="textPassword"
                 />
             <TextView
-                android:id="@+id/login_getcode_txt"
+                android:id="@+id/login_forget_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="忘记密码"

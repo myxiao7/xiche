@@ -21,7 +21,8 @@ public class ImageLoaderHelper {
                 //设置加载过程中的图片
                 .setLoadingDrawableId(R.mipmap.icon_user_default)
                 //设置加载失败后的图片
-                .setFailureDrawableId(R.mipmap.load_fail)
+                .setFailureDrawableId(R.mipmap.icon_user_default)
+                .setCircular(true)
                 .build();
     }
 
@@ -35,6 +36,6 @@ public class ImageLoaderHelper {
      * @param url
      */
     public void loadPic(ImageView img, String url){
-        x.image().bind(img, url.trim());
+        x.image().bind(img, url.trim(), options);
     }
 }

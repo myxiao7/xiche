@@ -43,12 +43,27 @@
             android:layout_height="180dp"
             app:canLoop="true"
         />
-        <EditText
-            android:id="@+id/register_name_edit"
+        <LinearLayout
             style="@style/register_edit"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+        <EditText
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:id="@+id/register_name_edit"
             android:hint="@string/login_phone_hint"
             android:inputType="number"
             />
+            <ImageView
+                android:id="@+id/register_name_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
+        </LinearLayout>
         <EditText
             android:id="@+id/register_pwd_edit"
             style="@style/register_edit"

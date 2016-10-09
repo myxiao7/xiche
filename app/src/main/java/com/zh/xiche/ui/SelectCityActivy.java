@@ -1,5 +1,6 @@
 package com.zh.xiche.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -88,6 +89,10 @@ public class SelectCityActivy extends BaseActivity {
                                     int position, long id) {
                 ToastUtil.showShort(SourceDateList.get(position).getRegion());
                 selCity = selCity + SourceDateList.get(position).getRegion();
+                Intent intent = new Intent();
+                intent.putExtra("city", selCity);
+                setResult(RESULT_OK, intent);
+                activity.finish();
             }
         });
 
