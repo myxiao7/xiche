@@ -6,12 +6,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zh.xiche.OrderEntity;
+import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
 import com.zh.xiche.adapter.MyOrderAdapter;
 import com.zh.xiche.base.BaseFragment;
+import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.entity.OrderEntity;
+import com.zh.xiche.entity.OrderResultEntity;
+import com.zh.xiche.entity.UserInfoEntity;
+import com.zh.xiche.http.HttpUtil;
+import com.zh.xiche.http.RequestCallBack;
+import com.zh.xiche.utils.DbUtils;
+import com.zh.xiche.utils.GsonUtil;
+import com.zh.xiche.utils.ToastUtil;
 import com.zh.xiche.view.xlistview.XListView;
 
+import org.xutils.common.util.LogUtil;
+import org.xutils.http.RequestParams;
+
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +45,9 @@ public class FragmentMyorder01 extends BaseFragment {
     private List<OrderEntity> list = new ArrayList<>();
     private MyOrderAdapter adapter;
 
+    private UserInfoEntity entity;
+    private int pageIndex = 1;
+
     public static FragmentMyorder01 newInstance(int id) {
         FragmentMyorder01 fragmentMyorder01 = new FragmentMyorder01();
         Bundle bundle = new Bundle();
@@ -46,41 +62,98 @@ public class FragmentMyorder01 extends BaseFragment {
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_myorder01, container, false);
         }
-        ButterKnife.bind(this, mView);
+        init();
 
-        for (int i = 0; i < 10; i++) {
-            OrderEntity orderEntity = new OrderEntity();
-            orderEntity.setId(i);
-            orderEntity.setName(i+"name");
-            list.add(orderEntity);
-        }
-        adapter = new MyOrderAdapter(activity, list, false);
-        xlistview.setAdapter(adapter);
-        xlistview.setPullLoadEnable(true);
-        xlistview.setPullRefreshEnable(true);
         xlistview.setXListViewListener(new XListView.IXListViewListener() {
             @Override
             public void onRefresh() {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-                String time = dateFormat.format(new Date());
-                xlistview.setRefreshTime(time);
-                xlistview.stopRefresh();
-                xlistview.stopLoadMore();
+                getWaitFinish(true);
             }
 
             @Override
             public void onLoadMore() {
-                OrderEntity orderEntity = new OrderEntity();
-                orderEntity.setName("加载更多"+"name");
-                list.add(orderEntity);
-                adapter.notifyDataSetChanged();
+                getWaitFinish(false);
+            }
+        });
+
+        getWaitFinish(true);
+        return mView;
+    }
+
+    private void init() {
+        ButterKnife.bind(this, mView);
+        entity = DbUtils.getInstance().getPersonInfo();
+        adapter = new MyOrderAdapter(activity, list, false);
+        xlistview.setAdapter(adapter);
+
+        xlistview.setPullLoadEnable(true);
+        xlistview.setPullRefreshEnable(true);
+    }
+
+    /**
+     * 获取已经服务订单
+     */
+    private void getWaitFinish(final boolean isRefresh){
+        if(isRefresh){
+            pageIndex = 1;
+        }else{
+            pageIndex++;
+        }
+        String path = HttpPath.getPath(HttpPath.ORDERLIST_WAIT);
+        RequestParams params = HttpUtil.params(path);
+        params.addBodyParameter("operid", entity.getId());
+        params.addBodyParameter("tockens", entity.getTockens());
+        params.addBodyParameter("rows", "10");
+        params.addBodyParameter("page", pageIndex+"");
+        params.addBodyParameter("sidx", "");
+        params.addBodyParameter("sord", "");
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                LogUtil.d(result);
+                Type type = new TypeToken<OrderResultEntity>(){}.getType();
+                OrderResultEntity orderResultEntity = GsonUtil.GsonToBean(result, type);
+                if(orderResultEntity.isSuccee()){
+                    if(isRefresh){
+                        list.clear();
+                        if(orderResultEntity.getDataList().size() > 0){
+                            list = orderResultEntity.getDataList();
+                            adapter = new MyOrderAdapter(activity, list, false);
+                            xlistview.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+                            String time = dateFormat.format(new Date());
+                            xlistview.setRefreshTime(time);
+                            ToastUtil.showShort("有数据");
+                        }else{
+                            ToastUtil.showShort("没有数据");
+                        }
+                    }else{
+                        if(orderResultEntity.getDataList().size() > 0){
+                            list.addAll(orderResultEntity.getDataList());
+                            adapter.notifyDataSetChanged();
+                        }else{
+                            ToastUtil.showShort("没有更多了");
+                        }
+                    }
+
+                }else{
+                    ToastUtil.showShort("获取失败");
+                }
+                xlistview.stopRefresh();
+                xlistview.stopLoadMore();
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+                ToastUtil.showShort(ex.getMessage());
                 xlistview.stopRefresh();
                 xlistview.stopLoadMore();
             }
         });
-        return mView;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

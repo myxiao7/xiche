@@ -90,7 +90,7 @@ public class HttpPath {
     /**
      * 忘记密码_验证验证码
      */
-    public static final String FORGETPWD_CHECKCODE = "xtgl_operator_checkePwdCode.action";
+//    public static final String FORGETPWD_CHECKCODE = "xtgl_operator_checkePwdCode.action";
     /**
      * 忘记密码_修改密码
      */

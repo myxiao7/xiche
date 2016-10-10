@@ -3,6 +3,7 @@ package com.zh.xiche.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.mapapi.map.Text;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseFragment;
 import com.zh.xiche.entity.UserInfoEntity;
@@ -70,7 +72,9 @@ public class PersonFragment extends BaseFragment {
         ButterKnife.bind(this, mView);
         entity = DbUtils.getInstance().getPersonInfo();
         perUsernameTv.setText(entity.getMobile());
-        ImageLoaderHelper.getInstance().loadPic(perIconImg, entity.getId());
+        if(!TextUtils.isEmpty(entity.getAvatar())){
+            ImageLoaderHelper.getInstance().loadPic(perIconImg, entity.getAvatar());
+        }
         return mView;
     }
 

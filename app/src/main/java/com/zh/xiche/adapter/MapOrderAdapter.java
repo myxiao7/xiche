@@ -1,7 +1,6 @@
 package com.zh.xiche.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zh.xiche.OrderEntity;
 import com.zh.xiche.R;
+import com.zh.xiche.entity.OrderEntity;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by win7 on 2016/9/25.

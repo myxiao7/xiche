@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zh.xiche.OrderEntity;
 import com.zh.xiche.R;
+import com.zh.xiche.entity.OrderEntity;
 import com.zh.xiche.utils.ToastUtil;
 
 import java.util.List;

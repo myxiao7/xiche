@@ -108,8 +108,8 @@ public class PersonInfo extends BaseActivity {
         });
         toolbarTv.setText("账号管理");
         entity = DbUtils.getInstance().getPersonInfo();
-        if(!TextUtils.isEmpty(entity.getCardno())){
-            ImageLoaderHelper.getInstance().loadPic(personInfoIconImg, entity.getCardno());
+        if(!TextUtils.isEmpty(entity.getAvatar())){
+            ImageLoaderHelper.getInstance().loadPic(personInfoIconImg, entity.getAvatar());
         }
         personInfoAccountTxt.setText(entity.getMobile());
         personInfoNameTxt.setText(entity.getName());

@@ -111,7 +111,7 @@ public class ForgetActivity extends BaseActivity {
                     ToastUtil.showShort(R.string.forget_pwd_check);
                     return;
                 }
-                checkCode(forgetNameEdit.getText().toString(), forgetCodeEdit.getText().toString());
+                ModifyPwd(forgetNameEdit.getText().toString(),forgetPwd2Edit.getText().toString(), forgetCodeEdit.getText().toString());
                 break;
         }
     }
@@ -164,7 +164,7 @@ public class ForgetActivity extends BaseActivity {
     /**
      * 验证验证码
      * @param phone
-     */
+     *//*
     private void checkCode(String phone, String code) {
         String url = HttpPath.getPath(HttpPath.FORGETPWD_CHECKCODE);
         RequestParams params = HttpUtil.params(url);
@@ -180,7 +180,6 @@ public class ForgetActivity extends BaseActivity {
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
                 if(entity.isSuccee()){
                     ToastUtil.showShort("验证码验证成功，开始修改密码");
-                    ModifyPwd(forgetNameEdit.getText().toString(),forgetPwd2Edit.getText().toString());
                     //修改密码
                 }else{
                     ToastUtil.showShort("验证码验证失败");
@@ -195,16 +194,17 @@ public class ForgetActivity extends BaseActivity {
             }
         });
 
-    }
+    }*/
 
     /**
      * 验证验证码
      * @param phone
      */
-    private void ModifyPwd(String phone, String pwd) {
+    private void ModifyPwd(String phone, String pwd, String code) {
         String url = HttpPath.getPath(HttpPath.FORGETPWD);
         RequestParams params = HttpUtil.params(url);
         params.addBodyParameter("mobile", phone);
+        params.addBodyParameter("code", code);
         params.addBodyParameter("password", pwd);
         HttpUtil.http().post(params, new RequestCallBack<String>(activity){
             @Override

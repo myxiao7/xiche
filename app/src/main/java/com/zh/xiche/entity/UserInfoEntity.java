@@ -11,6 +11,7 @@ import org.xutils.db.annotation.Table;
 public class UserInfoEntity {
     /**
      * cardno : null
+     * avatar :
      * id : 139
      * ispass : 2
      * joinustime : 2016-10-09 23:19:33
@@ -28,6 +29,8 @@ public class UserInfoEntity {
     private int ids;
     @Column(name="cardno")
     private String cardno;
+    @Column(name="avatar")
+    private String avatar;
     @Column(name="id")
     private String id;
     @Column(name="ispass")
@@ -67,6 +70,14 @@ public class UserInfoEntity {
 
     public void setCardno(String cardno) {
         this.cardno = cardno;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getId() {

@@ -1,5 +1,7 @@
 package com.zh.xiche.entity;
 
+import java.util.List;
+
 /**
  * 订单结果实体
  * Created by zhanghao on 2016/10/10.
@@ -12,12 +14,22 @@ public class OrderResultEntity {
      * record : 3
      * rows : 10
      * total : 1
+     * message=True
      */
+    private boolean message;
     private String page;
     private String record;
     private String rows;
     private String total;
-    private OrderEntity dataList;
+    private List<OrderEntity> dataList;
+
+    public boolean isMessage() {
+        return message;
+    }
+
+    public void setMessage(boolean message) {
+        this.message = message;
+    }
 
     public String getPage() {
         return page;
@@ -51,11 +63,24 @@ public class OrderResultEntity {
         this.total = total;
     }
 
-    public OrderEntity getDataList() {
+    public List<OrderEntity> getDataList() {
         return dataList;
     }
 
-    public void setDataList(OrderEntity dataList) {
+    public void setDataList(List<OrderEntity> dataList) {
         this.dataList = dataList;
     }
+
+    /**
+     * 是否请求成功
+     * @return
+     */
+    public boolean isSuccee(){
+        if(message){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

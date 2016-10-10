@@ -6,12 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zh.xiche.OrderEntity;
 import com.zh.xiche.R;
-import com.zh.xiche.adapter.MapOrderAdapter;
 import com.zh.xiche.adapter.MyOrderAdapter;
 import com.zh.xiche.base.BaseFragment;
 import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.entity.OrderEntity;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
@@ -42,7 +41,7 @@ public class FragmentMyorder02 extends BaseFragment {
     private MyOrderAdapter adapter;
 
     private UserInfoEntity entity;
-    private int pageIndex = 0;
+    private int pageIndex = 1;
 
     public static FragmentMyorder02 newInstance(int id) {
         FragmentMyorder02 fragmentMyorder02 = new FragmentMyorder02();
@@ -63,12 +62,12 @@ public class FragmentMyorder02 extends BaseFragment {
         entity = DbUtils.getInstance().getPersonInfo();
         getWaitFinish(false);
 
-        for (int i = 0; i < 10; i++) {
+       /* for (int i = 0; i < 10; i++) {
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.setId(i);
             orderEntity.setName(i+"name");
             list.add(orderEntity);
-        }
+        }*/
         adapter = new MyOrderAdapter(activity, list, true);
         xlistview.setAdapter(adapter);
         xlistview.setPullLoadEnable(true);
@@ -102,7 +101,7 @@ public class FragmentMyorder02 extends BaseFragment {
      */
     private void getWaitFinish(boolean isRefresh){
         if(isRefresh){
-            pageIndex = 0;
+            pageIndex = 1;
         }else{
             pageIndex++;
         }
