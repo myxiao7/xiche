@@ -33,7 +33,7 @@ public class HttpUtil {
      */
     public  static RequestParams params(){
         RequestParams params = new RequestParams();
-        params.setCharset(CHARSET);
+        params.setCharset(CHARSET_UTF8);
         return  params;
     }
 
@@ -44,7 +44,7 @@ public class HttpUtil {
      */
     public  static RequestParams params(String url){
         RequestParams params = new RequestParams(url);
-        params.setCharset(CHARSET);
+        params.setCharset(CHARSET_UTF8);
         return  params;
     }
 

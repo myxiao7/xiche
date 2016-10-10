@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.ui.fragment.MainFragment;
 import com.zh.xiche.ui.fragment.PersonFragment;
 import com.zh.xiche.utils.DbUtils;
+import com.zh.xiche.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,9 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         toolbarTv.setText(R.string.app_name);
         entity = DbUtils.getInstance().getPersonInfo();
+        if(TextUtils.isEmpty(entity.getCardno()) || TextUtils.isEmpty(entity.getLocation()) || TextUtils.isEmpty(entity.getName())){
+            ToastUtil.showShort("请先完善个人信息");
+        }
         Fragment fragment01 = MainFragment.newInstance();
         Fragment fragment02 = PersonFragment.newInstance();
         list.add(fragment01);

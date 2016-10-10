@@ -36,36 +36,12 @@
         android:orientation="vertical"
         android:background="@color/page_bg_gray"
         >
-        <TextView
-            android:id="@+id/register_notice_tv"
-            android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/commonedit_edit"
             android:layout_width="match_parent"
-            android:padding="10dp"
-            android:text="@string/register_userinfo_notice"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
             android:textColor="@color/black"
-            android:background="@color/white"
             />
-        <TextView
-            android:id="@+id/register_citv_tv"
-            style="@style/register_edit"
-            android:hint="@string/register_locing"
-            android:drawableRight="@mipmap/ic_next"
-            />
-        <EditText
-            android:id="@+id/register_name_edit"
-            style="@style/register_edit"
-            android:hint="@string/register_userinfo_name"
-            android:inputType="number"
-            />
-        <EditText
-            android:id="@+id/register_card_edit"
-            style="@style/register_edit"
-            android:hint="@string/register_userinfo_card"
-            android:inputType="textPassword"
-            />
-        <Button
-            android:id="@+id/register_registe_btn"
-            style="@style/base_btn"
-            android:text="@string/finish" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

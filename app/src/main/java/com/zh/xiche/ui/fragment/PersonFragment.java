@@ -14,6 +14,7 @@ import com.zh.xiche.R;
 import com.zh.xiche.base.BaseFragment;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.ui.GetOrderActivity;
+import com.zh.xiche.ui.PersonInfo;
 import com.zh.xiche.ui.myorder.MyOrderSwitch;
 import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.ImageLoaderHelper;
@@ -81,19 +82,22 @@ public class PersonFragment extends BaseFragment {
 
     @OnClick({R.id.per_account_re, R.id.per_mydrder_tv, R.id.per_mybill_tv, R.id.per_setting_tv})
     public void onClick(View view) {
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.per_account_re:
                 ToastUtil.showShort(R.string.per_account);
+                intent = new Intent(activity, PersonInfo.class);
+                startActivity(intent);
                 break;
             case R.id.per_mydrder_tv:
                 ToastUtil.showShort(R.string.per_order);
-                Intent intent = new Intent(activity, MyOrderSwitch.class);
+                intent = new Intent(activity, MyOrderSwitch.class);
                 startActivity(intent);
                 break;
             case R.id.per_mybill_tv:
                 ToastUtil.showShort(R.string.per_bill);
-                Intent intent2 = new Intent(activity, GetOrderActivity.class);
-                startActivity(intent2);
+                intent = new Intent(activity, GetOrderActivity.class);
+                startActivity(intent);
                 break;
             case R.id.per_setting_tv:
                 ToastUtil.showShort(R.string.per_setting);

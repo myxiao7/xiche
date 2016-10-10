@@ -93,6 +93,7 @@ public class RegisterResultActivity extends BaseActivity {
                     ToastUtil.showShort("登录成功");
                     //保存用户信息
                     DbUtils.getInstance().clearPersonInfo();
+                    DbUtils.getInstance().savePersonInfo(entity.getOperatorDTO());
                     //去首页
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);

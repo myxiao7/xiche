@@ -23,6 +23,10 @@ public class HttpPath {
      */
     public static final String MODIFYINFO = "xtgl_operator_updateInfo.action";
     /**
+     * 修改个人头像
+     */
+    public static final String MODIFYICON = "xtgl_operator_updateAvatar.action";
+    /**
      * 修改个人位置
      */
     public static final String MODIFYLOCATION = "xtgl_operator_updateLocation.action";
@@ -34,6 +38,15 @@ public class HttpPath {
      * 拒单
      */
     public static final String ORDERREFUSER = "chuXiaoDing_orders_denyOrder.action";
+    /**
+     * 待服务订单
+     */
+    public static final String ORDERLIST_WAIT = "chuXiaoDing_orders_queryAppAcceptOrders.action";
+    /**
+     * 已服务订单
+     */
+    public static final String ORDERLIST_FINISH = "chuXiaoDing_orders_queryAppFinishOrders.action";
+
     /**
      * 完成订单
      */
@@ -81,7 +94,7 @@ public class HttpPath {
     /**
      * 忘记密码_修改密码
      */
-    public static final String FORGETPWD = "xtgl_operator_checkePwdCode.action";
+    public static final String FORGETPWD = "xtgl_operator_updatePwd.action";
 
 
     /**

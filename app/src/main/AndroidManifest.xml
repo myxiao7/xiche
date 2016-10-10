@@ -23,9 +23,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />
+            android:value="RT4TGU5cWUOSmOoSv4os1pvcfPR63TyM" />
+
         <service android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote">
@@ -58,9 +62,23 @@
             android:name=".ui.RegisterResultActivity"
             />
 
-     <!--注册 用户信息-->
+        <!--注册 用户信息-->
         <activity
             android:name=".ui.SelectCityActivy"
+            />
+
+        <!--用户信息-->
+        <activity
+            android:name=".ui.PersonInfo"
+            />
+        <!--通用修改-->
+        <activity
+            android:name=".ui.CommonEdit"
+            />
+
+        <!--修改用户信息-->
+        <activity
+            android:name=".ui.ModifyUserInfoActivity"
             />
 
         <!--忘记密码-->

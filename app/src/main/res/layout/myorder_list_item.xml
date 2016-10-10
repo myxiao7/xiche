@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    >
     <LinearLayout
         style="@style/order_list_lin">
         <de.hdodenhof.circleimageview.CircleImageView
@@ -49,6 +51,7 @@
                 />
         </LinearLayout>
         <ImageView
+            android:id="@+id/myorder_list_item_phone_img"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@mipmap/ic_phone"
@@ -162,9 +165,10 @@
         android:gravity="right"
         >
         <TextView
+            android:id="@+id/myorder_list_item_datedes_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="接单时间:"
+            android:text="完成时间:"
             android:layout_marginRight="5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/sp18"

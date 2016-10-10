@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.location.b.e;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
@@ -28,6 +29,7 @@ import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
+import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.DialogUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ImageLoaderHelper;
@@ -231,6 +233,8 @@ public class RegisterActivity extends BaseActivity {
                     ToastUtil.showShort("注册成功");
                     //完善资料
                     Intent intent = new Intent(activity, RegisterUserInfoActivity.class);
+                    intent.putExtra("id", entity.getOperatorDTO().getId());
+                    intent.putExtra("token",entity.getOperatorDTO().getTockens());
                     intent.putExtra("userName",registerNameEdit.getText().toString());
                     intent.putExtra("userPwd",registerPwdEdit.getText().toString());
                     startActivity(intent);

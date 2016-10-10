@@ -41,6 +41,7 @@
     <string name="main_tab01">首页</string>
     <string name="main_tab02">我的</string>
 
+
     <string name="today_order">今日接单</string>
     <string name="today_money">今日车费</string>
 
@@ -48,6 +49,17 @@
     <string name="per_order">我的订单</string>
     <string name="per_bill">我的账单</string>
     <string name="per_setting">设置</string>
+
+    <!--个人中心-->
+    <string name="per_icon">头像</string>
+    <string name="per_username">用户名</string>
+    <string name="per_name">姓名</string>
+    <string name="per_name_title">修改姓名</string>
+    <string name="per_card">卡号</string>
+    <string name="per_card_title">修改卡号</string>
+    <string name="per_add">地址</string>
+    <string name="per_add_title">修改地址</string>
+    <string name="per_logout">注&#160;&#160;销</string>
 
     <string name="route_failt">生成路线失败</string>
     <string name="route_finish">路线绘制完成</string>

@@ -22,14 +22,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
-import com.baidu.mapapi.search.route.PlanNode;
-import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.google.gson.reflect.TypeToken;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionNo;
@@ -44,7 +36,6 @@ import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
 import com.zh.xiche.utils.DbUtils;
-import com.zh.xiche.utils.DialogUtil;
 import com.zh.xiche.utils.DialogUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ToastUtil;
@@ -63,7 +54,7 @@ import butterknife.OnClick;
  * Created by win7 on 2016/9/27.
  */
 
-public class RegisterUserInfoActivity extends BaseActivity {
+public class ModifyUserInfoActivity extends BaseActivity {
     @Bind(R.id.toolbar_tv)
     TextView toolbarTv;
     @Bind(R.id.toolbar)
@@ -80,13 +71,18 @@ public class RegisterUserInfoActivity extends BaseActivity {
     Button registerRegisteBtn;
 
     private static final int CITYREQUEST = 0x1001;
-    private String userName, userPwd, id, token;
 
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
 
     private Double lon ,lar;
+    private UserInfoEntity entity;
+
+    @Override
+    public void onBackPressed() {
+        ToastUtil.showShort("请完善个人信息");
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +99,7 @@ public class RegisterUserInfoActivity extends BaseActivity {
                     .send();
         }else{
             initLocaticon();
+
         }
     }
 
@@ -126,25 +123,19 @@ public class RegisterUserInfoActivity extends BaseActivity {
             }).show();
         }
     };
-
     private void init() {
         ButterKnife.bind(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.mipmap.ic_back);
+        /*toolbar.setNavigationIcon(R.mipmap.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 activity.finish();
             }
-        });
+        });*/
         toolbarTv.setText("完善个人信息");
-        Intent intent = this.getIntent();
-        userName = intent.getStringExtra("userName");
-        userPwd = intent.getStringExtra("userPwd");
-        id = intent.getStringExtra("id");
-        token = intent.getStringExtra("token");
-
+        entity = DbUtils.getInstance().getPersonInfo();
     }
 
 
@@ -207,8 +198,8 @@ public class RegisterUserInfoActivity extends BaseActivity {
     private void modifyUserInfo() {
         String url = HttpPath.getPath(HttpPath.MODIFYINFO);
         RequestParams params = HttpUtil.params(url);
-        params.addBodyParameter("uid", id);
-        params.addBodyParameter("tockens", token);
+        params.addBodyParameter("uid", entity.getId());
+        params.addBodyParameter("tockens", entity.getTockens());
         params.addBodyParameter("name", registerNameEdit.getText().toString());
         params.addBodyParameter("location", registerCitvTv.getText().toString());
         params.addBodyParameter("lon", lon + "");
@@ -223,14 +214,19 @@ public class RegisterUserInfoActivity extends BaseActivity {
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
                 if(entity.isSuccee()){
-                    ToastUtil.showShort("注册成功");
-                    //去结果页面
-                    Intent intent = new Intent(activity, RegisterResultActivity.class);
-                    intent.putExtra("userName", userName);
-                    intent.putExtra("userPwd", userPwd);
+                    ToastUtil.showShort("提交成功");
+                    //去首页
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    //更新信息
+                    entity.getOperatorDTO().setCardno(registerCardEdit.getText().toString());
+                    entity.getOperatorDTO().setName(registerNameEdit.getText().toString());
+                    entity.getOperatorDTO().setLocation(registerCitvTv.getText().toString());
+                    entity.getOperatorDTO().setLat(lar+"");
+                    entity.getOperatorDTO().setLon(lon+"");
                     startActivity(intent);
+                    activity.finish();
                 }else{
-                    ToastUtil.showShort("注册失败");
+                    ToastUtil.showShort("提交失败");
                 }
             }
 
@@ -262,7 +258,7 @@ public class RegisterUserInfoActivity extends BaseActivity {
     @PermissionYes(101)
     private void getLocationYes() {
         // 申请权限成功，可以去做点什么了。
-        ToastUtil.showShort("获取定位权限成功");
+        Toast.makeText(this, "获取定位权限成功", Toast.LENGTH_SHORT).show();
         initLocaticon();
     }
 
@@ -270,9 +266,8 @@ public class RegisterUserInfoActivity extends BaseActivity {
     @PermissionNo(101)
     private void getLocationNo() {
         // 申请权限失败，可以提醒一下用户。
-        ToastUtil.showShort("获取定位权限失败,请您选择城市");
+        Toast.makeText(this, "获取定位权限失败,请您选择城市", Toast.LENGTH_SHORT).show();
     }
-
 
     @Override
     protected void onDestroy() {

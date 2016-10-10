@@ -67,4 +67,31 @@ public class DbUtils {
         }
         return entity;
     }
+
+    /**
+     * 更新
+     * @return
+     */
+    public void updateUserInfo(int id, String str){
+        UserInfoEntity entity = null;
+        try {
+            entity = getPersonInfo();
+            switch (id){
+                case 1:
+                    entity.setName(str);
+                    dbManager.update(entity, "name");
+                    break;
+                case 2:
+                    entity.setCardno(str);
+                    dbManager.update(entity, "cardno");
+                    break;
+                case 3:
+                    entity.setLocation(str);
+                    dbManager.update(entity, "location");
+                    break;
+            }
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+    }
 }

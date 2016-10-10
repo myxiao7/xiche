@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -39,6 +43,11 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionNo;
+import com.yanzhenjie.permission.PermissionYes;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RationaleListener;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
 import com.zh.xiche.utils.DialogUtil;
@@ -104,17 +113,39 @@ public class GetOrderActivity extends BaseActivity implements OnGetRoutePlanResu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_getorder);
         init();
-        int checkPermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
-        if (checkPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-            ToastUtil.showShort("未打开位置开关");
-            return;
-        } else {
+        //6.0以上动态获取需求权限
+        if(Build.VERSION.SDK_INT >= 23){
+            AndPermission.with(this)
+                    .requestCode(101)
+                    .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                    .rationale(mRationaleListener)
+                    .send();
+        }else{
             initLocaticon();
         }
     }
 
-
+    private RationaleListener mRationaleListener = new RationaleListener() {
+        @Override
+        public void showRequestPermissionRationale(int requestCode, final Rationale rationale) {
+            new MaterialDialog.Builder(activity)
+                    .title("申请定位")
+                    .content("没有定位权限,需要申请")
+                    .positiveText("申请")
+                    .negativeText("取消").onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    rationale.resume();// 用户同意继续申请。
+                }
+            }).onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    rationale.cancel(); // 用户拒绝申请。
+                }
+            }).show();
+        }
+    };
 
     /**
      * 初始化定位
@@ -257,6 +288,26 @@ public class GetOrderActivity extends BaseActivity implements OnGetRoutePlanResu
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // 只需要调用这一句，剩下的AndPermission自动完成。
+        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    // 成功回调的方法，用注解即可，里面的数字是请求时的requestCode。
+    @PermissionYes(101)
+    private void getLocationYes() {
+        // 申请权限成功，可以去做点什么了。
+        ToastUtil.showShort("获取定位权限成功");
+        initLocaticon();
+    }
+
+    // 失败回调的方法，用注解即可，里面的数字是请求时的requestCode。
+    @PermissionNo(101)
+    private void getLocationNo() {
+        // 申请权限失败，可以提醒一下用户。
+        ToastUtil.showShort("定位失败，无法绘制路线");
+    }
     @Override
     protected void onPause() {
         mMapView.onPause();

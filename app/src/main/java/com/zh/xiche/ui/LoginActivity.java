@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
 import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.config.SharedData;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
@@ -56,6 +57,11 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        if(!TextUtils.isEmpty(SharedData.getUserName()) && !TextUtils.isEmpty(SharedData.getUserPwd())){
+            loginNameTxt.setText(SharedData.getUserName());
+            loginPwdTxt.setText(SharedData.getUserPwd());
+        }
     }
 
     @OnClick({R.id.login_login_btn, R.id.login_register_txt, R.id.login_forget_txt})
@@ -112,9 +118,20 @@ public class LoginActivity extends BaseActivity {
                     //保存用户信息
                     DbUtils.getInstance().clearPersonInfo();
                     DbUtils.getInstance().savePersonInfo(entity.getOperatorDTO());
-                    //去首页
-                    Intent intent = new Intent(activity, MainActivity.class);
-                    startActivity(intent);
+                    SharedData.saveUserName(loginNameTxt.getText().toString());
+                    SharedData.saveUserPwd(loginPwdTxt.getText().toString());
+                    if(TextUtils.isEmpty(entity.getOperatorDTO().getCardno()) || TextUtils.isEmpty(entity.getOperatorDTO().getLocation()) || TextUtils.isEmpty(entity.getOperatorDTO().getName())){
+                        ToastUtil.showShort("请先完善个人信息");
+                        //去填写个人信息
+                        Intent intent = new Intent(activity, ModifyUserInfoActivity.class);
+                        intent.putExtra("isRegister", false);
+                        startActivity(intent);
+                    }else{
+                        //去首页
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        startActivity(intent);
+                    }
+                    activity.finish();
                 } else {
                     ToastUtil.showShort("登录失败");
                 }

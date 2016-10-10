@@ -35,7 +35,7 @@ public class MyOrderSwitch extends BaseActivity {
     ViewPager myorderViewpager;
 
     private List<Fragment> list = new ArrayList<>();
-    private String []titles = {"服务中", "待服务", "已服务"};
+    private String []titles = {"待服务", "已服务"};
     private FragViewPagerAdapter adapter;
 
     private int id;
@@ -47,10 +47,8 @@ public class MyOrderSwitch extends BaseActivity {
         init();
         Fragment fragment01 = FragmentMyorder01.newInstance(1);
         Fragment fragment02 = FragmentMyorder02.newInstance(1);
-        Fragment fragment03 = FragmentMyorder03.newInstance(1);
         list.add(fragment01);
         list.add(fragment02);
-        list.add(fragment03);
         adapter = new FragViewPagerAdapter(getSupportFragmentManager(),list,titles);
         myorderViewpager.setAdapter(adapter);
         tablayout.setupWithViewPager(myorderViewpager);

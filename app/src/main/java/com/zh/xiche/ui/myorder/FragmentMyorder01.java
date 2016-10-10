@@ -54,7 +54,7 @@ public class FragmentMyorder01 extends BaseFragment {
             orderEntity.setName(i+"name");
             list.add(orderEntity);
         }
-        adapter = new MyOrderAdapter(activity, list);
+        adapter = new MyOrderAdapter(activity, list, false);
         xlistview.setAdapter(adapter);
         xlistview.setPullLoadEnable(true);
         xlistview.setPullRefreshEnable(true);

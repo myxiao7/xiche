@@ -9,8 +9,17 @@ import android.view.ViewGroup;
 import com.zh.xiche.OrderEntity;
 import com.zh.xiche.R;
 import com.zh.xiche.adapter.MapOrderAdapter;
+import com.zh.xiche.adapter.MyOrderAdapter;
 import com.zh.xiche.base.BaseFragment;
+import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.entity.UserInfoEntity;
+import com.zh.xiche.http.HttpUtil;
+import com.zh.xiche.http.RequestCallBack;
+import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.view.xlistview.XListView;
+
+import org.xutils.common.util.LogUtil;
+import org.xutils.http.RequestParams;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,7 +39,10 @@ public class FragmentMyorder02 extends BaseFragment {
     XListView xlistview;
     private View mView;
     private List<OrderEntity> list = new ArrayList<>();
-    private MapOrderAdapter adapter;
+    private MyOrderAdapter adapter;
+
+    private UserInfoEntity entity;
+    private int pageIndex = 0;
 
     public static FragmentMyorder02 newInstance(int id) {
         FragmentMyorder02 fragmentMyorder02 = new FragmentMyorder02();
@@ -47,19 +59,24 @@ public class FragmentMyorder02 extends BaseFragment {
             mView = inflater.inflate(R.layout.fragment_myorder01, container, false);
         }
         ButterKnife.bind(this, mView);
+
+        entity = DbUtils.getInstance().getPersonInfo();
+        getWaitFinish(false);
+
         for (int i = 0; i < 10; i++) {
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.setId(i);
             orderEntity.setName(i+"name");
             list.add(orderEntity);
         }
-        adapter = new MapOrderAdapter(activity, list);
+        adapter = new MyOrderAdapter(activity, list, true);
         xlistview.setAdapter(adapter);
         xlistview.setPullLoadEnable(true);
         xlistview.setPullRefreshEnable(true);
         xlistview.setXListViewListener(new XListView.IXListViewListener() {
             @Override
             public void onRefresh() {
+                getWaitFinish(false);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
                 String time = dateFormat.format(new Date());
                 xlistview.setRefreshTime(time);
@@ -80,6 +97,36 @@ public class FragmentMyorder02 extends BaseFragment {
         return mView;
     }
 
+    /**
+     * 获取已经服务订单
+     */
+    private void getWaitFinish(boolean isRefresh){
+        if(isRefresh){
+            pageIndex = 0;
+        }else{
+            pageIndex++;
+        }
+        String path = HttpPath.getPath(HttpPath.ORDERLIST_WAIT);
+        RequestParams params = HttpUtil.params(path);
+        params.addBodyParameter("operid", entity.getId());
+        params.addBodyParameter("tockens", entity.getTockens());
+        params.addBodyParameter("rows", "10");
+        params.addBodyParameter("page", pageIndex+"");
+        params.addBodyParameter("sidx", "");
+        params.addBodyParameter("sord", "");
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                LogUtil.d(result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+            }
+        });
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

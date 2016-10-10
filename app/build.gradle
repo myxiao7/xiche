@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 23
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
         applicationId "com.zh.xiche"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -32,7 +32,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'org.xutils:xutils:3.3.25'
     compile 'com.google.code.gson:gson:2.5'
@@ -40,7 +40,7 @@ dependencies {
         transitive = true
     }
     compile 'de.hdodenhof:circleimageview:2.0.0'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:design:23.4.0'
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile files('libs/baidumapapi_base_v4_0_0.jar')
     compile files('libs/baidumapapi_cloud_v4_0_0.jar')
@@ -49,4 +49,7 @@ dependencies {
     compile files('libs/baidumapapi_search_v4_0_0.jar')
     compile files('libs/baidumapapi_util_v4_0_0.jar')
     compile files('libs/locSDK_6.13.jar')
+    compile 'com.yanzhenjie:permission:1.0.3'
+    compile 'cn.finalteam:galleryfinal:1.4.8.7'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }
