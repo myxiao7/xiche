@@ -29,11 +29,12 @@ public class MyOrderAdapter extends BaseAdapter {
     private Context context;
     private boolean isFinish;//区分待服务 已服务
 
-    public MyOrderAdapter(Context context ,List<OrderEntity> list) {
+    public MyOrderAdapter(Context context, List<OrderEntity> list) {
         this.list = list;
         this.context = context;
     }
-    public MyOrderAdapter(Context context ,List<OrderEntity> list, boolean finish) {
+
+    public MyOrderAdapter(Context context, List<OrderEntity> list, boolean finish) {
         this.list = list;
         this.context = context;
         this.isFinish = finish;
@@ -57,10 +58,10 @@ public class MyOrderAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.myorder_list_item, parent, false);
             holder = new ViewHolder();
-            holder.iconImg = (CircleImageView) convertView.findViewById(R.id.myorder_list_item_icon_img);
+            holder.iconImg = (ImageView) convertView.findViewById(R.id.myorder_list_item_icon_img);
             holder.nameTv = (TextView) convertView.findViewById(R.id.myorder_list_item_name_tv);
             holder.phoneTv = (TextView) convertView.findViewById(R.id.myorder_list_item_phone_tv);
             holder.phoneBtn = (ImageView) convertView.findViewById(R.id.myorder_list_item_phone_img);
@@ -76,62 +77,91 @@ public class MyOrderAdapter extends BaseAdapter {
             holder.dateDesTv = (TextView) convertView.findViewById(R.id.myorder_list_item_datedes_tv);
             holder.remarkTv = (TextView) convertView.findViewById(R.id.myorder_list_item_remark_tv);
             convertView.setTag(holder);
-        }else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if(isFinish){
+        if (isFinish) {
             holder.dateDesTv.setText("完成时间");
-        }else{
+        } else {
             holder.dateDesTv.setText("接单时间");
         }
         final OrderEntity entity = list.get(position);
         //头像
-        if(!TextUtils.isEmpty(entity.getAvartar())){
+        if (!TextUtils.isEmpty(entity.getAvartar())) {
             ImageLoaderHelper.getInstance().loadCirPic(holder.iconImg, entity.getAvartar());
         }
         //昵称 + 姓名
-        holder.nameTv.setText(entity.getUname() + "(" +entity.getName() +")");
-        //手机号码
-        holder.phoneTv.setText(entity.getMobile());
-        holder.phoneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!TextUtils.isEmpty(entity.getMobile())){
-                    Uri uri = Uri.parse("tel:" + entity.getMobile());
-                    context.startActivity(new Intent(Intent.ACTION_DIAL, uri));
+        holder.nameTv.setText(entity.getUname() + "(" + entity.getName() + ")");
+        if (!TextUtils.isEmpty(entity.getMobile())) {
+            //手机号码
+            holder.phoneTv.setText(entity.getMobile());
+            holder.phoneBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                Uri uri = Uri.parse("tel:" + entity.getMobile());
+                context.startActivity(new Intent(Intent.ACTION_DIAL, uri));
                 }
-            }
-        });
-        //订单号码
-        holder.orderTv.setText(entity.getOrderid());
-        //洗车类型
-        holder.typeTv.setText(entity.getServicetypename());
-        //地址
-        holder.addTv.setText(entity.getLocation());
-        //预约时间
-        holder.timeTv.setText(entity.getAppointment());
-        //车型
-        holder.carTypeTv.setText(entity.getCarbrank());
-        //颜色
-        holder.colorTv.setText(entity.getCarcolor());
-        //车牌
-        holder.numTv.setText(entity.getCarno());
-        //价格
-        holder.priceTv.setText(entity.getOrderamount()+"");
-        //接单时间/完成时间
-        if(isFinish){
-            holder.priceTv.setText(entity.getFinishDate());
-        }else {
-            holder.priceTv.setText(entity.getAcceptdate());
+            });
         }
-        //备注
-        holder.remarkTv.setText(entity.getRemark());
 
+        if (!TextUtils.isEmpty(entity.getOrderid())) {
+            //订单号码
+            holder.orderTv.setText("订单号:" + entity.getOrderid());
+        }
+        if (!TextUtils.isEmpty(entity.getServicetypename())) {
+            //洗车类型
+            holder.typeTv.setText(entity.getServicetypename());
+        }
+        if (!TextUtils.isEmpty(entity.getLocation())) {
+            //地址
+            holder.addTv.setText(entity.getLocation());
+        }
+        if (!TextUtils.isEmpty(entity.getAppointment())) {
+            //预约时间
+            holder.timeTv.setText(entity.getAppointment());
+        }
+        if (!TextUtils.isEmpty(entity.getCarbrank())) {
+            //车型
+            holder.carTypeTv.setText(entity.getCarbrank());
+        }
+        if (!TextUtils.isEmpty(entity.getCarcolor())) {
+            //颜色
+            holder.colorTv.setText(entity.getCarcolor());
+        }
+        if (!TextUtils.isEmpty(entity.getCarno())) {
+            //车牌
+            holder.numTv.setText(entity.getCarno());
+        }
+        if (!TextUtils.isEmpty(entity.getOrderamount() + "")) {
+            //价格
+            holder.priceTv.setText("￥" + entity.getOrderamount() + "");
+        }
+        if (!TextUtils.isEmpty(entity.getOrderid())) {
+            //订单号码
+            holder.orderTv.setText("订单号:"+entity.getOrderid()+"");
+        }
+
+        //接单时间/完成时间
+        if (isFinish) {
+            if (!TextUtils.isEmpty(entity.getFinishDate())) {
+                holder.dateTv.setText(entity.getFinishDate());
+            }
+
+        } else {
+            if (!TextUtils.isEmpty(entity.getAcceptdate())) {
+                holder.dateTv.setText(entity.getAcceptdate());
+
+            }
+        }
+        if (!TextUtils.isEmpty(entity.getRemark())) {
+            //备注
+            holder.remarkTv.setText(entity.getRemark());
+        }
         return convertView;
     }
 
-    class ViewHolder{
-        CircleImageView iconImg;//头像
+    class ViewHolder {
+        ImageView iconImg;//头像
         TextView nameTv;//姓名
         TextView phoneTv;//电话
         ImageView phoneBtn;//打电话

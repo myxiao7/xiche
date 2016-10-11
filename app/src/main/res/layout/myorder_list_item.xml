@@ -7,14 +7,12 @@
     >
     <LinearLayout
         style="@style/order_list_lin">
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <ImageView
             android:id="@+id/myorder_list_item_icon_img"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@mipmap/icon_user_default"
-            app:civ_border_width="0dp"
-            app:civ_border_color="#FF000000"/>
+           />
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -45,9 +43,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="订单号："
+                android:text=""
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
+                android:singleLine="true"
+                android:ellipsize="end"
                 />
         </LinearLayout>
         <ImageView
@@ -169,12 +169,6 @@
                 />
         </LinearLayout>
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray"
-        android:layout_marginTop="5dp"
-        />
     <LinearLayout
         style="@style/order_list_lin"
         >

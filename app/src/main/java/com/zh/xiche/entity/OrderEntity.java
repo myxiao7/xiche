@@ -1,11 +1,14 @@
 package com.zh.xiche.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * 订单实体
  * Created by zhanghao on 2016/10/10.
  */
 
-public class OrderEntity {
+public class OrderEntity implements Parcelable {
 
     /**
      * acceptdate : 2016-09-21 00:51:15
@@ -320,4 +323,93 @@ public class OrderEntity {
     public void setUserid(int userid) {
         this.userid = userid;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.acceptdate);
+        dest.writeString(this.appointment);
+        dest.writeInt(this.appointmentId);
+        dest.writeString(this.assigndate);
+        dest.writeString(this.avartar);
+        dest.writeString(this.carbrank);
+        dest.writeString(this.carcolor);
+        dest.writeString(this.carno);
+        dest.writeString(this.carstyle);
+        dest.writeString(this.finishDate);
+        dest.writeDouble(this.lat);
+        dest.writeString(this.location);
+        dest.writeDouble(this.lon);
+        dest.writeString(this.mobile);
+        dest.writeInt(this.monthIncome);
+        dest.writeInt(this.monthOrdersNum);
+        dest.writeString(this.name);
+        dest.writeString(this.operator);
+        dest.writeInt(this.operid);
+        dest.writeString(this.opmobile);
+        dest.writeInt(this.orderamount);
+        dest.writeString(this.orderdate);
+        dest.writeString(this.orderid);
+        dest.writeString(this.paydate);
+        dest.writeString(this.paystyle);
+        dest.writeString(this.remark);
+        dest.writeString(this.servicetype);
+        dest.writeString(this.servicetypename);
+        dest.writeInt(this.status);
+        dest.writeString(this.uname);
+        dest.writeInt(this.userid);
+    }
+
+    public OrderEntity() {
+    }
+
+    protected OrderEntity(Parcel in) {
+        this.acceptdate = in.readString();
+        this.appointment = in.readString();
+        this.appointmentId = in.readInt();
+        this.assigndate = in.readString();
+        this.avartar = in.readString();
+        this.carbrank = in.readString();
+        this.carcolor = in.readString();
+        this.carno = in.readString();
+        this.carstyle = in.readString();
+        this.finishDate = in.readString();
+        this.lat = in.readDouble();
+        this.location = in.readString();
+        this.lon = in.readDouble();
+        this.mobile = in.readString();
+        this.monthIncome = in.readInt();
+        this.monthOrdersNum = in.readInt();
+        this.name = in.readString();
+        this.operator = in.readString();
+        this.operid = in.readInt();
+        this.opmobile = in.readString();
+        this.orderamount = in.readInt();
+        this.orderdate = in.readString();
+        this.orderid = in.readString();
+        this.paydate = in.readString();
+        this.paystyle = in.readString();
+        this.remark = in.readString();
+        this.servicetype = in.readString();
+        this.servicetypename = in.readString();
+        this.status = in.readInt();
+        this.uname = in.readString();
+        this.userid = in.readInt();
+    }
+
+    public static final Parcelable.Creator<OrderEntity> CREATOR = new Parcelable.Creator<OrderEntity>() {
+        @Override
+        public OrderEntity createFromParcel(Parcel source) {
+            return new OrderEntity(source);
+        }
+
+        @Override
+        public OrderEntity[] newArray(int size) {
+            return new OrderEntity[size];
+        }
+    };
 }

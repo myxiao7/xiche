@@ -92,14 +92,18 @@
             android:name=".ui.MainActivity"
             />
 
+        <!--订单列表-->
+        <activity
+            android:name=".ui.OrderListActivity"
+            />
         <!--我的订单-->
         <activity
             android:name=".ui.myorder.MyOrderSwitch"
             />
 
-        <!--抢单-->
+        <!--订单详情-->
         <activity
-            android:name=".ui.GetOrderActivity"
+            android:name=".ui.OrderDetailsActivity"
             />
 
     </application>

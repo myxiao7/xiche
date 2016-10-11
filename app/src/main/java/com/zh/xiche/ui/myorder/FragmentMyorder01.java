@@ -1,10 +1,12 @@
 package com.zh.xiche.ui.myorder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
@@ -16,6 +18,7 @@ import com.zh.xiche.entity.OrderResultEntity;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
+import com.zh.xiche.ui.OrderDetailsActivity;
 import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ToastUtil;
@@ -67,16 +70,25 @@ public class FragmentMyorder01 extends BaseFragment {
         xlistview.setXListViewListener(new XListView.IXListViewListener() {
             @Override
             public void onRefresh() {
-                getWaitFinish(true);
+                getWaitOrder(true);
             }
 
             @Override
             public void onLoadMore() {
-                getWaitFinish(false);
+                getWaitOrder(false);
             }
         });
 
-        getWaitFinish(true);
+        xlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(activity, OrderDetailsActivity.class);
+                intent.putExtra("order", list.get(i-1));
+                intent.putExtra("type", 2);
+                startActivity(intent);
+            }
+        });
+        getWaitOrder(true);
         return mView;
     }
 
@@ -91,9 +103,9 @@ public class FragmentMyorder01 extends BaseFragment {
     }
 
     /**
-     * 获取已经服务订单
+     * 获取待服务订单
      */
-    private void getWaitFinish(final boolean isRefresh){
+    private void getWaitOrder(final boolean isRefresh){
         if(isRefresh){
             pageIndex = 1;
         }else{

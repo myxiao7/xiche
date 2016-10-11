@@ -15,7 +15,7 @@ import com.baidu.mapapi.map.Text;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseFragment;
 import com.zh.xiche.entity.UserInfoEntity;
-import com.zh.xiche.ui.GetOrderActivity;
+
 import com.zh.xiche.ui.PersonInfo;
 import com.zh.xiche.ui.myorder.MyOrderSwitch;
 import com.zh.xiche.utils.DbUtils;
@@ -100,8 +100,8 @@ public class PersonFragment extends BaseFragment {
                 break;
             case R.id.per_mybill_tv:
                 ToastUtil.showShort(R.string.per_bill);
-                intent = new Intent(activity, GetOrderActivity.class);
-                startActivity(intent);
+                /*intent = new Intent(activity, OrderDetailsActivity.class);
+                startActivity(intent);*/
                 break;
             case R.id.per_setting_tv:
                 ToastUtil.showShort(R.string.per_setting);

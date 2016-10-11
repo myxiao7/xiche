@@ -238,7 +238,7 @@ public class PersonInfo extends BaseActivity {
         params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());
         params.setMultipart(true);
-        params.addBodyParameter("avatar", new File(avatarPath));
+        params.addBodyParameter("file", new File(avatarPath));
         HttpUtil.http().post(params, new RequestCallBack<String>(activity) {
             @Override
             public void onSuccess(String result) {

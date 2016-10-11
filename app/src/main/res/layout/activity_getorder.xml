@@ -43,14 +43,12 @@
             >
         <LinearLayout
             style="@style/order_list_lin">
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <ImageView
                 android:id="@+id/getorder_icon_img"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@mipmap/icon_user_default"
-                app:civ_border_width="0dp"
-                app:civ_border_color="#FF000000"/>
+                />
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -63,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="lilili"
+                    android:text=""
                     android:gravity="center_vertical"
                     android:textColor="@color/black"
                     />
@@ -72,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="13965334566"
+                    android:text=""
                     android:gravity="center_vertical"
                     android:textColor="@color/black"
                     />
@@ -81,12 +79,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="订单号：213131321313132123"
+                    android:text=""
                     android:gravity="center_vertical"
                     android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     />
             </LinearLayout>
             <ImageView
+                android:id="@+id/getorder_phone_img"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:background="@mipmap/ic_phone"
@@ -99,7 +100,7 @@
                 android:id="@+id/getorder_type_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="精致洗车"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp16"
                 />
@@ -118,7 +119,7 @@
                 android:id="@+id/getorder_add_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="北京市曹阳去经之路"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp18"
                 />
@@ -139,7 +140,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="今天8:00—12:00"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp18"
                 />
@@ -147,7 +148,7 @@
                 android:id="@+id/getorder_price_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="￥0.0"
+                android:text=""
                 android:textColor="@color/red"
                 android:textSize="@dimen/sp18"
                 />
@@ -166,7 +167,7 @@
                 android:id="@+id/getorder_cartype_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="大众迈腾"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp18"
                 />
@@ -179,11 +180,44 @@
                 android:layout_height="20dp"
                 android:layout_marginRight="5dp"
                 />
-            <TextView
-                android:id="@+id/getorder_color_tv"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="棕色 京A12185"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
+                <TextView
+                    android:id="@+id/getorder_color_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp18"
+                    />
+                <TextView
+                    android:id="@+id/getorder_num_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp18"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/order_list_lin"
+            >
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="5dp"
+                />
+            <TextView
+                android:id="@+id/getorder_remark_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/order_noremark"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp18"
                 />
