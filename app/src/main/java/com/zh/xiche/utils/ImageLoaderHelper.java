@@ -22,7 +22,6 @@ public class ImageLoaderHelper {
                 .setLoadingDrawableId(R.mipmap.icon_user_default)
                 //设置加载失败后的图片
                 .setFailureDrawableId(R.mipmap.icon_user_default)
-                .setCircular(true)
                 .build();
     }
 
@@ -36,6 +35,22 @@ public class ImageLoaderHelper {
      * @param url
      */
     public void loadPic(ImageView img, String url){
+        x.image().bind(img, url.trim(), options);
+    }
+    /**
+     * 加载网络图片 圆形
+     * @param img
+     * @param url
+     */
+    public void loadCirPic(ImageView img, String url){
+        options = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                //设置加载过程中的图片
+                .setLoadingDrawableId(R.mipmap.icon_user_default)
+                //设置加载失败后的图片
+                .setFailureDrawableId(R.mipmap.icon_user_default)
+                .setCircular(true)
+                .build();
         x.image().bind(img, url.trim(), options);
     }
 }

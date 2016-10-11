@@ -6,43 +6,46 @@ package com.zh.xiche.entity;
  */
 
 public class OrderEntity {
+
     /**
-     * acceptdate : 2016-09-20 21:49:19
+     * acceptdate : 2016-09-21 00:51:15
      * appointment : 明天8:00-10:00
      * appointmentId : 0
      * assigndate :
-     * carbrank : 宝马
-     * carcolor : 灰色
-     * carno : 鲁MX3333
-     * carstyle : X7
+     * avartar : images/avartar.png
+     * carbrank : 奥迪
+     * carcolor : 黑色
+     * carno : 鲁MX2222
+     * carstyle : A8
      * finishDate :
-     * lat : 37.854
+     * lat : 37.858
      * location : 山东省滨州市
-     * lon : 114.392
-     * mobile : 18800006666
+     * lon : 114.394
+     * mobile : 18790996688
      * monthIncome : 0
      * monthOrdersNum : 0
-     * name : 李四
-     * operator : 胡技师
-     * operid : 114
-     * opmobile : 18809125687
-     * orderamount : 50
-     * orderdate : 2016-09-21 17:01:00
-     * orderid : 89182fbeace248f99352cd3bcaebdeda
-     * paydate :
+     * name : 王五
+     * operator : 566666
+     * operid : 142
+     * opmobile : 18562653050
+     * orderamount : 100
+     * orderdate : 2016-09-20 17:05:00
+     * orderid : 61c6b9f2569f4effaca3a0d4caf701a4
+     * paydate : 2016-09-21 00:57:50
      * paystyle :
-     * remark : 需要洗车
+     * remark :
      * servicetype :
-     * servicetypename : 汽车精细
-     * status :
-     * uname : 小李子
-     * userid : 4942
+     * servicetypename : 汽车打蜡
+     * status : 2
+     * uname : 小旺旺
+     * userid : 4943
      */
 
     private String acceptdate;
     private String appointment;
-    private String appointmentId;
+    private int appointmentId;
     private String assigndate;
+    private String avartar;
     private String carbrank;
     private String carcolor;
     private String carno;
@@ -66,7 +69,7 @@ public class OrderEntity {
     private String remark;
     private String servicetype;
     private String servicetypename;
-    private String status;
+    private int status;
     private String uname;
     private int userid;
 
@@ -86,11 +89,11 @@ public class OrderEntity {
         this.appointment = appointment;
     }
 
-    public String getAppointmentId() {
+    public int getAppointmentId() {
         return appointmentId;
     }
 
-    public void setAppointmentId(String appointmentId) {
+    public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
 
@@ -100,6 +103,14 @@ public class OrderEntity {
 
     public void setAssigndate(String assigndate) {
         this.assigndate = assigndate;
+    }
+
+    public String getAvartar() {
+        return avartar;
+    }
+
+    public void setAvartar(String avartar) {
+        this.avartar = avartar;
     }
 
     public String getCarbrank() {
@@ -286,11 +297,11 @@ public class OrderEntity {
         this.servicetypename = servicetypename;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

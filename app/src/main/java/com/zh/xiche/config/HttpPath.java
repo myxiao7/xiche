@@ -25,7 +25,7 @@ public class HttpPath {
     /**
      * 修改个人头像
      */
-    public static final String MODIFYICON = "xtgl_operator_updateAvatar.action";
+    public static final String MODIFYICON = "uploadFile_execute.action";
     /**
      * 修改个人位置
      */

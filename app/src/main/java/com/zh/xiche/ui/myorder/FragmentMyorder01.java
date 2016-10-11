@@ -101,7 +101,7 @@ public class FragmentMyorder01 extends BaseFragment {
         }
         String path = HttpPath.getPath(HttpPath.ORDERLIST_WAIT);
         RequestParams params = HttpUtil.params(path);
-        params.addBodyParameter("operid", entity.getId());
+        params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());
         params.addBodyParameter("rows", "10");
         params.addBodyParameter("page", pageIndex+"");

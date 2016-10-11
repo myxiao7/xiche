@@ -340,6 +340,13 @@ public class RegisterActivity extends BaseActivity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        registerBanner.stopTurning();
+    }
+
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);

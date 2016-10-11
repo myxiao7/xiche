@@ -64,6 +64,8 @@
     <string name="route_failt">生成路线失败</string>
     <string name="route_finish">路线绘制完成</string>
 
+    <!--订单列表-->
+    <string name="order_noremark">无备注</string>
 
     <!--xlistview-->
     <string name="xlistview_header_hint_normal">下拉刷新</string>
