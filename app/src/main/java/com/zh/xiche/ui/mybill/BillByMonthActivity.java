@@ -77,8 +77,9 @@ public class BillByMonthActivity extends BaseActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(activity, BillByMonthActivity.class);
+                Intent intent = new Intent(activity, BillByDayActivity.class);
                 intent.putExtra("day", ((BillDayEntity)parent.getAdapter().getItem(position)).getDaydate());
+                startActivity(intent);
             }
         });
     }

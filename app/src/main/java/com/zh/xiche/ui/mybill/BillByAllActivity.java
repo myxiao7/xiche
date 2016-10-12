@@ -83,6 +83,7 @@ public class BillByAllActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(activity, BillByMonthActivity.class);
                 intent.putExtra("month", ((BillMonthEntity)parent.getAdapter().getItem(position)).getMonthdate());
+                startActivity(intent);
             }
         });
 
@@ -91,6 +92,7 @@ public class BillByAllActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(activity, BillByYearActivity.class);
                 intent.putExtra("year", ((BillYearEntity)parent.getAdapter().getItem(position)).getYeardate());
+                startActivity(intent);
             }
         });
     }

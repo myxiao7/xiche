@@ -205,7 +205,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         type = intent.getIntExtra("type", 1);
         switch (type) {
             case 1:
-                toolbarTv.setText("抢单");
+                toolbarTv.setText("接单");
                 getorderGetBtn.setText("接 单");
                 break;
             case 2:
@@ -307,6 +307,13 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                 break;
 
         }
+    }
+
+    /**
+     * 接单
+     */
+    private void getOrder(){
+
     }
 
     @Override
