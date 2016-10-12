@@ -233,17 +233,14 @@
         <com.baidu.mapapi.map.MapView
             android:id="@+id/mapView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             >
         </com.baidu.mapapi.map.MapView>
-
+        <Button
+            android:id="@+id/getorder_get_btn"
+            style="@style/base_btn2"
+            android:text="接单"
+            />
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/getorder_get_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_add"
-        android:layout_gravity="right|bottom"
-        android:layout_margin="25dp"
-        />
 </android.support.design.widget.CoordinatorLayout>

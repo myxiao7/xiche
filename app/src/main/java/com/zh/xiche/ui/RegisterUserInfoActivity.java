@@ -94,16 +94,12 @@ public class RegisterUserInfoActivity extends BaseActivity {
         setContentView(R.layout.activity_register_userinfo);
         init();
         //6.0以上动态获取需求权限
-        if(Build.VERSION.SDK_INT >= 23){
-            AndPermission.with(this)
-                    .requestCode(101)
-                    .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                    .rationale(mRationaleListener)
-                    .send();
-        }else{
-            initLocaticon();
-        }
+        AndPermission.with(this)
+                .requestCode(101)
+                .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .rationale(mRationaleListener)
+                .send();
     }
 
     private RationaleListener mRationaleListener = new RationaleListener() {

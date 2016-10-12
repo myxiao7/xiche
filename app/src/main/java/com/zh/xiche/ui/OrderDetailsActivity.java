@@ -3,14 +3,13 @@ package com.zh.xiche.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,6 +52,8 @@ import com.zh.xiche.utils.ImageLoaderHelper;
 import com.zh.xiche.utils.OverlayManager;
 import com.zh.xiche.utils.ToastUtil;
 
+import org.xutils.common.util.LogUtil;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -86,7 +87,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     @Bind(R.id.getorder_color_tv)
     TextView getorderColorTv;
     @Bind(R.id.getorder_get_btn)
-    FloatingActionButton getorderGetBtn;
+    Button getorderGetBtn;
     @Bind(R.id.getorder_icon_img)
     ImageView getorderIconImg;
     @Bind(R.id.mapView)
@@ -103,6 +104,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
+
 
     private MyLocationConfiguration.LocationMode mCurrentMode;
     BitmapDescriptor mCurrentMarker;
@@ -124,17 +126,13 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         ButterKnife.bind(this);
         init();
         setOrderData();
-        //6.0以上动态获取需求权限
-        if (Build.VERSION.SDK_INT >= 23) {
-            AndPermission.with(this)
-                    .requestCode(101)
-                    .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                    .rationale(mRationaleListener)
-                    .send();
-        } else {
-            initLocaticon();
-        }
+        AndPermission.with(this)
+                .requestCode(101)
+                .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .rationale(mRationaleListener)
+                .send();
+
     }
 
     private RationaleListener mRationaleListener = new RationaleListener() {
@@ -162,7 +160,6 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
      * 初始化定位
      */
     private void initLocaticon() {
-        mMapView = (MapView) findViewById(R.id.mapView);
         // 地图初始化
         mBaiduMap = mMapView.getMap();
         // 开启定位图层
@@ -181,6 +178,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                         mCurrentMode, true, mCurrentMarker));*/
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
+        LogUtil.d("定位123");
 
     }
 
@@ -195,7 +193,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                 activity.finish();
             }
         });
-
+        mMapView = (MapView) findViewById(R.id.mapView);
     }
 
     /**
@@ -205,15 +203,20 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         Intent intent = this.getIntent();
         entity = intent.getParcelableExtra("order");
         type = intent.getIntExtra("type", 1);
-        switch (type){
+        switch (type) {
             case 1:
                 toolbarTv.setText("抢单");
+                getorderGetBtn.setText("接 单");
                 break;
-             case 2:
+            case 2:
                 toolbarTv.setText("订单信息");
+                getorderGetBtn.setText("完 成");
                 break;
-             case 3:
+            case 3:
                 toolbarTv.setText("订单信息");
+                getorderGetBtn.setText("已完成");
+                getorderGetBtn.setClickable(false);
+                getorderGetBtn.setBackgroundResource(R.drawable.border_gray);
                 break;
 
         }
@@ -281,10 +284,11 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
 
     @OnClick(R.id.getorder_get_btn)
     public void onClick() {
-        switch (type){
+        switch (type) {
             case 1:
                 ToastUtil.showShort("抢单");
                 type = 2;
+                getorderGetBtn.setText("完 成");
                 //绘制路线
                 DialogUtil.showProgress(activity);
                 mSearch.drivingSearch((new DrivingRoutePlanOption())
@@ -293,8 +297,9 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                 break;
             case 2:
                 ToastUtil.showShort("完成");
+                getorderGetBtn.setText("已完成");
                 getorderGetBtn.setClickable(false);
-                getorderGetBtn.setVisibility(View.GONE);
+                getorderGetBtn.setBackgroundResource(R.drawable.border_gray);
                 type = 3;
                 break;
             case 3:
@@ -391,7 +396,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
             stNode = PlanNode.withLocation(ll);
 //            PlanNode enNode = PlanNode.withLocation(new LatLng(36.08246, 120.417519));
             enNode = PlanNode.withLocation(new LatLng(lat, lon));
-            if(type !=1 ){
+            if (type != 1) {
                 DialogUtil.showProgress(activity);
                 //绘制路线
                 mSearch.drivingSearch((new DrivingRoutePlanOption())

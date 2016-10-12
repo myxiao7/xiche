@@ -120,7 +120,7 @@ public class LoginActivity extends BaseActivity {
                     DbUtils.getInstance().savePersonInfo(entity.getOperatorDTO());
                     SharedData.saveUserName(loginNameTxt.getText().toString());
                     SharedData.saveUserPwd(loginPwdTxt.getText().toString());
-                    if(TextUtils.isEmpty(entity.getOperatorDTO().getCardno()) || TextUtils.isEmpty(entity.getOperatorDTO().getLocation()) || TextUtils.isEmpty(entity.getOperatorDTO().getName())){
+                    /*if(TextUtils.isEmpty(entity.getOperatorDTO().getCardno()) || TextUtils.isEmpty(entity.getOperatorDTO().getLocation()) || TextUtils.isEmpty(entity.getOperatorDTO().getName())){
                         ToastUtil.showShort("请先完善个人信息");
                         //去填写个人信息
                         Intent intent = new Intent(activity, ModifyUserInfoActivity.class);
@@ -130,7 +130,10 @@ public class LoginActivity extends BaseActivity {
                         //去首页
                         Intent intent = new Intent(activity, MainActivity.class);
                         startActivity(intent);
-                    }
+                    }*/
+                    //去首页
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    startActivity(intent);
                     activity.finish();
                 } else {
                     ToastUtil.showShort("登录失败");

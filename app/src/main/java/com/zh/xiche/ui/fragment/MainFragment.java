@@ -79,16 +79,13 @@ public class MainFragment extends BaseFragment {
         ButterKnife.bind(this, mView);
         mMapView = SupportMapFragment.newInstance();
         //6.0以上动态获取需求权限
-        if (Build.VERSION.SDK_INT >= 23) {
-            AndPermission.with(this)
-                    .requestCode(101)
-                    .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                    .rationale(mRationaleListener)
-                    .send();
-        } else {
-            initLocaticon();
-        }
+        AndPermission.with(this)
+                .requestCode(101)
+                .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .rationale(mRationaleListener)
+                .send();
+
         return mView;
     }
 

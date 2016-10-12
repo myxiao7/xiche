@@ -55,13 +55,12 @@
             android:id="@+id/register_name_edit"
             style="@style/register_edit"
             android:hint="@string/register_userinfo_name"
-            android:inputType="number"
             />
         <EditText
             android:id="@+id/register_card_edit"
             style="@style/register_edit"
             android:hint="@string/register_userinfo_card"
-            android:inputType="textPassword"
+            android:inputType="number"
             />
         <Button
             android:id="@+id/register_registe_btn"

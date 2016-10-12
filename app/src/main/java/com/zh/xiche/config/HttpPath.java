@@ -63,17 +63,17 @@ public class HttpPath {
     /**
      * 日账单列表
      */
-    public static final String BILLBYDAY = "chuXiaoDing_dayBill_queryDayBill.action";
+    public static final String BILLBYDAY = "chuXiaoDing_orders_queryAppDyaBillOrders.action";
     /**
      * 月账单列表
      */
-    public static final String BILLBYMONUTH = "chuXiaoDing_orders_queryFinishOrders.action";
+    public static final String BILLBYMONUTH = "chuXiaoDing_dayBill_queryAppDayBill.action";
     /**
      * 年账单列表
      */
-    public static final String BILLBYYEAR = "chuXiaoDing_orders_queryFinishOrders.action";
+    public static final String BILLBYYEAR = "chuXiaoDing_monthBill_queryAppMonthBill.action";
     /**
-     * 年账单列表
+     * 总账单列表
      */
     public static final String BILLBYALL = "chuXiaoDing_yearBill_queryYearAppBill.action";
     /**

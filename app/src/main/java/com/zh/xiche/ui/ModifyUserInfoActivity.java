@@ -77,7 +77,7 @@ public class ModifyUserInfoActivity extends BaseActivity {
     public MyLocationListenner myListener = new MyLocationListenner();
 
     private Double lon ,lar;
-    private UserInfoEntity entity;
+    private UserInfoEntity infoEntity;
 
     @Override
     public void onBackPressed() {
@@ -89,18 +89,13 @@ public class ModifyUserInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_userinfo);
         init();
-        //6.0以上动态获取需求权限
-        if(Build.VERSION.SDK_INT >= 23){
-            AndPermission.with(this)
-                    .requestCode(101)
-                    .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                    .rationale(mRationaleListener)
-                    .send();
-        }else{
-            initLocaticon();
+        AndPermission.with(this)
+                .requestCode(101)
+                .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .rationale(mRationaleListener)
+                .send();
 
-        }
     }
 
     private RationaleListener mRationaleListener = new RationaleListener() {
@@ -135,7 +130,7 @@ public class ModifyUserInfoActivity extends BaseActivity {
             }
         });*/
         toolbarTv.setText("完善个人信息");
-        entity = DbUtils.getInstance().getPersonInfo();
+        infoEntity = DbUtils.getInstance().getPersonInfo();
     }
 
 
@@ -186,8 +181,6 @@ public class ModifyUserInfoActivity extends BaseActivity {
 
             case R.id.register_registe_btn:
                 modifyUserInfo();
-                Intent intent2 = new Intent(activity, RegisterResultActivity.class);
-                startActivity(intent2);
                 break;
         }
     }
@@ -198,8 +191,8 @@ public class ModifyUserInfoActivity extends BaseActivity {
     private void modifyUserInfo() {
         String url = HttpPath.getPath(HttpPath.MODIFYINFO);
         RequestParams params = HttpUtil.params(url);
-        params.addBodyParameter("uid", entity.getId());
-        params.addBodyParameter("tockens", entity.getTockens());
+        params.addBodyParameter("uid", infoEntity.getId());
+        params.addBodyParameter("tockens", infoEntity.getTockens());
         params.addBodyParameter("name", registerNameEdit.getText().toString());
         params.addBodyParameter("location", registerCitvTv.getText().toString());
         params.addBodyParameter("lon", lon + "");
@@ -218,11 +211,13 @@ public class ModifyUserInfoActivity extends BaseActivity {
                     //去首页
                     Intent intent = new Intent(activity, MainActivity.class);
                     //更新信息
-                    entity.getOperatorDTO().setCardno(registerCardEdit.getText().toString());
-                    entity.getOperatorDTO().setName(registerNameEdit.getText().toString());
-                    entity.getOperatorDTO().setLocation(registerCitvTv.getText().toString());
-                    entity.getOperatorDTO().setLat(lar+"");
-                    entity.getOperatorDTO().setLon(lon+"");
+                    infoEntity.setCardno(registerCardEdit.getText().toString());
+                    infoEntity.setName(registerNameEdit.getText().toString());
+                    infoEntity.setLocation(registerCitvTv.getText().toString());
+                    infoEntity.setLat(lar+"");
+                    infoEntity.setLon(lon+"");
+                    DbUtils.getInstance().clearPersonInfo();
+                    DbUtils.getInstance().savePersonInfo(infoEntity);
                     startActivity(intent);
                     activity.finish();
                 }else{

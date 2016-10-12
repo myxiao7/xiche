@@ -112,7 +112,7 @@ public class FragmentMyorder02 extends BaseFragment {
         }else{
             pageIndex++;
         }
-        String path = HttpPath.getPath(HttpPath.ORDERLIST_WAIT);
+        String path = HttpPath.getPath(HttpPath.ORDERLIST_FINISH);
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());

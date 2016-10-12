@@ -23,12 +23,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-         <meta-data
+         <!--<meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />
-        <!--<meta-data
+            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />-->
+        <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="RT4TGU5cWUOSmOoSv4os1pvcfPR63TyM" />-->
+            android:value="RT4TGU5cWUOSmOoSv4os1pvcfPR63TyM" />
 
         <service android:name="com.baidu.location.f"
             android:enabled="true"
@@ -104,6 +104,23 @@
         <!--订单详情-->
         <activity
             android:name=".ui.OrderDetailsActivity"
+            />
+
+        <!--我的账单-->
+        <activity
+            android:name=".ui.mybill.BillByAllActivity"
+            />
+        <!--年账单-->
+        <activity
+            android:name=".ui.mybill.BillByYearActivity"
+            />
+        <!--月账单-->
+        <activity
+            android:name=".ui.mybill.BillByMonthActivity"
+            />
+        <!--日账单-->
+        <activity
+            android:name=".ui.mybill.BillByDayActivity"
             />
 
     </application>

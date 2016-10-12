@@ -46,6 +46,20 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> list = new ArrayList<>();
 
     private UserInfoEntity entity;
+
+    long waitTime = 2000;
+    long touchTime = 0;
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if((currentTime-touchTime)>=waitTime) {
+            ToastUtil.showShort("再按一次退出");
+            touchTime = currentTime;
+        }else {
+            finish();
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +69,9 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         toolbarTv.setText(R.string.app_name);
         entity = DbUtils.getInstance().getPersonInfo();
-        if(TextUtils.isEmpty(entity.getCardno()) || TextUtils.isEmpty(entity.getLocation()) || TextUtils.isEmpty(entity.getName())){
+      /*  if(TextUtils.isEmpty(entity.getCardno()) || TextUtils.isEmpty(entity.getLocation()) || TextUtils.isEmpty(entity.getName())){
             ToastUtil.showShort("请先完善个人信息");
-        }
+        }*/
         Fragment fragment01 = MainFragment.newInstance();
         Fragment fragment02 = PersonFragment.newInstance();
         list.add(fragment01);

@@ -47,7 +47,16 @@
         <item name="android:layout_margin">15dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/sp18</item>
-
+    </style>
+<!--基础按钮-->
+    <style name="base_btn2">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/btn_bg</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/sp18</item>
     </style>
 <!--基础编辑-->
  <style name="base_edit">
