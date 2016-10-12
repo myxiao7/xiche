@@ -7,6 +7,8 @@ import com.baidu.mapapi.SDKInitializer;
 import org.xutils.DbManager;
 import org.xutils.x;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by win7 on 2016/9/18.
  */
@@ -23,6 +25,8 @@ public class BaseApplication extends Application {
         super.onCreate();
         application = this;
         SDKInitializer.initialize(this);
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         x.Ext.init(this);
         x.Ext.setDebug(true); // 是否输出debug日志
         //全局异常捕获

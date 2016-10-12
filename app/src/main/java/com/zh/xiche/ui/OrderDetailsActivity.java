@@ -38,6 +38,7 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.google.gson.reflect.TypeToken;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionNo;
 import com.yanzhenjie.permission.PermissionYes;
@@ -45,14 +46,24 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
+import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.entity.OrderEntity;
+import com.zh.xiche.entity.ResultEntity;
+import com.zh.xiche.entity.UserInfoEntity;
+import com.zh.xiche.http.HttpUtil;
+import com.zh.xiche.http.RequestCallBack;
+import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.DialogUtil;
 import com.zh.xiche.utils.DrivingRouteOverlay;
+import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ImageLoaderHelper;
 import com.zh.xiche.utils.OverlayManager;
 import com.zh.xiche.utils.ToastUtil;
 
 import org.xutils.common.util.LogUtil;
+import org.xutils.http.RequestParams;
+
+import java.lang.reflect.Type;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -115,9 +126,10 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     OverlayManager routeOverlay = null;
     PlanNode stNode, enNode;//起点, 终点
 
-    private OrderEntity entity; //订单详情
+    private UserInfoEntity userInfoEntity; //个人信息
+    private OrderEntity orderEntity; //订单详情
     private Double lon, lat;
-    private int type = 1;// 订单类型（抢单，完成，已完成）
+    private int orderType = 1;// 订单类型（抢单，完成，已完成）
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -194,6 +206,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
             }
         });
         mMapView = (MapView) findViewById(R.id.mapView);
+        userInfoEntity = DbUtils.getInstance().getPersonInfo();
     }
 
     /**
@@ -201,9 +214,9 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
      */
     private void setOrderData() {
         Intent intent = this.getIntent();
-        entity = intent.getParcelableExtra("order");
-        type = intent.getIntExtra("type", 1);
-        switch (type) {
+        orderEntity = intent.getParcelableExtra("order");
+        orderType = intent.getIntExtra("type", 1);
+        switch (orderType) {
             case 1:
                 toolbarTv.setText("接单");
                 getorderGetBtn.setText("接 单");
@@ -220,87 +233,78 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                 break;
 
         }
-        if (!TextUtils.isEmpty(entity.getAvartar())) {
-            ImageLoaderHelper.getInstance().loadPic(getorderIconImg, entity.getAvartar());
+        if (!TextUtils.isEmpty(orderEntity.getAvartar())) {
+            ImageLoaderHelper.getInstance().loadPic(getorderIconImg, orderEntity.getAvartar());
         }
         //昵称 + 姓名
-        getorderNameTv.setText(entity.getUname() + "(" + entity.getName() + ")");
-        if (!TextUtils.isEmpty(entity.getMobile())) {
+        getorderNameTv.setText(orderEntity.getUname() + "(" + orderEntity.getName() + ")");
+        if (!TextUtils.isEmpty(orderEntity.getMobile())) {
             //手机号码
-            getorderPhoneTv.setText(entity.getMobile());
+            getorderPhoneTv.setText(orderEntity.getMobile());
             getorderPhoneImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Uri uri = Uri.parse("tel:" + entity.getMobile());
+                    Uri uri = Uri.parse("tel:" + orderEntity.getMobile());
                     activity.startActivity(new Intent(Intent.ACTION_DIAL, uri));
                 }
             });
         }
 
-        if (!TextUtils.isEmpty(entity.getOrderid())) {
+        if (!TextUtils.isEmpty(orderEntity.getOrderid())) {
             //订单号码
-            getorderOrderTv.setText(entity.getOrderid());
+            getorderOrderTv.setText(orderEntity.getOrderid());
         }
-        if (!TextUtils.isEmpty(entity.getServicetypename())) {
+        if (!TextUtils.isEmpty(orderEntity.getServicetypename())) {
             //洗车类型
-            getorderTypeTv.setText(entity.getServicetypename());
+            getorderTypeTv.setText(orderEntity.getServicetypename());
         }
-        if (!TextUtils.isEmpty(entity.getLocation())) {
+        if (!TextUtils.isEmpty(orderEntity.getLocation())) {
             //地址
-            getorderAddTv.setText(entity.getLocation());
+            getorderAddTv.setText(orderEntity.getLocation());
         }
-        if (!TextUtils.isEmpty(entity.getAppointment())) {
+        if (!TextUtils.isEmpty(orderEntity.getAppointment())) {
             //预约时间
-            getorderTimeTv.setText(entity.getAppointment());
+            getorderTimeTv.setText(orderEntity.getAppointment());
         }
-        if (!TextUtils.isEmpty(entity.getCarbrank())) {
+        if (!TextUtils.isEmpty(orderEntity.getCarbrank())) {
             //车型
-            getorderCartypeTv.setText(entity.getCarbrank());
+            getorderCartypeTv.setText(orderEntity.getCarbrank());
         }
-        if (!TextUtils.isEmpty(entity.getCarcolor())) {
+        if (!TextUtils.isEmpty(orderEntity.getCarcolor())) {
             //颜色
-            getorderColorTv.setText(entity.getCarcolor());
+            getorderColorTv.setText(orderEntity.getCarcolor());
         }
-        if (!TextUtils.isEmpty(entity.getCarno())) {
+        if (!TextUtils.isEmpty(orderEntity.getCarno())) {
             //车牌
-            getorderNumTv.setText(entity.getCarno());
+            getorderNumTv.setText(orderEntity.getCarno());
         }
-        if (!TextUtils.isEmpty(entity.getOrderamount() + "")) {
+        if (!TextUtils.isEmpty(orderEntity.getOrderamount() + "")) {
             //价格
-            getorderPriceTv.setText("￥" + entity.getOrderamount() + "");
+            getorderPriceTv.setText("￥" + orderEntity.getOrderamount() + "");
         }
-        if (!TextUtils.isEmpty(entity.getOrderid())) {
+        if (!TextUtils.isEmpty(orderEntity.getOrderid())) {
             //订单号码
-            getorderOrderTv.setText("订单号:" + entity.getOrderid());
+            getorderOrderTv.setText("订单号:" + orderEntity.getOrderid());
         }
-        if (!TextUtils.isEmpty(entity.getRemark())) {
+        if (!TextUtils.isEmpty(orderEntity.getRemark())) {
             //备注
-            getorderRemarkTv.setText(entity.getRemark());
+            getorderRemarkTv.setText(orderEntity.getRemark());
         }
-        lon = entity.getLon();
-        lat = entity.getLat();
+        lon = orderEntity.getLon();
+        lat = orderEntity.getLat();
     }
 
 
     @OnClick(R.id.getorder_get_btn)
     public void onClick() {
-        switch (type) {
+        switch (orderType) {
             case 1:
                 ToastUtil.showShort("抢单");
-                type = 2;
-                getorderGetBtn.setText("完 成");
-                //绘制路线
-                DialogUtil.showProgress(activity);
-                mSearch.drivingSearch((new DrivingRoutePlanOption())
-                        .from(stNode)
-                        .to(enNode));
+                getOrder();
                 break;
             case 2:
                 ToastUtil.showShort("完成");
-                getorderGetBtn.setText("已完成");
-                getorderGetBtn.setClickable(false);
-                getorderGetBtn.setBackgroundResource(R.drawable.border_gray);
-                type = 3;
+                finishOrder();
                 break;
             case 3:
                 ToastUtil.showShort("已完成");
@@ -313,9 +317,72 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
      * 接单
      */
     private void getOrder(){
+        String path = HttpPath.getPath(HttpPath.ORDERACCEPT);
+        RequestParams params = HttpUtil.params(path);
+        params.addBodyParameter("uid", userInfoEntity.getId());
+        params.addBodyParameter("tockens", userInfoEntity.getTockens());
+        params.addBodyParameter("orderid", orderEntity.getOrderid());
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                Type type = new TypeToken<ResultEntity>(){}.getType();
+                ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
+                if(resultEntity.isSuccee()){
+                    ToastUtil.showShort("接单成功，正在生成路线...");
+                    orderType = 2;
+                    getorderGetBtn.setText("完 成");
+                    //绘制路线
+                    DialogUtil.showProgress(activity);
+                    mSearch.drivingSearch((new DrivingRoutePlanOption())
+                            .from(stNode)
+                            .to(enNode));
+                }else{
+                    ToastUtil.showShort("接单失败，推出，刷新订单...");
+                }
+            }
 
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+                ToastUtil.showShort(ex.getMessage());
+            }
+        });
     }
 
+    /**
+     * 完成订单
+     */
+    private void finishOrder(){
+        String path = HttpPath.getPath(HttpPath.ORDERACCEPT);
+        RequestParams params = HttpUtil.params(path);
+        params.addBodyParameter("uid", userInfoEntity.getId());
+        params.addBodyParameter("tockens", userInfoEntity.getTockens());
+        params.addBodyParameter("orderid", orderEntity.getOrderid());
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                Type type = new TypeToken<ResultEntity>(){}.getType();
+                ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
+                if(resultEntity.isSuccee()){
+                    ToastUtil.showShort("完成订单");
+                    getorderGetBtn.setText("已完成");
+                    getorderGetBtn.setClickable(false);
+                    getorderGetBtn.setBackgroundResource(R.drawable.border_gray);
+                    orderType = 3;
+                }else{
+                    ToastUtil.showShort("订单状态更新失败");
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+                ToastUtil.showShort(ex.getMessage());
+            }
+        });
+    }
     @Override
     public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
 
@@ -403,7 +470,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
             stNode = PlanNode.withLocation(ll);
 //            PlanNode enNode = PlanNode.withLocation(new LatLng(36.08246, 120.417519));
             enNode = PlanNode.withLocation(new LatLng(lat, lon));
-            if (type != 1) {
+            if (orderType != 1) {
                 DialogUtil.showProgress(activity);
                 //绘制路线
                 mSearch.drivingSearch((new DrivingRoutePlanOption())

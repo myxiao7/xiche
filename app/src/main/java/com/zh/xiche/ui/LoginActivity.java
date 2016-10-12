@@ -32,6 +32,7 @@ import java.lang.reflect.Type;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by win7 on 2016/9/18.
@@ -157,6 +158,18 @@ public class LoginActivity extends BaseActivity {
             loginNameTxt.setText(data.getStringExtra("userName"));
             loginPwdTxt.setText(data.getStringExtra("userPwd"));
         }
+    }
+
+   /* @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
+    }*/
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
     }
 
     @Override

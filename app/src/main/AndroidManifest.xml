@@ -23,12 +23,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-         <!--<meta-data
+         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />-->
-        <meta-data
+            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />
+        <!--<meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="RT4TGU5cWUOSmOoSv4os1pvcfPR63TyM" />
+            android:value="RT4TGU5cWUOSmOoSv4os1pvcfPR63TyM" />-->
 
         <service android:name="com.baidu.location.f"
             android:enabled="true"
@@ -123,6 +123,17 @@
             android:name=".ui.mybill.BillByDayActivity"
             />
 
+        <receiver
+            android:name=".ui.receive.MyReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <category android:name="com.zh.xiche" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

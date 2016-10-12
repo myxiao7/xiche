@@ -2,7 +2,6 @@ package com.zh.xiche.ui.fragment;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +23,7 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
+import com.google.gson.reflect.TypeToken;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionNo;
 import com.yanzhenjie.permission.PermissionYes;
@@ -31,11 +31,21 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseFragment;
+import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.entity.ResultEntity;
+import com.zh.xiche.entity.UserInfoEntity;
+import com.zh.xiche.http.HttpUtil;
+import com.zh.xiche.http.RequestCallBack;
 import com.zh.xiche.ui.OrderListActivity;
 import com.zh.xiche.ui.myorder.MyOrderSwitch;
+import com.zh.xiche.utils.DbUtils;
+import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ToastUtil;
 
 import org.xutils.common.util.LogUtil;
+import org.xutils.http.RequestParams;
+
+import java.lang.reflect.Type;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,6 +72,8 @@ public class MainFragment extends BaseFragment {
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
 
+    private UserInfoEntity entity;
+
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
         Bundle bundle = new Bundle();
@@ -77,6 +89,7 @@ public class MainFragment extends BaseFragment {
             mView = inflater.inflate(R.layout.fragment_main, container, false);
         }
         ButterKnife.bind(this, mView);
+        entity = DbUtils.getInstance().getPersonInfo();
         mMapView = SupportMapFragment.newInstance();
         //6.0以上动态获取需求权限
         AndPermission.with(this)
@@ -124,7 +137,7 @@ public class MainFragment extends BaseFragment {
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(60 * 60 * 1000);
+        option.setScanSpan(1 * 60 * 1000);
         option.setAddrType("all");
         mLocClient.setLocOption(option);
         mLocClient.start();
@@ -158,10 +171,44 @@ public class MainFragment extends BaseFragment {
             MapStatus.Builder builder = new MapStatus.Builder();
             builder.target(ll).zoom(15.0f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            //更新位置
+            updateLocation(location.getLatitude()+"", location.getLongitude()+"", location.getAddrStr());
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
         }
+    }
+
+    /**
+     * 更新位置
+     */
+    private void updateLocation(String lon, String lat, String location){
+        String path = HttpPath.getPath(HttpPath.ORDERACCEPT);
+        RequestParams params = HttpUtil.params(path);
+        params.addBodyParameter("uid", entity.getId());
+        params.addBodyParameter("tockens", entity.getTockens());
+        params.addBodyParameter("location", location);
+        params.addBodyParameter("lon", lon);
+        params.addBodyParameter("lat", lat);
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                Type type = new TypeToken<ResultEntity>(){}.getType();
+                ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
+                if(resultEntity.isSuccee()){
+                    ToastUtil.showShort("更新位置成功");
+                }else{
+                    ToastUtil.showShort("更新位置失败");
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+                ToastUtil.showShort(ex.getMessage());
+            }
+        });
     }
 
     @Override

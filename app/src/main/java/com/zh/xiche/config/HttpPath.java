@@ -35,6 +35,10 @@ public class HttpPath {
      */
     public static final String ORDERACCEPT = "chuXiaoDing_orders_acceptOrder.action";
     /**
+     * 完成订单
+     */
+    public static final String ORDERFINISH = "chuXiaoDing_orders_acceptOrder.action";
+    /**
      * 拒单
      */
     public static final String ORDERREFUSER = "chuXiaoDing_orders_denyOrder.action";
@@ -51,15 +55,6 @@ public class HttpPath {
      */
     public static final String ORDERLIST_FINISH = "chuXiaoDing_orders_queryAppFinishOrders.action";
 
-    /**
-     * 完成订单
-     */
-    public static final String ORDERFINISH = "chuXiaoDing_orders_finishOrder.action";
-
-    /**
-     * 已完成订单列表
-     */
-    public static final String LISTFINISH = "chuXiaoDing_orders_queryFinishOrders.action";
     /**
      * 日账单列表
      */

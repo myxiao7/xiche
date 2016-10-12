@@ -10,6 +10,18 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "14c931519e28aa31f145fb79", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
     }
     buildTypes {
         release {
@@ -52,4 +64,6 @@ dependencies {
     compile 'com.yanzhenjie:permission:1.0.3'
     compile 'cn.finalteam:galleryfinal:1.4.8.7'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
+    compile 'cn.jiguang:jpush:2.1.8'  // 此处以SDK 2.1.8版本为例
 }

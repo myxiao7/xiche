@@ -57,7 +57,7 @@ public class BillByMonthActivity extends BaseActivity {
         ButterKnife.bind(this);
         init();
 
-        getBillByYear(month);
+        getBillByMonth(month);
     }
 
     private void init() {
@@ -85,10 +85,10 @@ public class BillByMonthActivity extends BaseActivity {
     }
 
     /**
-     * 获取所有月份账单
+     * 获取某月所有日期的账单
      */
-    private void getBillByYear(String year) {
-        String path = HttpPath.getPath(HttpPath.BILLBYYEAR);
+    private void getBillByMonth(String month) {
+        String path = HttpPath.getPath(HttpPath.BILLBYMONUTH);
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());
@@ -96,7 +96,7 @@ public class BillByMonthActivity extends BaseActivity {
         params.addBodyParameter("page", "1");
         params.addBodyParameter("sidx", "");
         params.addBodyParameter("sord", "");
-        params.addBodyParameter("monthDate", year);
+        params.addBodyParameter("monthDate", month);
         HttpUtil.http().post(params, new RequestCallBack<String>(activity) {
             @Override
             public void onSuccess(String result) {
