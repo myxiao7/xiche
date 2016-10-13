@@ -15,7 +15,7 @@
             android:id="@+id/per_icon_img"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@mipmap/icon_user_default"
+            android:src="@mipmap/avator_default"
             />
         <TextView
             android:id="@+id/per_username_tv"

@@ -17,6 +17,8 @@ public class BaseApplication extends Application {
     private static BaseApplication application;
     private static DbManager.DaoConfig daoConfig;
 
+    public static final String LOGOUT = "com.zh.xc.logout";
+
     public synchronized static BaseApplication getInstance(){
         return  application;
     }

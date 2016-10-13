@@ -47,6 +47,7 @@ import com.yanzhenjie.permission.RationaleListener;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
 import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.config.SharedData;
 import com.zh.xiche.entity.OrderEntity;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.entity.UserInfoEntity;
@@ -138,6 +139,15 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         ButterKnife.bind(this);
         init();
         setOrderData();
+        //初始化地图显示区域
+        if(!TextUtils.isEmpty(SharedData.getCurrentlat()) && !TextUtils.isEmpty(SharedData.getCurrentlon())){
+            LatLng ll = new LatLng(Double.parseDouble(SharedData.getCurrentlat()),
+                    Double.parseDouble(SharedData.getCurrentlon()));
+            LogUtil.d(Double.parseDouble(SharedData.getCurrentlat()) + "," + Double.parseDouble(SharedData.getCurrentlon()));
+            MapStatus.Builder builder = new MapStatus.Builder();
+            builder.target(ll).zoom(18.0f);
+            mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+        }
         AndPermission.with(this)
                 .requestCode(101)
                 .permission(Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -172,8 +182,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
      * 初始化定位
      */
     private void initLocaticon() {
-        // 地图初始化
-        mBaiduMap = mMapView.getMap();
+
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
         // 定位初始化
@@ -206,6 +215,8 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
             }
         });
         mMapView = (MapView) findViewById(R.id.mapView);
+        // 地图初始化
+        mBaiduMap = mMapView.getMap();
         userInfoEntity = DbUtils.getInstance().getPersonInfo();
     }
 

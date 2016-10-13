@@ -92,7 +92,7 @@ public class BillByDayActivity extends BaseActivity {
         }else{
             page ++;
         }
-        String path = HttpPath.getPath(HttpPath.BILLBYYEAR);
+        String path = HttpPath.getPath(HttpPath.BILLBYDAY);
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());

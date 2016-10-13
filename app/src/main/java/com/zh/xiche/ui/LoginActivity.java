@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity {
 //                downloadFile("");
                 break;
             case R.id.login_register_txt:
-                Intent intent2 = new Intent(activity, RegisterUserInfoActivity.class);
+                Intent intent2 = new Intent(activity, RegisterActivity.class);
                 startActivityForResult(intent2, REGISTERCODE);
                 break;
             case R.id.login_forget_txt:
@@ -123,6 +123,7 @@ public class LoginActivity extends BaseActivity {
                     ToastUtil.showShort("登录成功");
                     //保存用户信息
                     DbUtils.getInstance().clearPersonInfo();
+                    entity.getOperatorDTO().setIspass(1);
                     DbUtils.getInstance().savePersonInfo(entity.getOperatorDTO());
                     SharedData.saveUserName(loginNameTxt.getText().toString());
                     SharedData.saveUserPwd(loginPwdTxt.getText().toString());
@@ -163,7 +164,7 @@ public class LoginActivity extends BaseActivity {
                 .progress(false, 0, true)
                 .cancelable(false)
                 .show();
-        RequestParams requestParams = new RequestParams("http://192.168.0.14:8080/jxys/1.apk");
+        RequestParams requestParams = new RequestParams("http://192.168.1.104:8080/examples/1.apk");
         requestParams.setSaveFilePath(FilePath.CACHE_PATH + "xiche.apk");
         HttpUtil.http().get(requestParams, new Callback.ProgressCallback<File>() {
             @Override

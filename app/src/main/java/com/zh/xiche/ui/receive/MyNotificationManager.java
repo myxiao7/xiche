@@ -30,7 +30,7 @@ public class MyNotificationManager {
 
         builder.setContentTitle(title)
                 .setContentText(message)
-                .setTicker("签约通过了")
+                .setTicker("派单")
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setSmallIcon(R.mipmap.ic_car);

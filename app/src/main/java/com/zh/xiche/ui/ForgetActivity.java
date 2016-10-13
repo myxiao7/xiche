@@ -236,6 +236,8 @@ public class ForgetActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        downTimer.cancel();
+        if (downTimer != null) {
+            downTimer.cancel();
+        }
     }
 }

@@ -199,7 +199,7 @@ public class MainFragment extends BaseFragment {
      * 更新位置
      */
     private void updateLocation(String lon, String lat, String location){
-        String path = HttpPath.getPath(HttpPath.ORDERACCEPT);
+        String path = HttpPath.getPath(HttpPath.MODIFYLOCATION);
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());
@@ -238,7 +238,7 @@ public class MainFragment extends BaseFragment {
     private void getLocationYes() {
         // 申请权限成功，可以去做点什么了。
         ToastUtil.showShort("获取定位权限成功");
-//        initLocaticon();
+        initLocaticon();
     }
 
     // 失败回调的方法，用注解即可，里面的数字是请求时的requestCode。
@@ -253,12 +253,20 @@ public class MainFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.frag_main_list_tv:
-                Intent intent = new Intent(activity, MyOrderSwitch.class);
-                startActivity(intent);
+                if(entity.getIspass() == 1){
+                    Intent intent = new Intent(activity, MyOrderSwitch.class);
+                    startActivity(intent);
+                }else{
+                    ToastUtil.showShort("请等待审核");
+                }
                 break;
             case R.id.frag_main_list2_tv:
-                Intent intent2 = new Intent(activity, OrderListActivity.class);
-                startActivity(intent2);
+                if(entity.getIspass() == 1){
+                    Intent intent2 = new Intent(activity, OrderListActivity.class);
+                    startActivity(intent2);
+                }else{
+                    ToastUtil.showShort("请等待审核");
+                }
                 break;
         }
     }

@@ -11,16 +11,24 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseFragment;
+import com.zh.xiche.config.FilePath;
 import com.zh.xiche.entity.UserInfoEntity;
 
+import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.ui.mybill.BillByAllActivity;
 import com.zh.xiche.ui.PersonInfo;
 import com.zh.xiche.ui.myorder.MyOrderSwitch;
 import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.ImageLoaderHelper;
 import com.zh.xiche.utils.ToastUtil;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,6 +62,7 @@ public class PersonFragment extends BaseFragment {
     private View mView;
 
     private UserInfoEntity entity;
+    private MaterialDialog dialog;
 
     public static PersonFragment newInstance() {
         PersonFragment fragment = new PersonFragment();
@@ -94,18 +103,73 @@ public class PersonFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.per_mydrder_tv:
-                ToastUtil.showShort(R.string.per_order);
-                intent = new Intent(activity, MyOrderSwitch.class);
-                startActivity(intent);
+                if(entity.getIspass() == 1){
+                    intent = new Intent(activity, MyOrderSwitch.class);
+                    startActivity(intent);
+                }else{
+                    ToastUtil.showShort("请等待审核");
+                }
                 break;
             case R.id.per_mybill_tv:
-                ToastUtil.showShort(R.string.per_bill);
-                intent = new Intent(activity, BillByAllActivity.class);
-                startActivity(intent);
+                if(entity.getIspass() == 1){
+                    intent = new Intent(activity, BillByAllActivity.class);
+                    startActivity(intent);
+                }else{
+                    ToastUtil.showShort("请等待审核");
+                }
                 break;
             case R.id.per_setting_tv:
-                ToastUtil.showShort(R.string.per_setting);
+//                ToastUtil.showShort(R.string.per_setting);
+                downloadFile("");
                 break;
         }
+    }
+
+    private void downloadFile(String url){
+        dialog = new MaterialDialog.Builder(activity)
+                .title("更新")
+                .content("正在下载")
+                .progress(false, 0, true)
+                .cancelable(false)
+                .show();
+        RequestParams requestParams = new RequestParams("http://192.168.1.104:8080/examples/1.apk");
+        requestParams.setSaveFilePath(FilePath.CACHE_PATH + "xiche.apk");
+        HttpUtil.http().get(requestParams, new Callback.ProgressCallback<File>() {
+            @Override
+            public void onWaiting() {
+            }
+
+            @Override
+            public void onStarted() {
+            }
+
+            @Override
+            public void onLoading(long total, long current, boolean isDownloading) {
+                dialog.setMaxProgress((int) total);
+                dialog.setProgress((int) current);
+
+            }
+
+            @Override
+            public void onSuccess(File result) {
+                ToastUtil.showShort("下载成功");
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                ex.printStackTrace();
+                ToastUtil.showShort("下载失败");
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
     }
 }

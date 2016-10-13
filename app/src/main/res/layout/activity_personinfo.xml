@@ -53,7 +53,7 @@
                 android:id="@+id/person_info_icon_img"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:background="@mipmap/icon_user_default"
+                android:background="@mipmap/avator_default"
                 />
         </LinearLayout>
         <View
@@ -133,6 +133,7 @@
             android:background="@color/gray03"/>
 
         <Button
+            android:id="@+id/logout_btn"
             style="@style/base_btn"
             android:text="@string/per_logout" />
     </LinearLayout>

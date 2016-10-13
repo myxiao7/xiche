@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,21 +21,20 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
+import com.zh.xiche.base.BaseApplication;
 import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.entity.BaseEditEnum;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
+import com.zh.xiche.ui.receive.GiveOrderActivity;
 import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ImageLoaderHelper;
 import com.zh.xiche.utils.ToastUtil;
 import com.zh.xiche.utils.UILImageLoader;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 
@@ -81,16 +81,21 @@ public class PersonInfo extends BaseActivity {
     TextView personInfoAddTxt;
     @Bind(R.id.person_info_add_lin)
     LinearLayout personInfoAddLin;
+    @Bind(R.id.logout_btn)
+    Button logoutBtn;
 
     private static final int REQUEST_EDIT = 0x1002;
     private final int REQUEST_CODE_CAMERA = 1000;
     private final int REQUEST_CODE_GALLERY = 1001;
 
+
     private UserInfoEntity entity;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personinfo);
+        ButterKnife.bind(this);
         init();
         initImageLoader(activity);
     }
@@ -108,7 +113,7 @@ public class PersonInfo extends BaseActivity {
         });
         toolbarTv.setText("账号管理");
         entity = DbUtils.getInstance().getPersonInfo();
-        if(!TextUtils.isEmpty(entity.getAvatar())){
+        if (!TextUtils.isEmpty(entity.getAvatar())) {
             ImageLoaderHelper.getInstance().loadPic(personInfoIconImg, entity.getAvatar());
         }
         personInfoAccountTxt.setText(entity.getMobile());
@@ -117,7 +122,7 @@ public class PersonInfo extends BaseActivity {
         personInfoAddTxt.setText(entity.getLocation());
     }
 
-    @OnClick({R.id.person_info_icon_lin, R.id.person_info_account_lin, R.id.person_info_name_lin, R.id.person_info_card_lin, R.id.person_info_add_lin})
+    @OnClick({R.id.person_info_icon_lin, R.id.person_info_account_lin, R.id.person_info_name_lin, R.id.person_info_card_lin, R.id.person_info_add_lin,R.id.logout_btn})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.person_info_icon_lin:
@@ -152,6 +157,9 @@ public class PersonInfo extends BaseActivity {
             case R.id.person_info_add_lin:
                 startEdit(BaseEditEnum.perinfo_add.getId(), personInfoAddTxt.getText().toString());
                 break;
+            case R.id.logout_btn:
+                logout();
+                break;
         }
     }
 
@@ -166,6 +174,7 @@ public class PersonInfo extends BaseActivity {
 
     /**
      * 初始化相册
+     *
      * @return
      */
     private FunctionConfig getFunctionConfig() {
@@ -244,14 +253,16 @@ public class PersonInfo extends BaseActivity {
             public void onSuccess(String result) {
                 super.onSuccess(result);
                 LogUtil.d(result);
-                Type type = new TypeToken<ResultEntity>(){}.getType();
+                Type type = new TypeToken<ResultEntity>() {
+                }.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if(entity.isSuccee()){
+                if (entity.isSuccee()) {
                     ToastUtil.showShort("修改成功");
-                }else{
+                } else {
                     ToastUtil.showShort("修改失败");
                 }
             }
+
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
@@ -259,13 +270,47 @@ public class PersonInfo extends BaseActivity {
         });
     }
 
+    /**
+     * 注销用户
+     */
+    private void logout() {
+        String path = HttpPath.getPath(HttpPath.LOGINOUT);
+        RequestParams params = HttpUtil.params(path);
+        params.addBodyParameter("uid", entity.getId());
+        params.addBodyParameter("tockens", entity.getTockens());
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity) {
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                Type type = new TypeToken<ResultEntity>() {
+                }.getType();
+                ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
+                if (resultEntity.isSuccee()) {
+                    ToastUtil.showShort("注销成功");
+                    //发送注销广播
+                    Intent intent1 = new Intent(BaseApplication.LOGOUT);
+                    activity.sendBroadcast(intent1);
+                    activity.finish();
+                } else {
+                    ToastUtil.showShort("注销失败");
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+                ToastUtil.showShort(ex.getMessage());
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && data != null){
-            if(requestCode == REQUEST_EDIT){
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == REQUEST_EDIT) {
                 int id = data.getIntExtra(CommonEdit.REQTYPE, 1);
-                switch (id){
+                switch (id) {
                     case 1:
                         personInfoNameTxt.setText(data.getStringExtra(CommonEdit.RESULTSTR));
                         break;

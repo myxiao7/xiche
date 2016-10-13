@@ -1,5 +1,9 @@
 package com.zh.xiche.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +18,7 @@ import android.widget.TextView;
 
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
+import com.zh.xiche.base.BaseApplication;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.ui.fragment.MainFragment;
 import com.zh.xiche.ui.fragment.PersonFragment;
@@ -69,6 +74,10 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         toolbarTv.setText(R.string.app_name);
         entity = DbUtils.getInstance().getPersonInfo();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BaseApplication.LOGOUT);
+        activity.registerReceiver(MyBroadcastReceiver, intentFilter);
+
       /*  if(TextUtils.isEmpty(entity.getCardno()) || TextUtils.isEmpty(entity.getLocation()) || TextUtils.isEmpty(entity.getName())){
             ToastUtil.showShort("请先完善个人信息");
         }*/
@@ -131,9 +140,25 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    BroadcastReceiver MyBroadcastReceiver =  new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(BaseApplication.LOGOUT)){
+                ToastUtil.showShort("主界面注销");
+                Intent intent1 = new Intent(activity, LoginActivity.class);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent1);
+                startActivity(intent1);
+                activity.finish();
+            }
+        }
+    };
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        activity.unregisterReceiver(MyBroadcastReceiver);
     }
 }

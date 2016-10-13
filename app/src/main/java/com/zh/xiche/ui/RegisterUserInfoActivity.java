@@ -227,8 +227,8 @@ public class RegisterUserInfoActivity extends BaseActivity implements OnAddressC
 
             case R.id.register_registe_btn:
                 modifyUserInfo();
-                Intent intent2 = new Intent(activity, RegisterResultActivity.class);
-                startActivity(intent2);
+                /*Intent intent2 = new Intent(activity, RegisterResultActivity.class);
+                startActivity(intent2);*/
                 break;
         }
     }

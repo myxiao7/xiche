@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
 import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.entity.OrderEntity;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
@@ -75,12 +76,29 @@ public class GiveOrderActivity extends Activity {
     private CountDownTimer downTimer;
     private UserInfoEntity userInfoEntity;
 
+    private OrderEntity orderEntity;
+
+
+    long waitTime = 2000;
+    long touchTime = 0;
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if((currentTime-touchTime)>=waitTime) {
+            ToastUtil.showShort("再按一次退出");
+            touchTime = currentTime;
+        }else {
+            finish();
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_giveorder);
         ButterKnife.bind(this);
         userInfoEntity = DbUtils.getInstance().getPersonInfo();
+        orderEntity = this.getIntent().getParcelableExtra("order");
         downTimer = new CountDownTimer(60 *1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -89,7 +107,7 @@ public class GiveOrderActivity extends Activity {
 
             @Override
             public void onFinish() {
-                ToastUtil.showShort("未接单");
+//                refuseOrder();
                 finish();
             }
         }.start();
@@ -99,9 +117,10 @@ public class GiveOrderActivity extends Activity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.giveorder_accept_btn:
+                getOrder();
                 break;
             case R.id.giveorder_refuse_btn:
-                ToastUtil.showShort("拒单");
+                refuseOrder();
                 finish();
                 break;
         }
@@ -115,7 +134,7 @@ public class GiveOrderActivity extends Activity {
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", userInfoEntity.getId());
         params.addBodyParameter("tockens", userInfoEntity.getTockens());
-//        params.addBodyParameter("orderid", orderEntity.getOrderid());
+        params.addBodyParameter("orderid", orderEntity.getOrderid());
         HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderActivity.this) {
             @Override
             public void onSuccess(String result) {
@@ -126,11 +145,44 @@ public class GiveOrderActivity extends Activity {
                 if (resultEntity.isSuccee()) {
                     ToastUtil.showShort("接单成功，转向订单详情");
                     Intent intent = new Intent(GiveOrderActivity.this, OrderDetailsActivity.class);
-//                    intent.putExtra("order", list.get(i-1));
+                    intent.putExtra("order", orderEntity);
                     intent.putExtra("type", 2);
                     startActivity(intent);
+                    GiveOrderActivity.this.finish();
                 } else {
                     ToastUtil.showShort("接单失败，退出，刷新订单...");
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+                ToastUtil.showShort(ex.getMessage());
+            }
+        });
+    }
+
+    /**
+     * 接单
+     */
+    private void refuseOrder() {
+        String path = HttpPath.getPath(HttpPath.ORDERREFUSER);
+        RequestParams params = HttpUtil.params(path);
+        params.addBodyParameter("uid", userInfoEntity.getId());
+        params.addBodyParameter("tockens", userInfoEntity.getTockens());
+        params.addBodyParameter("orderid", orderEntity.getOrderid());
+        HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderActivity.this) {
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                Type type = new TypeToken<ResultEntity>() {
+                }.getType();
+                ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
+                if (resultEntity.isSuccee()) {
+                    ToastUtil.showShort("拒单成功");
+                    GiveOrderActivity.this.finish();
+                } else {
+                    ToastUtil.showShort("接单失败");
                 }
             }
 
