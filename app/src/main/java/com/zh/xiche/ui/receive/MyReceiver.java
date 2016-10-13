@@ -33,7 +33,10 @@ public class MyReceiver extends BroadcastReceiver{
            /* Type type = new TypeToken<PushEntity>(){}.getType();
             PushEntity entity = GsonUtil.gsonToBean(result, type);*/
 
-            MyNotificationManager.getInstance().showNotifi(context, "签约通知", "李思已经和你签约了");
+            MyNotificationManager.getInstance().showNotifi(context, "您有一条新的订单", "系统给您推荐个一条新的订单");
+            Intent intent1 = new Intent(context, GiveOrderActivity.class);
+            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent1);
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             System.out.println("收到了通知");
             // 在这里可以做些统计，或者做些其他工作

@@ -26,9 +26,18 @@ public class SharedData {
     public static final String USERPWD = "userpwd";
 
     /**
-     * 密码
+     * 电话
      */
     public static final String USERPHONE = "userphone";
+
+    /**
+     * 经杜
+     */
+    public static final String CURRENTLON = "CURRENTLON";
+    /**
+     * 纬度
+     */
+    public static final String CURRENTLAT = "CURRENTLAT";
 
 
     private static SharedPreferences sharedPreferences;
@@ -116,6 +125,44 @@ public class SharedData {
      */
     public static void saveUserPhone(String phone) {
         getShare().edit().putString(USERPHONE, phone).commit();
+    }
+
+    /**
+     * 获取当前经度
+     *
+     * @return
+     */
+    public static String getCurrentlon() {
+        String host = getShare().getString(CURRENTLON, null);
+        return host;
+    }
+
+    /**
+     * 保存当前经度
+     *
+     * @return
+     */
+    public static void saveCurrentlon(String lon) {
+        getShare().edit().putString(CURRENTLON, lon).commit();
+    }
+
+    /**
+     * 获取当前纬度
+     *
+     * @return
+     */
+    public static String getCurrentlat() {
+        String host = getShare().getString(CURRENTLAT, null);
+        return host;
+    }
+
+    /**
+     * 保存当前纬度
+     *
+     * @return
+     */
+    public static void saveCurrentlat(String lat) {
+        getShare().edit().putString(CURRENTLAT, lat).commit();
     }
 
 }

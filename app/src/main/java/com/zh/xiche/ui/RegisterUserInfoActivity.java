@@ -39,6 +39,8 @@ import com.yanzhenjie.permission.RationaleListener;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
 import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.entity.AddressDtailsEntity;
+import com.zh.xiche.entity.AddressModel;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
@@ -48,6 +50,9 @@ import com.zh.xiche.utils.DialogUtil;
 import com.zh.xiche.utils.DialogUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ToastUtil;
+import com.zh.xiche.utils.Utils;
+import com.zh.xiche.view.cityview.ChooseAddressWheel;
+import com.zh.xiche.view.cityview.listener.OnAddressChangeListener;
 
 import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
@@ -63,7 +68,7 @@ import butterknife.OnClick;
  * Created by win7 on 2016/9/27.
  */
 
-public class RegisterUserInfoActivity extends BaseActivity {
+public class RegisterUserInfoActivity extends BaseActivity implements OnAddressChangeListener {
     @Bind(R.id.toolbar_tv)
     TextView toolbarTv;
     @Bind(R.id.toolbar)
@@ -79,6 +84,7 @@ public class RegisterUserInfoActivity extends BaseActivity {
     @Bind(R.id.register_registe_btn)
     Button registerRegisteBtn;
 
+    private ChooseAddressWheel chooseAddressWheel = null;
     private static final int CITYREQUEST = 0x1001;
     private String userName, userPwd, id, token;
 
@@ -141,8 +147,34 @@ public class RegisterUserInfoActivity extends BaseActivity {
         id = intent.getStringExtra("id");
         token = intent.getStringExtra("token");
 
+        //初始化城市选择
+        initWheel();
+        initData();
     }
 
+    private void initWheel() {
+        chooseAddressWheel = new ChooseAddressWheel(this);
+        chooseAddressWheel.setOnAddressChangeListener(this);
+    }
+
+    private void initData() {
+        String address = Utils.readAssert(this, "address.txt");
+        AddressModel model = GsonUtil.GsonToBean(address, AddressModel.class);
+        if (model != null) {
+            AddressDtailsEntity data = model.Result;
+            if (data == null) return;
+//            registerCitvTv.setText(data.Province + " " + data.City + " " + data.Area);
+            if (data.ProvinceItems != null && data.ProvinceItems.Province != null) {
+                chooseAddressWheel.setProvince(data.ProvinceItems.Province);
+                chooseAddressWheel.defaultValue(data.Province, data.City, data.Area);
+            }
+        }
+    }
+
+    @Override
+    public void onAddressChange(String province, String city, String district) {
+        registerCitvTv.setText(province + " " + city + " " + district);
+    }
 
     /**
      * 初始化定位
@@ -159,6 +191,8 @@ public class RegisterUserInfoActivity extends BaseActivity {
         mLocClient.setLocOption(option);
         mLocClient.start();
     }
+
+
 
     /**
      * 定位SDK监听函数
@@ -185,8 +219,10 @@ public class RegisterUserInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.register_citv_tv:
-                Intent intent = new Intent(activity, SelectCityActivy.class);
-                startActivityForResult(intent, CITYREQUEST);
+                /*Intent intent = new Intent(activity, SelectCityActivy.class);
+                startActivityForResult(intent, CITYREQUEST);*/
+                Utils.hideKeyBoard(this);
+                chooseAddressWheel.show(view);
                 break;
 
             case R.id.register_registe_btn:

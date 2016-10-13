@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.yanzhenjie.permission.RationaleListener;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseFragment;
 import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.config.SharedData;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
@@ -91,6 +93,17 @@ public class MainFragment extends BaseFragment {
         ButterKnife.bind(this, mView);
         entity = DbUtils.getInstance().getPersonInfo();
         mMapView = SupportMapFragment.newInstance();
+        // 地图初始化
+        mBaiduMap = bmapView.getMap();
+        //初始化地图显示区域
+        if(!TextUtils.isEmpty(SharedData.getCurrentlat()) && !TextUtils.isEmpty(SharedData.getCurrentlon())){
+            LatLng ll = new LatLng(Double.parseDouble(SharedData.getCurrentlat()),
+                    Double.parseDouble(SharedData.getCurrentlon()));
+            LogUtil.d(Double.parseDouble(SharedData.getCurrentlat()) + "," + Double.parseDouble(SharedData.getCurrentlon()));
+            MapStatus.Builder builder = new MapStatus.Builder();
+            builder.target(ll).zoom(18.0f);
+            mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+        }
         //6.0以上动态获取需求权限
         AndPermission.with(this)
                 .requestCode(101)
@@ -127,8 +140,7 @@ public class MainFragment extends BaseFragment {
      * 初始化定位
      */
     private void initLocaticon() {
-        // 地图初始化
-        mBaiduMap = bmapView.getMap();
+
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
         // 定位初始化
@@ -137,7 +149,7 @@ public class MainFragment extends BaseFragment {
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1 * 60 * 1000);
+        option.setScanSpan(5 * 60 * 1000);
         option.setAddrType("all");
         mLocClient.setLocOption(option);
         mLocClient.start();
@@ -173,6 +185,10 @@ public class MainFragment extends BaseFragment {
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             //更新位置
             updateLocation(location.getLatitude()+"", location.getLongitude()+"", location.getAddrStr());
+
+            //保存位置坐标
+            SharedData.saveCurrentlat(location.getLatitude()+"");
+            SharedData.saveCurrentlon(location.getLongitude()+"");
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
@@ -222,7 +238,7 @@ public class MainFragment extends BaseFragment {
     private void getLocationYes() {
         // 申请权限成功，可以去做点什么了。
         ToastUtil.showShort("获取定位权限成功");
-        initLocaticon();
+//        initLocaticon();
     }
 
     // 失败回调的方法，用注解即可，里面的数字是请求时的requestCode。

@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
+import com.zh.xiche.config.FilePath;
 import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.config.SharedData;
 import com.zh.xiche.entity.ResultEntity;
@@ -24,9 +26,11 @@ import com.zh.xiche.utils.DialogUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ToastUtil;
 
+import org.xutils.common.Callback;
 import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 
+import java.io.File;
 import java.lang.reflect.Type;
 
 import butterknife.Bind;
@@ -51,7 +55,7 @@ public class LoginActivity extends BaseActivity {
 
     private static final int REGISTERCODE = 0x1001;
 
-
+    private MaterialDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,11 +87,12 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
 
-                DialogUtils.showProgress(activity);
-                login();
+                /*DialogUtils.showProgress(activity);
+                login();*/
+                downloadFile("");
                 break;
             case R.id.login_register_txt:
-                Intent intent2 = new Intent(activity, RegisterActivity.class);
+                Intent intent2 = new Intent(activity, RegisterUserInfoActivity.class);
                 startActivityForResult(intent2, REGISTERCODE);
                 break;
             case R.id.login_forget_txt:
@@ -150,6 +155,55 @@ public class LoginActivity extends BaseActivity {
         });
 
     }
+
+    private void downloadFile(String url){
+        dialog = new MaterialDialog.Builder(this)
+                .title("更新")
+                .content("正在下载")
+                .progress(false, 0, true)
+                .cancelable(false)
+                .show();
+        RequestParams requestParams = new RequestParams("http://192.168.0.14:8080/jxys/1.apk");
+        requestParams.setSaveFilePath(FilePath.CACHE_PATH + "xiche.apk");
+        HttpUtil.http().get(requestParams, new Callback.ProgressCallback<File>() {
+            @Override
+            public void onWaiting() {
+            }
+
+            @Override
+            public void onStarted() {
+            }
+
+            @Override
+            public void onLoading(long total, long current, boolean isDownloading) {
+                dialog.setMaxProgress((int) total);
+                dialog.setProgress((int) current);
+
+            }
+
+            @Override
+            public void onSuccess(File result) {
+                ToastUtil.showShort("下载成功");
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                ex.printStackTrace();
+                ToastUtil.showShort("下载失败");
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

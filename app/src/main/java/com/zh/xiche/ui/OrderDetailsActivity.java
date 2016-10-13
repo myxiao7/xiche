@@ -316,19 +316,20 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     /**
      * 接单
      */
-    private void getOrder(){
+    private void getOrder() {
         String path = HttpPath.getPath(HttpPath.ORDERACCEPT);
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", userInfoEntity.getId());
         params.addBodyParameter("tockens", userInfoEntity.getTockens());
         params.addBodyParameter("orderid", orderEntity.getOrderid());
-        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity) {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
-                Type type = new TypeToken<ResultEntity>(){}.getType();
+                Type type = new TypeToken<ResultEntity>() {
+                }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
-                if(resultEntity.isSuccee()){
+                if (resultEntity.isSuccee()) {
                     ToastUtil.showShort("接单成功，正在生成路线...");
                     orderType = 2;
                     getorderGetBtn.setText("完 成");
@@ -337,7 +338,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                     mSearch.drivingSearch((new DrivingRoutePlanOption())
                             .from(stNode)
                             .to(enNode));
-                }else{
+                } else {
                     ToastUtil.showShort("接单失败，推出，刷新订单...");
                 }
             }
@@ -353,25 +354,26 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     /**
      * 完成订单
      */
-    private void finishOrder(){
-        String path = HttpPath.getPath(HttpPath.ORDERACCEPT);
+    private void finishOrder() {
+        String path = HttpPath.getPath(HttpPath.ORDERFINISH);
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", userInfoEntity.getId());
         params.addBodyParameter("tockens", userInfoEntity.getTockens());
         params.addBodyParameter("orderid", orderEntity.getOrderid());
-        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity) {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
-                Type type = new TypeToken<ResultEntity>(){}.getType();
+                Type type = new TypeToken<ResultEntity>() {
+                }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
-                if(resultEntity.isSuccee()){
+                if (resultEntity.isSuccee()) {
                     ToastUtil.showShort("完成订单");
                     getorderGetBtn.setText("已完成");
                     getorderGetBtn.setClickable(false);
                     getorderGetBtn.setBackgroundResource(R.drawable.border_gray);
                     orderType = 3;
-                }else{
+                } else {
                     ToastUtil.showShort("订单状态更新失败");
                 }
             }
@@ -383,6 +385,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
             }
         });
     }
+
     @Override
     public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
 
