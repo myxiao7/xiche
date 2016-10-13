@@ -87,9 +87,9 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
 
-                /*DialogUtils.showProgress(activity);
-                login();*/
-                downloadFile("");
+                DialogUtils.showProgress(activity);
+                login();
+//                downloadFile("");
                 break;
             case R.id.login_register_txt:
                 Intent intent2 = new Intent(activity, RegisterUserInfoActivity.class);

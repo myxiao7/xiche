@@ -37,7 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 待服务订单
+ * 已经服务订单
  * Created by win7 on 2016/9/22.
  */
 

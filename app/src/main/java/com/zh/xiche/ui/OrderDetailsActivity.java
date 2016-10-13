@@ -299,7 +299,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     public void onClick() {
         switch (orderType) {
             case 1:
-                ToastUtil.showShort("抢单");
+                ToastUtil.showShort("接单");
                 getOrder();
                 break;
             case 2:
