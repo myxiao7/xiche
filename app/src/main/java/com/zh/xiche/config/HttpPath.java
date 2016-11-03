@@ -20,13 +20,13 @@ public class HttpPath {
      */
     public static final String REGISTER = "xtgl_operator_appAdd.action";
     /**
-     * 修改个人信息
+     * 修改个人信息   
      */
     public static final String MODIFYINFO = "xtgl_operator_updateInfo.action";
     /**
      * 修改个人头像
      */
-    public static final String MODIFYICON = "uploadFile_execute.action";
+    public static final String MODIFYICON = "upload.do";
     /**
      * 修改个人位置
      */
