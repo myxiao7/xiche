@@ -32,11 +32,13 @@ import org.xutils.http.RequestParams;
 
 import java.io.File;
 import java.lang.reflect.Type;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * Created by win7 on 2016/9/18.
@@ -138,6 +140,13 @@ public class LoginActivity extends BaseActivity {
                         Intent intent = new Intent(activity, MainActivity.class);
                         startActivity(intent);
                     }*/
+                    JPushInterface.setAlias(activity, entity.getOperatorDTO().getId(), new TagAliasCallback() {
+                        @Override
+                        public void gotResult(int i, String s, Set<String> set) {
+                        LogUtil.d("JPushInterface code" + i + "userid" + s.toString());
+
+                        }
+                    });
                     //去首页
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);

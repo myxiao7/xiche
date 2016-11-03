@@ -5,7 +5,8 @@ package com.zh.xiche.config;
  * Created by win7 on 2016/9/18.
  */
 public class HttpPath {
-    public static final String HOST = "http://139.224.41.12:8080/chuXiaoDing/";
+    public static final String HOST = "http://ghl.xunmime.com/chuXiaoDing/";
+//    public static final String HOST = "http://139.224.41.12:8080/chuXiaoDing/";
     /**
      * 登录
      */
