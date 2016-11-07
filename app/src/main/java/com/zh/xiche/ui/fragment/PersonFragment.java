@@ -12,23 +12,34 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
+import com.zh.xiche.adapter.BillListAdapetr;
 import com.zh.xiche.base.BaseFragment;
 import com.zh.xiche.config.FilePath;
+import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.entity.Amont;
+import com.zh.xiche.entity.BillYearEntity;
+import com.zh.xiche.entity.JsonModel;
 import com.zh.xiche.entity.UserInfoEntity;
 
 import com.zh.xiche.http.HttpUtil;
+import com.zh.xiche.http.RequestCallBack;
 import com.zh.xiche.ui.mybill.BillByAllActivity;
 import com.zh.xiche.ui.PersonInfo;
 import com.zh.xiche.ui.myorder.MyOrderSwitch;
 import com.zh.xiche.utils.DbUtils;
+import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ImageLoaderHelper;
+import com.zh.xiche.utils.ListViewUtils;
 import com.zh.xiche.utils.ToastUtil;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
 import java.io.File;
+import java.lang.reflect.Type;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -88,6 +99,12 @@ public class PersonFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getCountByDay();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
@@ -120,7 +137,7 @@ public class PersonFragment extends BaseFragment {
                 break;
             case R.id.per_setting_tv:
 //                ToastUtil.showShort(R.string.per_setting);
-                downloadFile("");
+//                downloadFile("");
                 break;
         }
     }
@@ -169,6 +186,36 @@ public class PersonFragment extends BaseFragment {
 
             @Override
             public void onFinished() {
+            }
+        });
+    }
+
+    /**
+     * 获取订单数量和金额
+     */
+    private void getCountByDay(){
+        String path = HttpPath.getPath(HttpPath.GETCOUNTBYDAY);
+        RequestParams params = HttpUtil.params(path);
+        params.addBodyParameter("uid", entity.getId());
+        params.addBodyParameter("tockens", entity.getTockens());
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                Type type = new TypeToken<Amont>(){}.getType();
+                Amont amont  = GsonUtil.GsonToBean(result, type);
+                if(amont.isSuccess()){
+                    perOrdercountTv.setText(amont.getOperStatisticsDTO().getNum());
+                    perMoneycountTv.setText(amont.getOperStatisticsDTO().getAmmount());
+                }else{
+                    ToastUtil.showShort("请求失败");
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+                ToastUtil.showShort(ex.getMessage());
             }
         });
     }

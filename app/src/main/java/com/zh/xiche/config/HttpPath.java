@@ -20,7 +20,11 @@ public class HttpPath {
      */
     public static final String REGISTER = "xtgl_operator_appAdd.action";
     /**
-     * 修改个人信息   
+     * 获取个人信息
+     */
+    public static final String GETUSERINFO = "xtgl_operator_appOperView.action";
+    /**
+     * 修改个人信息
      */
     public static final String MODIFYINFO = "xtgl_operator_updateInfo.action";
     /**
@@ -38,11 +42,15 @@ public class HttpPath {
     /**
      * 完成订单
      */
-    public static final String ORDERFINISH = "chuXiaoDing_orders_acceptOrder.action";
+    public static final String ORDERFINISH = "chuXiaoDing_orders_finishOrder.action";
     /**
      * 拒单
      */
     public static final String ORDERREFUSER = "chuXiaoDing_orders_denyOrder.action";
+    /**
+     * 订单详情
+     */
+    public static final String ORDERDETAILS = "chuXiaoDing_orders_appView.action";
     /**
      * 待接单列表
      */
@@ -55,6 +63,11 @@ public class HttpPath {
      * 已服务订单
      */
     public static final String ORDERLIST_FINISH = "chuXiaoDing_orders_queryAppFinishOrders.action";
+
+    /**
+     * 获取当天的统计信息
+     */
+    public static final String GETCOUNTBYDAY = "chuXiaoDing_orders_appStatics.action";
 
     /**
      * 日账单列表

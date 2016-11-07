@@ -95,7 +95,8 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.login_register_txt:
                 Intent intent2 = new Intent(activity, RegisterActivity.class);
-                startActivityForResult(intent2, REGISTERCODE);
+//                startActivityForResult(intent2, REGISTERCODE);
+                activity.finish();
                 break;
             case R.id.login_forget_txt:
                 Intent intent3 = new Intent(activity, ForgetActivity.class);
@@ -125,7 +126,7 @@ public class LoginActivity extends BaseActivity {
                     ToastUtil.showShort("登录成功");
                     //保存用户信息
                     DbUtils.getInstance().clearPersonInfo();
-                    entity.getOperatorDTO().setIspass(1);
+//                    entity.getOperatorDTO().setIspass(1);
                     DbUtils.getInstance().savePersonInfo(entity.getOperatorDTO());
                     SharedData.saveUserName(loginNameTxt.getText().toString());
                     SharedData.saveUserPwd(loginPwdTxt.getText().toString());

@@ -78,9 +78,11 @@ public class MainActivity extends BaseActivity {
         intentFilter.addAction(BaseApplication.LOGOUT);
         activity.registerReceiver(MyBroadcastReceiver, intentFilter);
 
-      /*  if(TextUtils.isEmpty(entity.getCardno()) || TextUtils.isEmpty(entity.getLocation()) || TextUtils.isEmpty(entity.getName())){
+        if(TextUtils.isEmpty(entity.getCardno()) || TextUtils.isEmpty(entity.getLocation()) || TextUtils.isEmpty(entity.getName())){
             ToastUtil.showShort("请先完善个人信息");
-        }*/
+            Intent intent = new Intent(activity, ModifyUserInfoActivity.class);
+            startActivity(intent);
+        }
         Fragment fragment01 = MainFragment.newInstance();
         Fragment fragment02 = PersonFragment.newInstance();
         list.add(fragment01);
@@ -148,7 +150,6 @@ public class MainActivity extends BaseActivity {
                 ToastUtil.showShort("主界面注销");
                 Intent intent1 = new Intent(activity, LoginActivity.class);
                 intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent1);
                 startActivity(intent1);
                 activity.finish();
             }

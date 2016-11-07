@@ -16,6 +16,7 @@ import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
 import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.entity.OrderEntity;
+import com.zh.xiche.entity.PushEntity;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
@@ -76,7 +77,7 @@ public class GiveOrderActivity extends Activity {
     private CountDownTimer downTimer;
     private UserInfoEntity userInfoEntity;
 
-    private OrderEntity orderEntity;
+    private PushEntity pushEntity;
 
 
     long waitTime = 2000;
@@ -98,7 +99,7 @@ public class GiveOrderActivity extends Activity {
         setContentView(R.layout.activity_giveorder);
         ButterKnife.bind(this);
         userInfoEntity = DbUtils.getInstance().getPersonInfo();
-        orderEntity = this.getIntent().getParcelableExtra("order");
+        pushEntity = this.getIntent().getParcelableExtra("order");
         downTimer = new CountDownTimer(60 *1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -134,7 +135,7 @@ public class GiveOrderActivity extends Activity {
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", userInfoEntity.getId());
         params.addBodyParameter("tockens", userInfoEntity.getTockens());
-        params.addBodyParameter("orderid", orderEntity.getOrderid());
+        params.addBodyParameter("orderid", pushEntity.getOrder_id());
         HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderActivity.this) {
             @Override
             public void onSuccess(String result) {
@@ -145,7 +146,7 @@ public class GiveOrderActivity extends Activity {
                 if (resultEntity.isSuccee()) {
                     ToastUtil.showShort("接单成功，转向订单详情");
                     Intent intent = new Intent(GiveOrderActivity.this, OrderDetailsActivity.class);
-                    intent.putExtra("order", orderEntity);
+                    intent.putExtra("order", pushEntity);
                     intent.putExtra("type", 2);
                     startActivity(intent);
                     GiveOrderActivity.this.finish();
@@ -170,7 +171,7 @@ public class GiveOrderActivity extends Activity {
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", userInfoEntity.getId());
         params.addBodyParameter("tockens", userInfoEntity.getTockens());
-        params.addBodyParameter("orderid", orderEntity.getOrderid());
+        params.addBodyParameter("orderid", pushEntity.getOrder_id());
         HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderActivity.this) {
             @Override
             public void onSuccess(String result) {

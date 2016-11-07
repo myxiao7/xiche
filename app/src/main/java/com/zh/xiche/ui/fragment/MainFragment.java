@@ -184,7 +184,7 @@ public class MainFragment extends BaseFragment {
             builder.target(ll).zoom(15.0f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             //更新位置
-            updateLocation(location.getLatitude()+"", location.getLongitude()+"", location.getAddrStr());
+            updateLocation(location.getLongitude()+"", location.getLatitude()+"", location.getAddrStr());
 
             //保存位置坐标
             SharedData.saveCurrentlat(location.getLatitude()+"");

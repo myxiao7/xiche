@@ -77,7 +77,7 @@ public class RegisterResultActivity extends BaseActivity {
      * 登录
      */
     private void Login() {
-        String url = HttpPath.getPath(HttpPath.REGISTER);
+        String url = HttpPath.getPath(HttpPath.LOGIN);
         RequestParams params = HttpUtil.params(url);
         params.addBodyParameter("mobile", userName);
         params.addBodyParameter("password", userPwd);
@@ -97,6 +97,7 @@ public class RegisterResultActivity extends BaseActivity {
                     //去首页
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);
+                    activity.finish();
                 }else{
                     ToastUtil.showShort("登录失败");
                 }

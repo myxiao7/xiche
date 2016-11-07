@@ -30,6 +30,8 @@ import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
 import com.zh.xiche.ui.receive.GiveOrderActivity;
 import com.zh.xiche.utils.DbUtils;
+import com.zh.xiche.utils.DialogUtil;
+import com.zh.xiche.utils.DialogUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ImageLoaderHelper;
 import com.zh.xiche.utils.ToastUtil;
@@ -41,6 +43,7 @@ import org.xutils.http.RequestParams;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +53,8 @@ import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * 个人中心
@@ -85,7 +90,7 @@ public class PersonInfo extends BaseActivity {
     Button logoutBtn;
 
     private static final int REQUEST_EDIT = 0x1002;
-    private final int REQUEST_CODE_CAMERA = 1000;
+    private final int REQUEST_CODE_CAMERA = 0x1000;
     private final int REQUEST_CODE_GALLERY = 1001;
 
 
@@ -158,6 +163,7 @@ public class PersonInfo extends BaseActivity {
                 startEdit(BaseEditEnum.perinfo_add.getId(), personInfoAddTxt.getText().toString());
                 break;
             case R.id.logout_btn:
+                DialogUtils.showProgress(activity);
                 logout();
                 break;
         }
@@ -169,7 +175,7 @@ public class PersonInfo extends BaseActivity {
         intent.putExtra(CommonEdit.REQTYPE, id);
         //传入原字符串
         intent.putExtra(CommonEdit.BASESTR, str);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_EDIT);
     }
 
     /**
@@ -286,12 +292,19 @@ public class PersonInfo extends BaseActivity {
                 }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
                 if (resultEntity.isSuccee()) {
-                    ToastUtil.showShort("注销成功");
-                    //发送注销广播
-                    Intent intent1 = new Intent(BaseApplication.LOGOUT);
-                    activity.sendBroadcast(intent1);
-                    activity.finish();
+                    JPushInterface.setAlias(activity, "", new TagAliasCallback() {
+                        @Override
+                        public void gotResult(int i, String s, Set<String> set) {
+                            DialogUtils.stopProgress(activity);
+                            ToastUtil.showShort("注销成功");
+                            //发送注销广播
+                            Intent intent1 = new Intent(BaseApplication.LOGOUT);
+                            activity.sendBroadcast(intent1);
+                            activity.finish();
+                        }
+                    });
                 } else {
+                    DialogUtils.stopProgress(activity);
                     ToastUtil.showShort("注销失败");
                 }
             }
@@ -299,6 +312,7 @@ public class PersonInfo extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
+                DialogUtils.stopProgress(activity);
                 ToastUtil.showShort(ex.getMessage());
             }
         });
@@ -306,10 +320,13 @@ public class PersonInfo extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LogUtil.d("111");
 //        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == REQUEST_EDIT) {
+                LogUtil.d("222");
                 int id = data.getIntExtra(CommonEdit.REQTYPE, 1);
+                LogUtil.d("id"+id);
                 switch (id) {
                     case 1:
                         personInfoNameTxt.setText(data.getStringExtra(CommonEdit.RESULTSTR));

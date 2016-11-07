@@ -168,7 +168,7 @@ public class RegisterActivity extends BaseActivity {
     }
 
     /**
-     * 检查用户名是否可用
+     * 获取验证码
      * @param phone
      */
     private void getCode(String phone) {
@@ -238,6 +238,7 @@ public class RegisterActivity extends BaseActivity {
                     intent.putExtra("userName",registerNameEdit.getText().toString());
                     intent.putExtra("userPwd",registerPwdEdit.getText().toString());
                     startActivity(intent);
+                    activity.finish();
                 }else{
                     ToastUtil.showShort("注册失败");
                 }

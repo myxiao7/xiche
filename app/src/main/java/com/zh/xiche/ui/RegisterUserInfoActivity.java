@@ -255,14 +255,15 @@ public class RegisterUserInfoActivity extends BaseActivity implements OnAddressC
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
                 if(entity.isSuccee()){
-                    ToastUtil.showShort("注册成功");
+                    ToastUtil.showShort("添加成功");
                     //去结果页面
                     Intent intent = new Intent(activity, RegisterResultActivity.class);
                     intent.putExtra("userName", userName);
                     intent.putExtra("userPwd", userPwd);
                     startActivity(intent);
+                    activity.finish();
                 }else{
-                    ToastUtil.showShort("注册失败");
+                    ToastUtil.showShort("添加失败");
                 }
             }
 

@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
 
 public class CommonEdit extends BaseActivity {
 
-    public static final String REQTYPE = "REQTYPE";//每集类型key
+    public static final String REQTYPE = "REQTYPE";//每个类型key
     public static final String BASESTR = "BASESTR";//原字符串key
     public static final String RESULTSTR = "RESULTSTR";//修改后字符串key
     @Bind(R.id.toolbar_tv)
@@ -92,7 +92,26 @@ public class CommonEdit extends BaseActivity {
         RequestParams params = HttpUtil.params(url);
         params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());
-        params.addBodyParameter(baseEditEnum.getParamName(), commoneditEdit.getText().toString());
+        params.addBodyParameter("lon", entity.getLat());
+        params.addBodyParameter("lat", entity.getLon());
+        switch (baseEditEnum.getId()){
+            case 1:
+                params.addBodyParameter(baseEditEnum.getParamName(), commoneditEdit.getText().toString());
+                params.addBodyParameter("location", entity.getLocation());
+                params.addBodyParameter("cardno", entity.getCardno());
+                break;
+            case 2:
+                params.addBodyParameter(baseEditEnum.getParamName(), commoneditEdit.getText().toString());
+                params.addBodyParameter("name", entity.getName());
+                params.addBodyParameter("location", entity.getLocation());
+                break;
+            case 3:
+                params.addBodyParameter(baseEditEnum.getParamName(), commoneditEdit.getText().toString());
+                params.addBodyParameter("name", entity.getName());
+                params.addBodyParameter("cardno", entity.getCardno());
+                break;
+        }
+
         HttpUtil.http().post(params, new RequestCallBack<String>(activity){
             @Override
             public void onSuccess(String result) {

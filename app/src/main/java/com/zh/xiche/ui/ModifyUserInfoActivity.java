@@ -218,7 +218,7 @@ public class ModifyUserInfoActivity extends BaseActivity {
                     infoEntity.setLon(lon+"");
                     DbUtils.getInstance().clearPersonInfo();
                     DbUtils.getInstance().savePersonInfo(infoEntity);
-                    startActivity(intent);
+//                    startActivity(intent);
                     activity.finish();
                 }else{
                     ToastUtil.showShort("提交失败");
