@@ -179,8 +179,7 @@ public class FragmentMyorder02 extends BaseFragment {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 ToastUtil.showShort(ex.getMessage());
-                xlistview.stopRefresh();
-                xlistview.stopLoadMore();
+
             }
         });
     }

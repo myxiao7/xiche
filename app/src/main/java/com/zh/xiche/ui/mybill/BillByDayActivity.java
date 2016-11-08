@@ -79,8 +79,26 @@ public class BillByDayActivity extends BaseActivity {
         toolbarTv.setText(day + "账单");
         entity = DbUtils.getInstance().getPersonInfo();
 
-        xlistview.setPullLoadEnable(true);
+        xlistview.setPullLoadEnable(false);
         xlistview.setPullRefreshEnable(true);
+
+        xlistview.setXListViewListener(new XListView.IXListViewListener() {
+            @Override
+            public void onRefresh() {
+                xlistview.setEnabled(false);
+                xlistview.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getBillByYear(true, day);
+                    }
+                },800);
+            }
+
+            @Override
+            public void onLoadMore() {
+                getBillByYear(false, day);
+            }
+        });
     }
 
     /**
@@ -126,15 +144,22 @@ public class BillByDayActivity extends BaseActivity {
                     }
                     SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
                     xlistview.setRefreshTime(format.format(new Date()));
+                    if(list.size() >= 10){
+                        xlistview.setPullLoadEnable(true);
+                    }
                 } else {
                     ToastUtil.showShort("请求失败");
                 }
+                xlistview.setEnabled(true);
+                xlistview.stopRefresh();
+                xlistview.stopLoadMore();
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 ToastUtil.showShort(ex.getMessage());
+                xlistview.setEnabled(true);
             }
         });
     }
