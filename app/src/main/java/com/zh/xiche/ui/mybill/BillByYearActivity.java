@@ -93,7 +93,7 @@ public class BillByYearActivity extends BaseActivity {
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());
-        params.addBodyParameter("rows", "10");
+        params.addBodyParameter("rows", "12");
         params.addBodyParameter("page", "1");
         params.addBodyParameter("sidx", "");
         params.addBodyParameter("sord", "");
@@ -102,55 +102,6 @@ public class BillByYearActivity extends BaseActivity {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
-                result = "{\n" +
-                        "    \"dataList\":[\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-10\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-09\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-08\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-07\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-06\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-05\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-04\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-03\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-02\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-01\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        }\n" +
-                        "    ],\n" +
-                        "    \"message\":true,\n" +
-                        "    \"page\":1,\n" +
-                        "    \"record\":2,\n" +
-                        "    \"rows\":10,\n" +
-                        "    \"total\":1\n" +
-                        "}";
                 Type type = new TypeToken<JsonModel<List<BillMonthEntity>>>() {
                 }.getType();
                 JsonModel<List<BillMonthEntity>> jsonModel = GsonUtil.GsonToBean(result, type);
@@ -160,7 +111,7 @@ public class BillByYearActivity extends BaseActivity {
                         listview.setAdapter(adapetr);
                         adapetr.notifyDataSetChanged();
                     } else {
-                        ToastUtil.showShort("无数据");
+//                        ToastUtil.showShort("无数据");
                     }
                 } else {
                     ToastUtil.showShort("请求失败");

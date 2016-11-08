@@ -18,6 +18,8 @@ public class BaseApplication extends Application {
     private static DbManager.DaoConfig daoConfig;
 
     public static final String LOGOUT = "com.zh.xc.logout";
+    //完成订单
+    public static final String ORDERFINISH = "com.zh.xc.orderfinish";
 
     public synchronized static BaseApplication getInstance(){
         return  application;

@@ -58,9 +58,9 @@ public class BillByAllActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_billbyall);
         init();
-        getBillByAll();
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
+        getBillByAll(year+"");
         getBillByYear(year+"");
     }
 
@@ -99,8 +99,9 @@ public class BillByAllActivity extends BaseActivity {
 
     /**
      * 获取所有年份账单
+     *
      */
-    private void getBillByAll(){
+    private void getBillByAll(final String year){
         String path = HttpPath.getPath(HttpPath.BILLBYALL);
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", entity.getId());
@@ -113,41 +114,22 @@ public class BillByAllActivity extends BaseActivity {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
-                result = "{\n" +
-                        "    \"dataList\":[\n" +
-                        "        {\n" +
-                        "            \"yeardate\":\"2016\",\n" +
-                        "            \"yearincome\":300\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"yeardate\":\"2015\",\n" +
-                        "            \"yearincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"yeardate\":\"2014\",\n" +
-                        "            \"yearincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"yeardate\":\"2013\",\n" +
-                        "            \"yearincome\":100\n" +
-                        "        }\n" +
-                        "    ],\n" +
-                        "    \"message\":true,\n" +
-                        "    \"page\":1,\n" +
-                        "    \"record\":2,\n" +
-                        "    \"rows\":10,\n" +
-                        "    \"total\":1\n" +
-                        "}";
                 Type type = new TypeToken<JsonModel<List<BillYearEntity>>>(){}.getType();
                 JsonModel<List<BillYearEntity>> jsonModel = GsonUtil.GsonToBean(result, type);
                 if(jsonModel.isSuccess()){
                     if(jsonModel.hasData()){
-                        adapetr2 = new BillListAdapetr<>(activity,jsonModel.getDataList());
+                        List<BillYearEntity> datas = jsonModel.getDataList();
+                        for (int i = 0; i < datas.size(); i++) {
+                            if(datas.get(i).getYeardate().equals(year)){
+                                datas.remove(i);
+                            }
+                        }
+                        adapetr2 = new BillListAdapetr<>(activity,datas);
                         listview02.setAdapter(adapetr2);
                         ListViewUtils.setListViewHeightBasedOnChildren(listview02);
                         adapetr2.notifyDataSetChanged();
                     }else{
-                        ToastUtil.showShort("无数据");
+//                        ToastUtil.showShort("无数据");
                     }
                 }else{
                     ToastUtil.showShort("请求失败");
@@ -170,7 +152,7 @@ public class BillByAllActivity extends BaseActivity {
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());
-        params.addBodyParameter("rows", "10");
+        params.addBodyParameter("rows", "12");
         params.addBodyParameter("page", "1");
         params.addBodyParameter("sidx", "");
         params.addBodyParameter("sord", "");
@@ -179,55 +161,6 @@ public class BillByAllActivity extends BaseActivity {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
-                result = "{\n" +
-                        "    \"dataList\":[\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-10\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-09\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-08\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-07\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-06\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-05\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-04\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-03\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-02\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"monthdate\":\"2016-01\",\n" +
-                        "            \"monthincome\":100\n" +
-                        "        }\n" +
-                        "    ],\n" +
-                        "    \"message\":true,\n" +
-                        "    \"page\":1,\n" +
-                        "    \"record\":2,\n" +
-                        "    \"rows\":10,\n" +
-                        "    \"total\":1\n" +
-                        "}";
                 Type type = new TypeToken<JsonModel<List<BillMonthEntity>>>(){}.getType();
                 JsonModel<List<BillMonthEntity>> jsonModel = GsonUtil.GsonToBean(result, type);
                 if(jsonModel.isSuccess()){
@@ -237,7 +170,7 @@ public class BillByAllActivity extends BaseActivity {
                         ListViewUtils.setListViewHeightBasedOnChildren(listview01);
                         adapetr.notifyDataSetChanged();
                     }else{
-                        ToastUtil.showShort("无数据");
+//                        ToastUtil.showShort("无数据");
                     }
                 }else{
                     ToastUtil.showShort("请求失败");

@@ -160,6 +160,15 @@ public class MyOrderAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * 移除列表项目
+     * @param position
+     */
+    public void removeItem(int position){
+        list.remove(position);
+        notifyDataSetChanged();
+    }
+
     class ViewHolder {
         ImageView iconImg;//头像
         TextView nameTv;//姓名

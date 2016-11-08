@@ -92,7 +92,7 @@ public class BillByMonthActivity extends BaseActivity {
         RequestParams params = HttpUtil.params(path);
         params.addBodyParameter("uid", entity.getId());
         params.addBodyParameter("tockens", entity.getTockens());
-        params.addBodyParameter("rows", "10");
+        params.addBodyParameter("rows", "31");
         params.addBodyParameter("page", "1");
         params.addBodyParameter("sidx", "");
         params.addBodyParameter("sord", "");
@@ -101,31 +101,6 @@ public class BillByMonthActivity extends BaseActivity {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
-                result = "{\n" +
-                        "    \"dataList\":[\n" +
-                        "        {\n" +
-                        "            \"daydate\":\"2016-09-24\",\n" +
-                        "            \"dayincome\":400\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"daydate\":\"2016-09-23\",\n" +
-                        "            \"dayincome\":300\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"daydate\":\"2016-09-22\",\n" +
-                        "            \"dayincome\":200\n" +
-                        "        },\n" +
-                        "        {\n" +
-                        "            \"daydate\":\"2016-09-21\",\n" +
-                        "            \"dayincome\":100\n" +
-                        "        }\n" +
-                        "    ],\n" +
-                        "    \"message\":true,\n" +
-                        "    \"page\":1,\n" +
-                        "    \"record\":4,\n" +
-                        "    \"rows\":10,\n" +
-                        "    \"total\":1\n" +
-                        "}";
                 Type type = new TypeToken<JsonModel<List<BillDayEntity>>>() {
                 }.getType();
                 JsonModel<List<BillDayEntity>> jsonModel = GsonUtil.GsonToBean(result, type);

@@ -1,6 +1,9 @@
 package com.zh.xiche.ui.myorder;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.widget.AdapterView;
 import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
 import com.zh.xiche.adapter.MyOrderAdapter;
+import com.zh.xiche.base.BaseApplication;
 import com.zh.xiche.base.BaseFragment;
 import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.entity.OrderEntity;
@@ -72,7 +76,13 @@ public class FragmentMyorder02 extends BaseFragment {
         xlistview.setXListViewListener(new XListView.IXListViewListener() {
             @Override
             public void onRefresh() {
-                getFinishOrder(true);
+                xlistview.setEnabled(false);
+                xlistview.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getFinishOrder(true);
+                    }
+                },800);
             }
 
             @Override
@@ -96,11 +106,15 @@ public class FragmentMyorder02 extends BaseFragment {
 
     private void init() {
         ButterKnife.bind(this, mView);
+        IntentFilter filter = new IntentFilter(BaseApplication.ORDERFINISH);
+        activity.registerReceiver(receiver,filter);
+        entity = DbUtils.getInstance().getPersonInfo();
+
         entity = DbUtils.getInstance().getPersonInfo();
         adapter = new MyOrderAdapter(activity, list, true);
         xlistview.setAdapter(adapter);
 
-        xlistview.setPullLoadEnable(true);
+        xlistview.setPullLoadEnable(false);
         xlistview.setPullRefreshEnable(true);
     }
     /**
@@ -135,12 +149,14 @@ public class FragmentMyorder02 extends BaseFragment {
                             adapter = new MyOrderAdapter(activity, list, true);
                             xlistview.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-                            String time = dateFormat.format(new Date());
-                            xlistview.setRefreshTime(time);
-                            ToastUtil.showShort("有数据");
                         }else{
                             ToastUtil.showShort("没有数据");
+                        }
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+                        String time = dateFormat.format(new Date());
+                        xlistview.setRefreshTime(time);
+                        if(list.size() >= 10){
+                            xlistview.setPullLoadEnable(true);
                         }
                     }else{
                         if(orderResultEntity.getDataList().size() > 0){
@@ -154,6 +170,7 @@ public class FragmentMyorder02 extends BaseFragment {
                 }else{
                     ToastUtil.showShort("获取失败");
                 }
+                xlistview.setEnabled(true);
                 xlistview.stopRefresh();
                 xlistview.stopLoadMore();
             }
@@ -167,9 +184,20 @@ public class FragmentMyorder02 extends BaseFragment {
             }
         });
     }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(BaseApplication.ORDERFINISH)){
+                getFinishOrder(true);
+                LogUtil.d("已完成列表刷新");
+            }
+        }
+    };
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        activity.unregisterReceiver(receiver);
     }
 }

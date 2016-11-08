@@ -1,6 +1,9 @@
 package com.zh.xiche.ui.myorder;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.widget.AdapterView;
 import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
 import com.zh.xiche.adapter.MyOrderAdapter;
+import com.zh.xiche.base.BaseApplication;
 import com.zh.xiche.base.BaseFragment;
 import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.entity.OrderEntity;
@@ -70,7 +74,14 @@ public class FragmentMyorder01 extends BaseFragment {
         xlistview.setXListViewListener(new XListView.IXListViewListener() {
             @Override
             public void onRefresh() {
-                getWaitOrder(true);
+                xlistview.setEnabled(false);
+
+                xlistview.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getWaitOrder(true);
+                    }
+                },800);
             }
 
             @Override
@@ -84,6 +95,7 @@ public class FragmentMyorder01 extends BaseFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(activity, OrderDetailsActivity.class);
                 intent.putExtra("order", list.get(i-1));
+                intent.putExtra("position", i-1);
                 intent.putExtra("type", 2);
                 startActivity(intent);
             }
@@ -94,12 +106,15 @@ public class FragmentMyorder01 extends BaseFragment {
 
     private void init() {
         ButterKnife.bind(this, mView);
+        IntentFilter filter = new IntentFilter(BaseApplication.ORDERFINISH);
+        activity.registerReceiver(receiver,filter);
         entity = DbUtils.getInstance().getPersonInfo();
         adapter = new MyOrderAdapter(activity, list, false);
         xlistview.setAdapter(adapter);
 
-        xlistview.setPullLoadEnable(true);
+        xlistview.setPullLoadEnable(false);
         xlistview.setPullRefreshEnable(true);
+
     }
 
     /**
@@ -134,12 +149,14 @@ public class FragmentMyorder01 extends BaseFragment {
                             adapter = new MyOrderAdapter(activity, list, false);
                             xlistview.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-                            String time = dateFormat.format(new Date());
-                            xlistview.setRefreshTime(time);
-                            ToastUtil.showShort("有数据");
                         }else{
                             ToastUtil.showShort("没有数据");
+                        }
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+                        String time = dateFormat.format(new Date());
+                        xlistview.setRefreshTime(time);
+                        if(list.size() >= 10){
+                            xlistview.setPullLoadEnable(true);
                         }
                     }else{
                         if(orderResultEntity.getDataList().size() > 0){
@@ -153,6 +170,7 @@ public class FragmentMyorder01 extends BaseFragment {
                 }else{
                     ToastUtil.showShort("获取失败");
                 }
+                xlistview.setEnabled(true);
                 xlistview.stopRefresh();
                 xlistview.stopLoadMore();
             }
@@ -161,14 +179,24 @@ public class FragmentMyorder01 extends BaseFragment {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 ToastUtil.showShort(ex.getMessage());
-                xlistview.stopRefresh();
-                xlistview.stopLoadMore();
             }
         });
     }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(BaseApplication.ORDERFINISH)){
+                adapter.removeItem(intent.getIntExtra("position", 0));
+                LogUtil.d("移除了"+intent.getIntExtra("position", 0)+"个已完成");
+            }
+        }
+    };
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        activity.unregisterReceiver(receiver);
     }
 }

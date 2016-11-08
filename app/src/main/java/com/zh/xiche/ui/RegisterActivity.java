@@ -75,6 +75,7 @@ public class RegisterActivity extends BaseActivity {
 
 
     private List<String> urls = new ArrayList<>();
+    private List<Integer> res = new ArrayList<>();
     private CountDownTimer downTimer;
 
     private boolean isUsed = true;
@@ -94,23 +95,23 @@ public class RegisterActivity extends BaseActivity {
      * 初始化轮播
      */
     private void initBanner() {
-        urls.add(0, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_37/61364_1929700_451247.jpg");
-        urls.add(1, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932867_482144.jpg");
-        urls.add(2, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932872_251055.jpg");
-        urls.add(3, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932867_482144.jpg");
+        res.add(R.mipmap.banner01);
+        res.add(R.mipmap.banner01);
+        /*urls.add(2, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932872_251055.jpg");
+        urls.add(3, "http://www.sinaimg.cn/dy/slidenews/2_img/2016_38/61364_1932867_482144.jpg");*/
         registerBanner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
             @Override
             public LocalImageHolderView createHolder() {
                 return new LocalImageHolderView();
             }
-        }, urls)
+        }, res)
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
                 .setPageIndicator(new int[]{R.mipmap.ic_dot_default, R.mipmap.ic_dot_selected})
                 //设置指示器的方向
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT).setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                ToastUtil.showShort(urls.get(position));
+//                ToastUtil.showShort(urls.get(position));
             }
         })
                 .startTurning(2500);
@@ -324,19 +325,20 @@ public class RegisterActivity extends BaseActivity {
     }
 
 
-    public class LocalImageHolderView implements Holder<String> {
+    public class LocalImageHolderView implements Holder<Integer> {
         private ImageView imageView;
 
         @Override
         public View createView(Context context) {
             imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             return imageView;
         }
 
         @Override
-        public void UpdateUI(Context context, final int position, String data) {
-            ImageLoaderHelper.getInstance().loadPic(imageView, data);
+        public void UpdateUI(Context context, final int position, Integer data) {
+//            ImageLoaderHelper.getInstance().loadPic(imageView, data);
+            imageView.setBackgroundResource(data);
         }
     }
 

@@ -14,15 +14,8 @@ import org.xutils.x;
  */
 public class ImageLoaderHelper {
     private static final ImageLoaderHelper imageLoaderHelper = new ImageLoaderHelper();
-    private static ImageOptions options;
+//    private static ImageOptions options;
     private ImageLoaderHelper(){
-        options = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                //设置加载过程中的图片
-                .setLoadingDrawableId(R.mipmap.icon_user_default)
-                //设置加载失败后的图片
-                .setFailureDrawableId(R.mipmap.icon_user_default)
-                .build();
     }
 
     public static ImageLoaderHelper getInstance(){
@@ -35,6 +28,13 @@ public class ImageLoaderHelper {
      * @param url
      */
     public void loadPic(ImageView img, String url){
+        ImageOptions options = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.FIT_XY)
+                //设置加载过程中的图片
+                .setLoadingDrawableId(R.mipmap.banner01)
+                //设置加载失败后的图片
+                .setFailureDrawableId(R.mipmap.banner01)
+                .build();
         x.image().bind(img, url.trim(), options);
     }
     /**
@@ -43,12 +43,12 @@ public class ImageLoaderHelper {
      * @param url
      */
     public void loadCirPic(ImageView img, String url){
-        options = new ImageOptions.Builder()
+        ImageOptions options = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 //设置加载过程中的图片
-                .setLoadingDrawableId(R.mipmap.icon_user_default)
+                .setLoadingDrawableId(R.mipmap.avator_default)
                 //设置加载失败后的图片
-                .setFailureDrawableId(R.mipmap.icon_user_default)
+                .setFailureDrawableId(R.mipmap.avator_default)
                 .setCircular(true)
                 .build();
         x.image().bind(img, url.trim(), options);

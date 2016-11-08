@@ -63,11 +63,19 @@ public class OrderListActivity extends BaseActivity {
         xlistview.setXListViewListener(new XListView.IXListViewListener() {
             @Override
             public void onRefresh() {
-                getOrderList(true);
+                xlistview.setEnabled(false);
+
+                xlistview.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getOrderList(true);
+                    }
+                },800);
             }
 
             @Override
             public void onLoadMore() {
+                xlistview.setEnabled(false);
                 getOrderList(false);
             }
         });
@@ -81,6 +89,13 @@ public class OrderListActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        getOrderList(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        xlistview.setEnabled(false);
         getOrderList(true);
     }
 
@@ -101,7 +116,7 @@ public class OrderListActivity extends BaseActivity {
         adapter = new OrderListAdapter(activity, list);
         xlistview.setAdapter(adapter);
 
-        xlistview.setPullLoadEnable(true);
+        xlistview.setPullLoadEnable(false);
         xlistview.setPullRefreshEnable(true);
     }
 
@@ -137,12 +152,14 @@ public class OrderListActivity extends BaseActivity {
                             adapter = new OrderListAdapter(activity, list);
                             xlistview.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-                            String time = dateFormat.format(new Date());
-                            xlistview.setRefreshTime(time);
-                            ToastUtil.showShort("有数据");
                         }else{
                             ToastUtil.showShort("没有数据");
+                        }
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+                        String time = dateFormat.format(new Date());
+                        xlistview.setRefreshTime(time);
+                        if(list.size() >= 10){
+                            xlistview.setPullLoadEnable(true);
                         }
                     }else{
                         if(orderResultEntity.getDataList().size() > 0){
@@ -156,6 +173,7 @@ public class OrderListActivity extends BaseActivity {
                 }else{
                     ToastUtil.showShort("获取失败");
                 }
+                xlistview.setEnabled(true);
                 xlistview.stopRefresh();
                 xlistview.stopLoadMore();
             }
@@ -164,8 +182,7 @@ public class OrderListActivity extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 ToastUtil.showShort(ex.getMessage());
-                xlistview.stopRefresh();
-                xlistview.stopLoadMore();
+                xlistview.setEnabled(true);
             }
         });
     }

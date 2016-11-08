@@ -95,7 +95,7 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.login_register_txt:
                 Intent intent2 = new Intent(activity, RegisterActivity.class);
-//                startActivityForResult(intent2, REGISTERCODE);
+                startActivityForResult(intent2, REGISTERCODE);
                 activity.finish();
                 break;
             case R.id.login_forget_txt:

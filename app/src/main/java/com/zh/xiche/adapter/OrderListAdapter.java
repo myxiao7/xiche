@@ -85,12 +85,12 @@ public class OrderListAdapter extends BaseAdapter {
             //价格
             holder.priceTv.setText("￥" + entity.getOrderamount() + "");
         }
-        holder.getTv.setOnClickListener(new View.OnClickListener() {
+        /*holder.getTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ToastUtil.showShort("抢单");
             }
-        });
+        });*/
         return convertView;
     }
 

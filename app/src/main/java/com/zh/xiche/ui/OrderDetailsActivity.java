@@ -46,6 +46,7 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
+import com.zh.xiche.base.BaseApplication;
 import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.config.SharedData;
 import com.zh.xiche.entity.OrderEntity;
@@ -131,6 +132,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     private OrderEntity orderEntity; //订单详情
     private Double lon, lat;
     private int orderType = 1;// 订单类型（抢单，完成，已完成）
+    private int position = 0;// 订单类型（抢单，完成，已完成）
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -227,6 +229,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         Intent intent = this.getIntent();
         orderEntity = intent.getParcelableExtra("order");
         orderType = intent.getIntExtra("type", 1);
+        position = intent.getIntExtra("position", 0);
         switch (orderType) {
             case 1:
                 toolbarTv.setText("接单");
@@ -350,7 +353,8 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                             .from(stNode)
                             .to(enNode));
                 } else {
-                    ToastUtil.showShort("接单失败，推出，刷新订单...");
+                    activity.finish();
+                    ToastUtil.showShort("接单失败，刷新订单...");
                 }
             }
 
@@ -384,6 +388,11 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                     getorderGetBtn.setClickable(false);
                     getorderGetBtn.setBackgroundResource(R.drawable.border_gray);
                     orderType = 3;
+                    //更新我的订单列表
+                    Intent intent = new Intent(BaseApplication.ORDERFINISH);
+                    intent.putExtra("position",position);
+                    sendBroadcast(intent);
+                    LogUtil.d("更新订单状态。。。。。。。。。。");
                 } else {
                     ToastUtil.showShort("订单状态更新失败");
                 }
