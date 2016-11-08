@@ -30,7 +30,7 @@ public class HttpPath {
     /**
      * 修改个人头像
      */
-    public static final String MODIFYICON = "upload.do";
+    public static final String MODIFYICON = "uploadFileServ.do";
     /**
      * 修改个人位置
      */

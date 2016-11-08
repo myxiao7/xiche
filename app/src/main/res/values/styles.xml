@@ -156,4 +156,15 @@
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
+
+    <!--个人设置-->
+    <style name="per_set_text">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/sp20</item>
+        <item name="android:drawableRight">@mipmap/ic_next</item>
+        <item name="android:background">@color/white</item>
+    </style>
 </resources>

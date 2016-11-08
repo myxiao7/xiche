@@ -25,10 +25,13 @@ import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 
 import java.lang.reflect.Type;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * 注册结果
@@ -94,6 +97,15 @@ public class RegisterResultActivity extends BaseActivity {
                     //保存用户信息
                     DbUtils.getInstance().clearPersonInfo();
                     DbUtils.getInstance().savePersonInfo(entity.getOperatorDTO());
+
+                    JPushInterface.setAlias(activity, entity.getOperatorDTO().getId(), new TagAliasCallback() {
+                        @Override
+                        public void gotResult(int i, String s, Set<String> set) {
+                            LogUtil.d("JPushInterface code" + i + "userid" + s.toString());
+
+                        }
+                    });
+
                     //去首页
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);

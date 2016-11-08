@@ -61,12 +61,12 @@ public class RequestCallBack<T> implements Callback.ProgressCallback<T> {
             String responseMsg = httpEx.getMessage();
             String errorResult = httpEx.getResult();
             // ...
-            Toast.makeText(x.app(), "网络错误：" + responseCode, Toast.LENGTH_LONG).show();
+            Toast.makeText(x.app(), "网络错误1", Toast.LENGTH_LONG).show();
 
         } else { // 其他错误
             // ...
             if (ex.getMessage() != null){
-                Toast.makeText(x.app(), "系统错误：" + ex.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(x.app(), "网络错误2" , Toast.LENGTH_LONG).show();
             }
         }
     }

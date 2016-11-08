@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
 import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.config.SharedData;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
@@ -74,7 +75,7 @@ public class ForgetActivity extends BaseActivity {
                 activity.finish();
             }
         });
-        toolbarTv.setText("找回密码");
+        toolbarTv.setText("重置密码");
     }
 
     @OnClick({R.id.forget_getcode_txt, R.id.forget_btn})
@@ -200,7 +201,7 @@ public class ForgetActivity extends BaseActivity {
      * 验证验证码
      * @param phone
      */
-    private void ModifyPwd(String phone, String pwd, String code) {
+    private void ModifyPwd(String phone, final String pwd, String code) {
         String url = HttpPath.getPath(HttpPath.FORGETPWD);
         RequestParams params = HttpUtil.params(url);
         params.addBodyParameter("mobile", phone);
@@ -216,6 +217,7 @@ public class ForgetActivity extends BaseActivity {
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
                 if(entity.isSuccee()){
                     ToastUtil.showShort("修改成功");
+                    SharedData.saveUserPwd(pwd);
                     activity.finish();
                     //修改密码
                 }else{

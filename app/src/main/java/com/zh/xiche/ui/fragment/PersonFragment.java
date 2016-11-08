@@ -28,6 +28,7 @@ import com.zh.xiche.http.RequestCallBack;
 import com.zh.xiche.ui.mybill.BillByAllActivity;
 import com.zh.xiche.ui.PersonInfo;
 import com.zh.xiche.ui.myorder.MyOrderSwitch;
+import com.zh.xiche.ui.set.SettingActivity;
 import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ImageLoaderHelper;
@@ -136,6 +137,8 @@ public class PersonFragment extends BaseFragment {
                 }
                 break;
             case R.id.per_setting_tv:
+                intent = new Intent(activity, SettingActivity.class);
+                startActivity(intent);
 //                ToastUtil.showShort(R.string.per_setting);
 //                downloadFile("");
                 break;

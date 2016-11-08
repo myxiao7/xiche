@@ -23,13 +23,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-         <!--<meta-data
+         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />-->
-        <meta-data
+            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />
+        <!--<meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="RT4TGU5cWUOSmOoSv4os1pvcfPR63TyM" />
-
+-->
         <service android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote">
@@ -70,6 +70,11 @@
         <!--用户信息-->
         <activity
             android:name=".ui.PersonInfo"
+            />
+
+        <!--设置-->
+        <activity
+            android:name=".ui.set.SettingActivity"
             />
         <!--通用修改-->
         <activity

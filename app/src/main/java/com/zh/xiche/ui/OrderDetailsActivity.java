@@ -248,7 +248,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
 
         }
         if (!TextUtils.isEmpty(orderEntity.getAvartar())) {
-            ImageLoaderHelper.getInstance().loadPic(getorderIconImg, orderEntity.getAvartar());
+            ImageLoaderHelper.getInstance().loadCirPic(getorderIconImg, orderEntity.getAvartar());
         }
         //昵称 + 姓名
         getorderNameTv.setText(orderEntity.getUname() + "(" + orderEntity.getName() + ")");

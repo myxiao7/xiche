@@ -15,6 +15,8 @@ import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ToastUtil;
 
+import org.xutils.common.util.LogUtil;
+
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -29,11 +31,13 @@ public class MyReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
-        Log.d(TAG, "onReceive - " + intent.getAction());
+//        Log.d(TAG, "onReceive - " + intent.getAction());
 
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
+
         }else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-            System.out.println("收到了自定义消息。消息内容是：" + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+            Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_EXTRA));
+//            System.out.println("收到了自定义消息。消息内容是：" + bundle.getString(JPushInterface.EXTRA_EXTRA));
             // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
             String result = intent.getAction();
             Type type = new TypeToken<PushEntity>(){}.getType();
@@ -47,10 +51,11 @@ public class MyReceiver extends BroadcastReceiver{
                     break;
                 case 2:
                     //正常推送订单
+                    MyNotificationManager.getInstance().showNotifi(context, "初小丁", "您有一条新的订单");
                     break;
                 case 3:
                     //管理员派送单
-                    MyNotificationManager.getInstance().showNotifi(context, "您有一条新的订单", "系统给您推荐个一条新的订单");
+                    MyNotificationManager.getInstance().showNotifi(context, "初小丁", "系统给您派发了一条新的订单");
                     Intent intent1 = new Intent(context, GiveOrderActivity.class);
                     intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent1.putExtra("order", entity);
@@ -61,7 +66,8 @@ public class MyReceiver extends BroadcastReceiver{
                     break;
             }
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-            System.out.println("收到了通知");
+//            System.out.println("收到了通知");
+            LogUtil.d("收到了通知222222222");
             // 在这里可以做些统计，或者做些其他工作
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             System.out.println("用户点击打开了通知");

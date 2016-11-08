@@ -212,6 +212,7 @@ public class PersonInfo extends BaseActivity {
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
             if (resultList != null) {
                 String path = resultList.get(0).getPhotoPath();
+                LogUtil.d(path);
                 UploadAvatar(path);
 //                mPhotoList.addAll(resultList);
             }
@@ -320,13 +321,10 @@ public class PersonInfo extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LogUtil.d("111");
 //        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == REQUEST_EDIT) {
-                LogUtil.d("222");
                 int id = data.getIntExtra(CommonEdit.REQTYPE, 1);
-                LogUtil.d("id"+id);
                 switch (id) {
                     case 1:
                         personInfoNameTxt.setText(data.getStringExtra(CommonEdit.RESULTSTR));
