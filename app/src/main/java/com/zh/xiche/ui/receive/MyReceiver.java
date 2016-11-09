@@ -15,9 +15,12 @@ import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.GsonUtil;
 import com.zh.xiche.utils.ToastUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.common.util.LogUtil;
 
 import java.lang.reflect.Type;
+import java.util.Iterator;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
@@ -32,11 +35,14 @@ public class MyReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
 //        Log.d(TAG, "onReceive - " + intent.getAction());
-
+        LogUtil.d(printBundle(bundle));
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
 
         }else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
+            /*Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_TITLE));
+            Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_ALERT));
             Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_EXTRA));
+            Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_MESSAGE));*/
 //            System.out.println("收到了自定义消息。消息内容是：" + bundle.getString(JPushInterface.EXTRA_EXTRA));
             // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
             String result = intent.getAction();
@@ -79,4 +85,38 @@ public class MyReceiver extends BroadcastReceiver{
             Log.d(TAG, "Unhandled intent - " + intent.getAction());
         }
     }
+
+    private static String printBundle(Bundle bundle) {
+        StringBuilder sb = new StringBuilder();
+        for (String key : bundle.keySet()) {
+            if (key.equals(JPushInterface.EXTRA_NOTIFICATION_ID)) {
+                sb.append("\nkey:" + key + ", value:" + bundle.getInt(key));
+            }else if(key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)){
+                sb.append("\nkey:" + key + ", value:" + bundle.getBoolean(key));
+            } else if (key.equals(JPushInterface.EXTRA_EXTRA)) {
+                if (bundle.getString(JPushInterface.EXTRA_EXTRA).isEmpty()) {
+                    Log.i(TAG, "This message has no Extra data");
+                    continue;
+                }
+
+                try {
+                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                    Iterator<String> it =  json.keys();
+
+                    while (it.hasNext()) {
+                        String myKey = it.next().toString();
+                        sb.append("\nkey:" + key + ", value: [" +
+                                myKey + " - " +json.optString(myKey) + "]");
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "Get message extra JSON error!");
+                }
+
+            } else {
+                sb.append("\nkey:" + key + ", value:" + bundle.getString(key));
+            }
+        }
+        return sb.toString();
+    }
+
 }

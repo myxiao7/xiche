@@ -75,8 +75,9 @@ public class SettingActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.set_logout_tv:
-                DialogUtils.showProgress(activity);
-                logout();
+                /*DialogUtils.showProgress(activity);
+                logout();*/
+                ToastUtil.showShort("暂不支持");
                 break;
             case R.id.set_forget_tv:
                 Intent intent = new Intent(activity, ForgetActivity.class);
