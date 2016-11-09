@@ -23,13 +23,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-         <meta-data
+         <!--<meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" />
-        <!--<meta-data
+            android:value="vU9678fEaXjuUD9v7xzELhNcud5LIGjV" 6/>-->
+        <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="RT4TGU5cWUOSmOoSv4os1pvcfPR63TyM" />
--->
+
         <service android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote">
@@ -95,6 +95,7 @@
         <!--主界面-->
         <activity
             android:name=".ui.MainActivity"
+            android:launchMode="singleTop"
             />
 
         <!--订单列表-->

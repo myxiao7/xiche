@@ -253,7 +253,7 @@ public class MainFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.frag_main_list_tv:
-                if(entity.getIspass() == 1){
+                if(DbUtils.getInstance().getPersonInfo().getIspass() == 1){
                     Intent intent = new Intent(activity, MyOrderSwitch.class);
                     startActivity(intent);
                 }else{
@@ -261,7 +261,7 @@ public class MainFragment extends BaseFragment {
                 }
                 break;
             case R.id.frag_main_list2_tv:
-                if(entity.getIspass() == 1){
+                if(DbUtils.getInstance().getPersonInfo().getIspass() == 1){
                     Intent intent2 = new Intent(activity, OrderListActivity.class);
                     startActivity(intent2);
                 }else{

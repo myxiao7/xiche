@@ -46,7 +46,7 @@ public class MyReceiver extends BroadcastReceiver{
                 case 1:
                     //审核信息
                     if(entity.getAudit_conclusion() == 1){
-                        MyNotificationManager.getInstance().showNotifi(context, "初小丁", "恭喜您，您的信息已经审核通过");
+                        MyNotificationManager.getInstance().showNotifiClick(context, "初小丁", "恭喜您，您的信息已经审核通过");
                     }
                     break;
                 case 2:

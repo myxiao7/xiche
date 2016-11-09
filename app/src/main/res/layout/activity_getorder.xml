@@ -243,4 +243,13 @@
             android:text="接单"
             />
     </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/getorder_nav_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:src="@drawable/ic_directions_car"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone"
+        />
 </android.support.design.widget.CoordinatorLayout>

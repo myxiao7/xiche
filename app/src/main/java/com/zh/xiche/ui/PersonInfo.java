@@ -25,6 +25,7 @@ import com.zh.xiche.base.BaseApplication;
 import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.entity.BaseEditEnum;
 import com.zh.xiche.entity.ResultEntity;
+import com.zh.xiche.entity.UploadEntity;
 import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
@@ -119,7 +120,7 @@ public class PersonInfo extends BaseActivity {
         toolbarTv.setText("账号管理");
         entity = DbUtils.getInstance().getPersonInfo();
         if (!TextUtils.isEmpty(entity.getAvatar())) {
-            ImageLoaderHelper.getInstance().loadPic(personInfoIconImg, entity.getAvatar());
+            ImageLoaderHelper.getInstance().loadCirPic(personInfoIconImg, HttpPath.HOST + entity.getAvatar());
         }
         personInfoAccountTxt.setText(entity.getMobile());
         personInfoNameTxt.setText(entity.getName());
@@ -249,22 +250,25 @@ public class PersonInfo extends BaseActivity {
      * @param avatarPath
      */
     private void UploadAvatar(final String avatarPath) {
-        String url = HttpPath.getPath(HttpPath.MODIFYICON);
+        String url = HttpPath.getPath(HttpPath.MODIFYICON +"?uid=" + entity.getId() + "&tockens=" + entity.getTockens());
         RequestParams params = HttpUtil.params(url);
-        params.addBodyParameter("uid", entity.getId());
-        params.addBodyParameter("tockens", entity.getTockens());
+        /*params.addBodyParameter("uid", entity.getId());
+        params.addBodyParameter("tockens", entity.getTockens());*/
         params.setMultipart(true);
         params.addBodyParameter("file", new File(avatarPath));
         HttpUtil.http().post(params, new RequestCallBack<String>(activity) {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
-                LogUtil.d(result);
-                Type type = new TypeToken<ResultEntity>() {
+//                LogUtil.d(result);
+                Type type = new TypeToken<UploadEntity>() {
                 }.getType();
-                ResultEntity entity = GsonUtil.GsonToBean(result, type);
+                UploadEntity entity = GsonUtil.GsonToBean(result, type);
                 if (entity.isSuccee()) {
                     ToastUtil.showShort("修改成功");
+                    ImageLoaderHelper.getInstance().loadCirPic(personInfoIconImg, HttpPath.HOST + entity.getUrl());
+                    DbUtils.getInstance().updateIcon(entity.getUrl());
+                    setResult(RESULT_OK);
                 } else {
                     ToastUtil.showShort("修改失败");
                 }

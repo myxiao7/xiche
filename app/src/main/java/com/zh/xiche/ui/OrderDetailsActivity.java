@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -28,6 +30,9 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
+import com.baidu.mapapi.navi.BaiduMapNavigation;
+import com.baidu.mapapi.navi.NaviParaOption;
 import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteResult;
@@ -111,6 +116,8 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     TextView getorderRemarkTv;
     @Bind(R.id.getorder_phone_img)
     ImageView getorderPhoneImg;
+    @Bind(R.id.getorder_nav_btn)
+    FloatingActionButton getorderNavBtn;
 
     MapView mMapView;
     BaiduMap mBaiduMap;
@@ -127,6 +134,10 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     RouteLine route = null;
     OverlayManager routeOverlay = null;
     PlanNode stNode, enNode;//起点, 终点
+    //导航起点和重点
+    private LatLng mStartPoint, mEndPoint;
+    //导航起点名称
+    private String mStartLoc;
 
     private UserInfoEntity userInfoEntity; //个人信息
     private OrderEntity orderEntity; //订单详情
@@ -142,7 +153,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         init();
         setOrderData();
         //初始化地图显示区域
-        if(!TextUtils.isEmpty(SharedData.getCurrentlat()) && !TextUtils.isEmpty(SharedData.getCurrentlon())){
+        if (!TextUtils.isEmpty(SharedData.getCurrentlat()) && !TextUtils.isEmpty(SharedData.getCurrentlon())) {
             LatLng ll = new LatLng(Double.parseDouble(SharedData.getCurrentlat()),
                     Double.parseDouble(SharedData.getCurrentlon()));
             LogUtil.d(Double.parseDouble(SharedData.getCurrentlat()) + "," + Double.parseDouble(SharedData.getCurrentlon()));
@@ -194,6 +205,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
         option.setScanSpan(60 * 60 * 1000);
+        option.setAddrType("all");
         mLocClient.setLocOption(option);
         mLocClient.start();
         /*mCurrentMode = LocationMode.FOLLOWING;
@@ -327,6 +339,45 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         }
     }
 
+    @OnClick(R.id.getorder_nav_btn)
+    public void onClick2() {
+        startNavi();
+    }
+    /**
+     * 启动百度地图导航(Native)
+     */
+    public void startNavi() {
+        LatLng pt1 = mStartPoint;
+        LatLng pt2 = mEndPoint;
+
+        // 构建 导航参数
+        NaviParaOption para = new NaviParaOption()
+                .startPoint(pt1).endPoint(pt2)
+                .startName(mStartLoc).endName(orderEntity.getLocation());
+        try {
+            BaiduMapNavigation.openBaiduMapNavi(para, this);
+        } catch (BaiduMapAppNotSupportNaviException e) {
+            e.printStackTrace();
+            ToastUtil.showShort("您尚未安装百度地图app或app版本过低,为您打开Web导航");
+            startWebNavi();
+        }
+
+    }
+
+    /**
+     * 启动百度地图导航(Web)
+     */
+    public void startWebNavi() {
+        LatLng pt1 = mStartPoint;
+        LatLng pt2 = mEndPoint;
+        // 构建 导航参数
+        NaviParaOption para = new NaviParaOption()
+                .startPoint(pt1).endPoint(pt2);
+
+        BaiduMapNavigation.openWebBaiduMapNavi(para, this);
+    }
+
+
     /**
      * 接单
      */
@@ -390,7 +441,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                     orderType = 3;
                     //更新我的订单列表
                     Intent intent = new Intent(BaseApplication.ORDERFINISH);
-                    intent.putExtra("position",position);
+                    intent.putExtra("position", position);
                     sendBroadcast(intent);
                     LogUtil.d("更新订单状态。。。。。。。。。。");
                 } else {
@@ -482,19 +533,22 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                     .direction(100).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
             mBaiduMap.setMyLocationData(locData);
-            LatLng ll = new LatLng(location.getLatitude(),
+            mStartLoc = location.getAddrStr();
+            //定位起点 导航起点
+            mStartPoint = new LatLng(location.getLatitude(),
                     location.getLongitude());
             MapStatus.Builder builder = new MapStatus.Builder();
-            builder.target(ll).zoom(18.0f);
+            builder.target(mStartPoint).zoom(18.0f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+
             //设置起点和终点
-            /*PlanNode stNode = PlanNode.withCityNameAndPlaceName("北京", "龙泽");
-            PlanNode enNode = PlanNode.withCityNameAndPlaceName("北京", "西单");*/
-            stNode = PlanNode.withLocation(ll);
-//            PlanNode enNode = PlanNode.withLocation(new LatLng(36.08246, 120.417519));
-            enNode = PlanNode.withLocation(new LatLng(lat, lon));
+            stNode = PlanNode.withLocation(mStartPoint);
+            // 导航终点
+            mEndPoint = new LatLng(lat, lon);
+            enNode = PlanNode.withLocation(mEndPoint);
             if (orderType != 1) {
                 DialogUtil.showProgress(activity);
+                getorderNavBtn.setVisibility(View.VISIBLE);
                 //绘制路线
                 mSearch.drivingSearch((new DrivingRoutePlanOption())
                         .from(stNode)
@@ -549,6 +603,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         mBaiduMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
         mMapView = null;
+        BaiduMapNavigation.finish(this);
         super.onDestroy();
     }
 

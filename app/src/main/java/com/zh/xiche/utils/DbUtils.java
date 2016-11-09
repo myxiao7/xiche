@@ -69,7 +69,35 @@ public class DbUtils {
     }
 
     /**
-     * 更新
+     * 更新用户状态
+     * @return
+     */
+    public void updateState(int state){
+        UserInfoEntity entity = null;
+        try {
+            entity = getPersonInfo();
+            entity.setIspass(state);
+            dbManager.update(entity, "ispass");
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 更新用户头像
+     * @return
+     */
+    public void updateIcon(String url){
+        UserInfoEntity entity = null;
+        try {
+            entity = getPersonInfo();
+            entity.setAvatar(url);
+            dbManager.update(entity, "avatar");
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 更新用户信息
      * @return
      */
     public void updateUserInfo(int id, String str){

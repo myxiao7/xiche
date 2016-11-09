@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
 import com.zh.xiche.base.BaseActivity;
 import com.zh.xiche.config.HttpPath;
+import com.zh.xiche.entity.OrderDetailsEntity;
 import com.zh.xiche.entity.OrderEntity;
 import com.zh.xiche.entity.PushEntity;
 import com.zh.xiche.entity.ResultEntity;
@@ -100,6 +101,13 @@ public class GiveOrderActivity extends Activity {
         ButterKnife.bind(this);
         userInfoEntity = DbUtils.getInstance().getPersonInfo();
         pushEntity = this.getIntent().getParcelableExtra("order");
+
+        giveorderTypeTv.setText(pushEntity.getAppointment());
+        giveorderAddTv.setText(pushEntity.getAppointment());
+        giveorderTimeTv.setText(pushEntity.getAppointment());
+        giveorderCartypeTv.setText(pushEntity.getAppointment());
+        giveorderRemarkTv.setText(pushEntity.getAppointment());
+
         downTimer = new CountDownTimer(60 *1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -118,6 +126,7 @@ public class GiveOrderActivity extends Activity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.giveorder_accept_btn:
+                DialogUtil.showProgress(this);
                 getOrder();
                 break;
             case R.id.giveorder_refuse_btn:
@@ -144,27 +153,65 @@ public class GiveOrderActivity extends Activity {
                 }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
                 if (resultEntity.isSuccee()) {
-                    ToastUtil.showShort("接单成功，转向订单详情");
-                    Intent intent = new Intent(GiveOrderActivity.this, OrderDetailsActivity.class);
-                    intent.putExtra("order", pushEntity);
-                    intent.putExtra("type", 2);
-                    startActivity(intent);
-                    GiveOrderActivity.this.finish();
+                    ToastUtil.showShort("接单成功");
+                    getOrderDetails();
                 } else {
-                    ToastUtil.showShort("接单失败，退出，刷新订单...");
+                    ToastUtil.showShort("接单失败...");
                 }
+                GiveOrderActivity.this.finish();
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
+                DialogUtil.stopProgress(GiveOrderActivity.this);
             }
         });
     }
 
     /**
-     * 接单
+     * 订单详情
+     * @param
+     */
+    private void getOrderDetails() {
+        String path = HttpPath.getPath(HttpPath.ORDERDETAILS);
+        RequestParams params = HttpUtil.params(path);
+        params.addBodyParameter("uid", userInfoEntity.getId());
+        params.addBodyParameter("tockens", userInfoEntity.getTockens());
+        params.addBodyParameter("orderid", pushEntity.getOrder_id());
+        HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderActivity.this) {
+            @Override
+            public void onSuccess(String result) {
+                super.onSuccess(result);
+                Type type = new TypeToken<OrderDetailsEntity>() {
+                }.getType();
+                OrderDetailsEntity detailsEntity = GsonUtil.GsonToBean(result, type);
+                if (detailsEntity.isSuccee()) {
+                    //获取订单详情
+                    Intent intent = new Intent(GiveOrderActivity.this, OrderDetailsActivity.class);
+                    intent.putExtra("order", detailsEntity.getOrdersDTO());
+                    intent.putExtra("type", 2);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.showShort("获取订单详情失败,请查看待服务订单");
+                }
+                DialogUtil.stopProgress(GiveOrderActivity.this);
+                GiveOrderActivity.this.finish();
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+//                ToastUtil.showShort(ex.getMessage());
+                DialogUtil.stopProgress(GiveOrderActivity.this);
+                ToastUtil.showShort("获取订单详情失败,请查看待服务订单");
+                GiveOrderActivity.this.finish();
+            }
+        });
+    }
+    /**
+     * 据单
      */
     private void refuseOrder() {
         String path = HttpPath.getPath(HttpPath.ORDERREFUSER);

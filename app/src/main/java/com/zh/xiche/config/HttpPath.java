@@ -6,6 +6,7 @@ package com.zh.xiche.config;
  */
 public class HttpPath {
     public static final String HOST = "http://ghl.xunmime.com/chuXiaoDing/";
+//    public static final String HOST = "http://d15801597i.imwork.net/chuXiaoDing/";
 //    public static final String HOST = "http://139.224.41.12:8080/chuXiaoDing/";
     /**
      * 登录

@@ -25,6 +25,8 @@ import com.zh.xiche.ui.fragment.PersonFragment;
 import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.ToastUtil;
 
+import org.xutils.common.util.LogUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,7 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> list = new ArrayList<>();
 
     private UserInfoEntity entity;
+    private TabFragmentPagerAdapter adapter;
 
     long waitTime = 2000;
     long touchTime = 0;
@@ -87,9 +90,8 @@ public class MainActivity extends BaseActivity {
         Fragment fragment02 = PersonFragment.newInstance();
         list.add(fragment01);
         list.add(fragment02);
-        TabFragmentPagerAdapter adapter = new TabFragmentPagerAdapter(getSupportFragmentManager(), list);
+        adapter = new TabFragmentPagerAdapter(getSupportFragmentManager(), list);
         mainViewpager.setAdapter(adapter);
-
         mainViewpager.setCurrentItem(0, false);
 
         mainViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -121,6 +123,15 @@ public class MainActivity extends BaseActivity {
                 mainViewpager.setCurrentItem(indexOfChild,true);
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        DbUtils.getInstance().updateState(1);
+        adapter.notifyDataSetChanged();
+        LogUtil.d("接到通知");
     }
 
     private class TabFragmentPagerAdapter extends FragmentPagerAdapter {

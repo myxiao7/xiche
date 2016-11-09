@@ -93,15 +93,16 @@ public class PersonFragment extends BaseFragment {
         ButterKnife.bind(this, mView);
         entity = DbUtils.getInstance().getPersonInfo();
         perUsernameTv.setText(entity.getMobile());
-        if(!TextUtils.isEmpty(entity.getAvatar())){
-            ImageLoaderHelper.getInstance().loadPic(perIconImg, entity.getAvatar());
-        }
+
         return mView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if(!TextUtils.isEmpty(DbUtils.getInstance().getPersonInfo().getAvatar())){
+            ImageLoaderHelper.getInstance().loadCirPic(perIconImg, HttpPath.HOST + DbUtils.getInstance().getPersonInfo().getAvatar());
+        }
         getCountByDay();
     }
 
@@ -121,7 +122,7 @@ public class PersonFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.per_mydrder_tv:
-                if(entity.getIspass() == 1){
+                if(DbUtils.getInstance().getPersonInfo().getIspass() == 1){
                     intent = new Intent(activity, MyOrderSwitch.class);
                     startActivity(intent);
                 }else{
@@ -129,7 +130,7 @@ public class PersonFragment extends BaseFragment {
                 }
                 break;
             case R.id.per_mybill_tv:
-                if(entity.getIspass() == 1){
+                if(DbUtils.getInstance().getPersonInfo().getIspass() == 1){
                     intent = new Intent(activity, BillByAllActivity.class);
                     startActivity(intent);
                 }else{
