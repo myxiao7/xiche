@@ -8,98 +8,41 @@ import android.os.Parcelable;
  */
 
 public class PushEntity implements Parcelable {
-    private int message_type; //1.审核结果 2.正常推送订单 3.管理员拍单 4.自定义消息
-    private int audit_conclusion; //审核结果
-    private String custom_message;//"这是一条自定义消息"
-    private String order_id;
-    private String service_type;
-    private String order_Location;
-    private String lat;
-    private String lon;
-    private String car_brank;
-    private String car_style;
-    private String appointment;
-    private String order_amount;
+
+    /**
+     * remark : 1
+     * appointment : 2016-11-11  16:00-18:00
+     * car_brand : 大众
+     * order_id : dfc372d6b2174e8bacadaa30218417b2
+     * lon : 36.099506
+     * order_amount : 1.0
+     * lat : 120.374321
+     * car_style : 迈腾
+     * custom_message : 你有新的订单信息，请注意查收！
+     * service_type : 测试,
+     * message_type : 2
+     * audit_conclusion :
+     */
+
     private String remark;
+    private String appointment;
+    private String car_brand;
+    private String order_id;
+    private String lon;
+    private String order_amount;
+    private String lat;
+    private String car_style;
+    private String custom_message;
+    private String service_type;
+    private String message_type;
+    private String audit_conclusion;
 
-    public int getMessage_type() {
-        return message_type;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setMessage_type(int message_type) {
-        this.message_type = message_type;
-    }
-
-    public int getAudit_conclusion() {
-        return audit_conclusion;
-    }
-
-    public void setAudit_conclusion(int audit_conclusion) {
-        this.audit_conclusion = audit_conclusion;
-    }
-
-    public String getCustom_message() {
-        return custom_message;
-    }
-
-    public void setCustom_message(String custom_message) {
-        this.custom_message = custom_message;
-    }
-
-    public String getOrder_id() {
-        return order_id;
-    }
-
-    public void setOrder_id(String order_id) {
-        this.order_id = order_id;
-    }
-
-    public String getService_type() {
-        return service_type;
-    }
-
-    public void setService_type(String service_type) {
-        this.service_type = service_type;
-    }
-
-    public String getOrder_Location() {
-        return order_Location;
-    }
-
-    public void setOrder_Location(String order_Location) {
-        this.order_Location = order_Location;
-    }
-
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLon() {
-        return lon;
-    }
-
-    public void setLon(String lon) {
-        this.lon = lon;
-    }
-
-    public String getCar_brank() {
-        return car_brank;
-    }
-
-    public void setCar_brank(String car_brank) {
-        this.car_brank = car_brank;
-    }
-
-    public String getCar_style() {
-        return car_style;
-    }
-
-    public void setCar_style(String car_style) {
-        this.car_style = car_style;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public String getAppointment() {
@@ -110,6 +53,30 @@ public class PushEntity implements Parcelable {
         this.appointment = appointment;
     }
 
+    public String getCar_brand() {
+        return car_brand;
+    }
+
+    public void setCar_brand(String car_brand) {
+        this.car_brand = car_brand;
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
     public String getOrder_amount() {
         return order_amount;
     }
@@ -118,13 +85,54 @@ public class PushEntity implements Parcelable {
         this.order_amount = order_amount;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getLat() {
+        return lat;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setLat(String lat) {
+        this.lat = lat;
     }
+
+    public String getCar_style() {
+        return car_style;
+    }
+
+    public void setCar_style(String car_style) {
+        this.car_style = car_style;
+    }
+
+    public String getCustom_message() {
+        return custom_message;
+    }
+
+    public void setCustom_message(String custom_message) {
+        this.custom_message = custom_message;
+    }
+
+    public String getService_type() {
+        return service_type;
+    }
+
+    public void setService_type(String service_type) {
+        this.service_type = service_type;
+    }
+
+    public String getMessage_type() {
+        return message_type;
+    }
+
+    public void setMessage_type(String message_type) {
+        this.message_type = message_type;
+    }
+
+    public String getAudit_conclusion() {
+        return audit_conclusion;
+    }
+
+    public void setAudit_conclusion(String audit_conclusion) {
+        this.audit_conclusion = audit_conclusion;
+    }
+
 
     @Override
     public int describeContents() {
@@ -133,41 +141,39 @@ public class PushEntity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.message_type);
-        dest.writeInt(this.audit_conclusion);
-        dest.writeString(this.custom_message);
-        dest.writeString(this.order_id);
-        dest.writeString(this.service_type);
-        dest.writeString(this.order_Location);
-        dest.writeString(this.lat);
-        dest.writeString(this.lon);
-        dest.writeString(this.car_brank);
-        dest.writeString(this.car_style);
-        dest.writeString(this.appointment);
-        dest.writeString(this.order_amount);
         dest.writeString(this.remark);
+        dest.writeString(this.appointment);
+        dest.writeString(this.car_brand);
+        dest.writeString(this.order_id);
+        dest.writeString(this.lon);
+        dest.writeString(this.order_amount);
+        dest.writeString(this.lat);
+        dest.writeString(this.car_style);
+        dest.writeString(this.custom_message);
+        dest.writeString(this.service_type);
+        dest.writeString(this.message_type);
+        dest.writeString(this.audit_conclusion);
     }
 
     public PushEntity() {
     }
 
     protected PushEntity(Parcel in) {
-        this.message_type = in.readInt();
-        this.audit_conclusion = in.readInt();
-        this.custom_message = in.readString();
-        this.order_id = in.readString();
-        this.service_type = in.readString();
-        this.order_Location = in.readString();
-        this.lat = in.readString();
-        this.lon = in.readString();
-        this.car_brank = in.readString();
-        this.car_style = in.readString();
-        this.appointment = in.readString();
-        this.order_amount = in.readString();
         this.remark = in.readString();
+        this.appointment = in.readString();
+        this.car_brand = in.readString();
+        this.order_id = in.readString();
+        this.lon = in.readString();
+        this.order_amount = in.readString();
+        this.lat = in.readString();
+        this.car_style = in.readString();
+        this.custom_message = in.readString();
+        this.service_type = in.readString();
+        this.message_type = in.readString();
+        this.audit_conclusion = in.readString();
     }
 
-    public static final Parcelable.Creator<PushEntity> CREATOR = new Parcelable.Creator<PushEntity>() {
+    public static final Creator<PushEntity> CREATOR = new Creator<PushEntity>() {
         @Override
         public PushEntity createFromParcel(Parcel source) {
             return new PushEntity(source);

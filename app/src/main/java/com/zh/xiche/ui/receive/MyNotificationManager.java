@@ -42,10 +42,8 @@ public class MyNotificationManager {
                 .setTicker("派单")
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setSmallIcon(R.mipmap.ic_car);
+                .setSmallIcon(R.mipmap.ic_launcher);
         ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).notify(1, builder.build());
-
-
     }
 
     /**

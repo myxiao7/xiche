@@ -236,7 +236,7 @@
                 android:layout_width="10dp"
                 android:layout_weight="1"
                 style="@style/base_btn2"
-                android:text="拒单"
+                android:text="关闭"
                 />
             <Button
                 android:id="@+id/giveorder_accept_btn"

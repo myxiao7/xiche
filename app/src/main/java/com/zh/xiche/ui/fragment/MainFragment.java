@@ -221,8 +221,8 @@ public class MainFragment extends BaseFragment {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+                /*super.onError(ex, isOnCallback);
+                ToastUtil.showShort(ex.getMessage());*/
             }
         });
     }

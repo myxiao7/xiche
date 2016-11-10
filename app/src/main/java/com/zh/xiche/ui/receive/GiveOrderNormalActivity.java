@@ -12,13 +12,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.google.gson.reflect.TypeToken;
 import com.zh.xiche.R;
-import com.zh.xiche.base.BaseActivity;
 import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.entity.OrderDetailsEntity;
-import com.zh.xiche.entity.OrderEntity;
 import com.zh.xiche.entity.PushEntity;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.entity.UserInfoEntity;
@@ -40,11 +37,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 派单
+ * 自动订单
  * Created by zhanghao on 2016/10/13.
  */
 
-public class GiveOrderActivity extends Activity {
+public class GiveOrderNormalActivity extends Activity {
     @Bind(R.id.giveorder_icon_img)
     ImageView giveorderIconImg;
     @Bind(R.id.giveorder_name_tv)
@@ -133,7 +130,7 @@ public class GiveOrderActivity extends Activity {
                 getOrder();
                 break;
             case R.id.giveorder_refuse_btn:
-                refuseOrder();
+//                refuseOrder();
                 finish();
                 break;
         }
@@ -149,7 +146,7 @@ public class GiveOrderActivity extends Activity {
         params.addBodyParameter("tockens", userInfoEntity.getTockens());
         params.addBodyParameter("orderid", pushEntity.getOrder_id());
         LogUtil.d("接单号码" + pushEntity.getOrder_id());
-        HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderActivity.this) {
+        HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderNormalActivity.this) {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
@@ -162,14 +159,14 @@ public class GiveOrderActivity extends Activity {
                 } else {
                     ToastUtil.showShort("接单失败...");
                 }
-                GiveOrderActivity.this.finish();
+                GiveOrderNormalActivity.this.finish();
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
 //                ToastUtil.showShort(ex.getMessage());
-                DialogUtil.stopProgress(GiveOrderActivity.this);
+                DialogUtil.stopProgress(GiveOrderNormalActivity.this);
             }
         });
     }
@@ -184,7 +181,7 @@ public class GiveOrderActivity extends Activity {
         params.addBodyParameter("uid", userInfoEntity.getId());
         params.addBodyParameter("tockens", userInfoEntity.getTockens());
         params.addBodyParameter("orderid", pushEntity.getOrder_id());
-        HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderActivity.this) {
+        HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderNormalActivity.this) {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
@@ -193,24 +190,24 @@ public class GiveOrderActivity extends Activity {
                 OrderDetailsEntity detailsEntity = GsonUtil.GsonToBean(result, type);
                 if (detailsEntity.isSuccee()) {
                     //获取订单详情
-                    Intent intent = new Intent(GiveOrderActivity.this, OrderDetailsActivity.class);
+                    Intent intent = new Intent(GiveOrderNormalActivity.this, OrderDetailsActivity.class);
                     intent.putExtra("order", detailsEntity.getOrdersDTO());
                     intent.putExtra("type", 2);
                     startActivity(intent);
                 } else {
                     ToastUtil.showShort("获取订单详情失败,请查看待服务订单");
                 }
-                DialogUtil.stopProgress(GiveOrderActivity.this);
-                GiveOrderActivity.this.finish();
+                DialogUtil.stopProgress(GiveOrderNormalActivity.this);
+                GiveOrderNormalActivity.this.finish();
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
 //                ToastUtil.showShort(ex.getMessage());
-                DialogUtil.stopProgress(GiveOrderActivity.this);
+                DialogUtil.stopProgress(GiveOrderNormalActivity.this);
                 ToastUtil.showShort("获取订单详情失败,请查看待服务订单");
-                GiveOrderActivity.this.finish();
+                GiveOrderNormalActivity.this.finish();
             }
         });
     }
@@ -223,7 +220,7 @@ public class GiveOrderActivity extends Activity {
         params.addBodyParameter("uid", userInfoEntity.getId());
         params.addBodyParameter("tockens", userInfoEntity.getTockens());
         params.addBodyParameter("orderid", pushEntity.getOrder_id());
-        HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderActivity.this) {
+        HttpUtil.http().post(params, new RequestCallBack<String>(GiveOrderNormalActivity.this) {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
@@ -232,7 +229,7 @@ public class GiveOrderActivity extends Activity {
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
                 if (resultEntity.isSuccee()) {
                     ToastUtil.showShort("拒单成功");
-                    GiveOrderActivity.this.finish();
+                    GiveOrderNormalActivity.this.finish();
                 } else {
                     ToastUtil.showShort("接单失败");
                 }

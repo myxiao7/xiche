@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
@@ -35,42 +36,46 @@ public class MyReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
 //        Log.d(TAG, "onReceive - " + intent.getAction());
-        LogUtil.d(printBundle(bundle));
+//        LogUtil.d(printBundle(bundle));
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
 
         }else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-            /*Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_TITLE));
-            Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_ALERT));
+//            Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_TITLE));
+//            Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_ALERT));
             Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_EXTRA));
-            Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_MESSAGE));*/
+//            Log.d(TAG, "onReceive - " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
 //            System.out.println("收到了自定义消息。消息内容是：" + bundle.getString(JPushInterface.EXTRA_EXTRA));
             // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
-            String result = intent.getAction();
-            Type type = new TypeToken<PushEntity>(){}.getType();
-            PushEntity entity = GsonUtil.GsonToBean(result, type);
-            switch (entity.getMessage_type()){
-                case 1:
-                    //审核信息
-                    if(entity.getAudit_conclusion() == 1){
-                        MyNotificationManager.getInstance().showNotifiClick(context, "初小丁", "恭喜您，您的信息已经审核通过");
-                    }
-                    break;
-                case 2:
-                    //正常推送订单
-                    MyNotificationManager.getInstance().showNotifi(context, "初小丁", "您有一条新的订单");
-                    break;
-                case 3:
-                    //管理员派送单
-                    MyNotificationManager.getInstance().showNotifi(context, "初小丁", "系统给您派发了一条新的订单");
-                    Intent intent1 = new Intent(context, GiveOrderActivity.class);
-                    intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent1.putExtra("order", entity);
-                    context.startActivity(intent1);
-                    break;
-                case 4:
-                    //自定义消息
-                    break;
+            String result = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            LogUtil.d(result);
+            if(!TextUtils.isEmpty(result)){
+                Type type = new TypeToken<PushEntity>(){}.getType();
+                PushEntity entity = GsonUtil.GsonToBean(result, type);
+                switch (entity.getMessage_type()){
+                    case "1":
+                        //审核信息
+                        if(entity.getAudit_conclusion().equals("1")){
+                            MyNotificationManager.getInstance().showNotifiClick(context, "初小丁", "恭喜您，您的信息已经审核通过");
+                        }
+                        break;
+                    /*case "2":
+                        //正常推送订单
+                        MyNotificationManager.getInstance().showNotifi(context, "初小丁", "您有一条新的订单");
+                        break;
+                    case "3":
+                        //管理员派送单
+                        MyNotificationManager.getInstance().showNotifi(context, "初小丁", "系统给您派发了一条新的订单");
+                        Intent intent1 = new Intent(context, GiveOrderActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent1.putExtra("order", entity);
+                        context.startActivity(intent1);
+                        break;
+                    case "4":
+                        //自定义消息
+                        break;*/
+                }
             }
+
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
 //            System.out.println("收到了通知");
             LogUtil.d("收到了通知222222222");

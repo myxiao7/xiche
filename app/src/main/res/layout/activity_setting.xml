@@ -39,8 +39,8 @@
         <TextView
             android:id="@+id/set_logout_tv"
             style="@style/per_set_text"
-            android:layout_marginTop="30dp"
             android:text="更换手机"
+            android:visibility="gone"
             />
         <View
             android:layout_width="match_parent"
@@ -51,6 +51,7 @@
         <TextView
             android:id="@+id/set_forget_tv"
             style="@style/per_set_text"
+            android:layout_marginTop="30dp"
             android:text="修改密码"
             />
 

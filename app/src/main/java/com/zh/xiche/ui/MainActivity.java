@@ -59,13 +59,14 @@ public class MainActivity extends BaseActivity {
     long touchTime = 0;
     @Override
     public void onBackPressed() {
-        long currentTime = System.currentTimeMillis();
+      /*  long currentTime = System.currentTimeMillis();
         if((currentTime-touchTime)>=waitTime) {
             ToastUtil.showShort("再按一次退出");
             touchTime = currentTime;
         }else {
             finish();
-        }
+        }*/
+        moveTaskToBack(true);
     }
 
     @Override
@@ -131,6 +132,11 @@ public class MainActivity extends BaseActivity {
         setIntent(intent);
         DbUtils.getInstance().updateState(1);
         adapter.notifyDataSetChanged();
+        if(TextUtils.isEmpty(entity.getCardno()) || TextUtils.isEmpty(entity.getLocation()) || TextUtils.isEmpty(entity.getName())){
+            ToastUtil.showShort("请先完善个人信息");
+            Intent intent2 = new Intent(activity, ModifyUserInfoActivity.class);
+            startActivity(intent2);
+        }
         LogUtil.d("接到通知");
     }
 

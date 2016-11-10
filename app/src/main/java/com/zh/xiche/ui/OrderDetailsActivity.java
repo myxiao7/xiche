@@ -480,6 +480,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         }
         //
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+            getorderNavBtn.setVisibility(View.VISIBLE);
             route = result.getRouteLines().get(0);
             DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
             routeOverlay = overlay;
@@ -548,7 +549,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
             enNode = PlanNode.withLocation(mEndPoint);
             if (orderType != 1) {
                 DialogUtil.showProgress(activity);
-                getorderNavBtn.setVisibility(View.VISIBLE);
+//                getorderNavBtn.setVisibility(View.VISIBLE);
                 //绘制路线
                 mSearch.drivingSearch((new DrivingRoutePlanOption())
                         .from(stNode)
