@@ -121,7 +121,7 @@ public class CommonEdit extends BaseActivity {
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
                 if(entity.isSuccee()){
-                    ToastUtil.showShort("修改成功");
+//                    ToastUtil.showShort("修改成功");
                     Intent intent = new Intent();
                     intent.putExtra(REQTYPE,reqId);
                     intent.putExtra(RESULTSTR,commoneditEdit.getText().toString());
@@ -138,7 +138,7 @@ public class CommonEdit extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 DialogUtils.stopProgress(activity);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
     }
@@ -154,7 +154,7 @@ public class CommonEdit extends BaseActivity {
         switch (item.getItemId()){
             case Menu.FIRST + 1:
                 if(commoneditEdit.getText().toString().equals(str) || TextUtils.isEmpty(commoneditEdit.getText().toString())){
-                    ToastUtil.showShort("未作任何改动");
+//                    ToastUtil.showShort("未作任何改动");
                     hideSoftKeybord();
                     activity.finish();
                 }else{

@@ -153,7 +153,7 @@ public class OrderListActivity extends BaseActivity {
                             xlistview.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }else{
-                            ToastUtil.showShort("没有数据");
+                            ToastUtil.showShort("暂时还没有没有订单");
                         }
                         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
                         String time = dateFormat.format(new Date());
@@ -181,7 +181,7 @@ public class OrderListActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
                 xlistview.setEnabled(true);
             }
         });

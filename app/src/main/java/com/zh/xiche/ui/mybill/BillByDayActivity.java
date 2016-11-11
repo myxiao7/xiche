@@ -158,7 +158,7 @@ public class BillByDayActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
                 xlistview.setEnabled(true);
             }
         });

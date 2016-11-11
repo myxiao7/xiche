@@ -255,7 +255,7 @@ public class RegisterUserInfoActivity extends BaseActivity implements OnAddressC
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
                 if(entity.isSuccee()){
-                    ToastUtil.showShort("添加成功");
+//                    ToastUtil.showShort("添加成功");
                     //去结果页面
                     Intent intent = new Intent(activity, RegisterResultActivity.class);
                     intent.putExtra("userName", userName);
@@ -271,7 +271,7 @@ public class RegisterUserInfoActivity extends BaseActivity implements OnAddressC
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 DialogUtils.stopProgress(activity);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
     }
@@ -295,7 +295,7 @@ public class RegisterUserInfoActivity extends BaseActivity implements OnAddressC
     @PermissionYes(101)
     private void getLocationYes() {
         // 申请权限成功，可以去做点什么了。
-        ToastUtil.showShort("获取定位权限成功");
+//        ToastUtil.showShort("获取定位权限成功");
         initLocaticon();
     }
 

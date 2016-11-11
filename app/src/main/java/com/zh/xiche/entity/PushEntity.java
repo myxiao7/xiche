@@ -29,6 +29,7 @@ public class PushEntity implements Parcelable {
     private String car_brand;
     private String order_id;
     private String lon;
+    private String order_Location;
     private String order_amount;
     private String lat;
     private String car_style;
@@ -93,6 +94,14 @@ public class PushEntity implements Parcelable {
         this.lat = lat;
     }
 
+    public String getOrder_Location() {
+        return order_Location;
+    }
+
+    public void setOrder_Location(String order_Location) {
+        this.order_Location = order_Location;
+    }
+
     public String getCar_style() {
         return car_style;
     }
@@ -146,6 +155,7 @@ public class PushEntity implements Parcelable {
         dest.writeString(this.car_brand);
         dest.writeString(this.order_id);
         dest.writeString(this.lon);
+        dest.writeString(this.order_Location);
         dest.writeString(this.order_amount);
         dest.writeString(this.lat);
         dest.writeString(this.car_style);
@@ -164,6 +174,7 @@ public class PushEntity implements Parcelable {
         this.car_brand = in.readString();
         this.order_id = in.readString();
         this.lon = in.readString();
+        this.order_Location = in.readString();
         this.order_amount = in.readString();
         this.lat = in.readString();
         this.car_style = in.readString();

@@ -221,7 +221,7 @@ public class PersonInfo extends BaseActivity {
 
         @Override
         public void onHanlderFailure(int requestCode, String errorMsg) {
-            Toast.makeText(activity, errorMsg, Toast.LENGTH_SHORT).show();
+            ToastUtil.showShort(errorMsg);
         }
     };
 
@@ -301,7 +301,7 @@ public class PersonInfo extends BaseActivity {
                         @Override
                         public void gotResult(int i, String s, Set<String> set) {
                             DialogUtils.stopProgress(activity);
-                            ToastUtil.showShort("注销成功");
+//                            ToastUtil.showShort("注销成功");
                             //发送注销广播
                             Intent intent1 = new Intent(BaseApplication.LOGOUT);
                             activity.sendBroadcast(intent1);
@@ -318,7 +318,7 @@ public class PersonInfo extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 DialogUtils.stopProgress(activity);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
     }

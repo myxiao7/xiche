@@ -103,7 +103,7 @@ public class GiveOrderNormalActivity extends Activity {
         pushEntity = this.getIntent().getParcelableExtra("order");
         LogUtil.d("初始。。。。。" + pushEntity.getOrder_id());
         giveorderTypeTv.setText(pushEntity.getService_type());
-        giveorderAddTv.setText(pushEntity.getLat() + "--" +pushEntity.getLon());
+        giveorderAddTv.setText(pushEntity.getOrder_Location());
         giveorderTimeTv.setText(pushEntity.getAppointment());
         giveorderCartypeTv.setText(pushEntity.getCar_style());
         giveorderRemarkTv.setText(pushEntity.getRemark());
@@ -256,8 +256,8 @@ public class GiveOrderNormalActivity extends Activity {
         userInfoEntity = DbUtils.getInstance().getPersonInfo();
         pushEntity = intent.getParcelableExtra("order");
         LogUtil.d("订单号" + pushEntity.getOrder_id());
-        giveorderTypeTv.setText(pushEntity.getService_type()+"我是新的"+i++);
-        giveorderAddTv.setText(pushEntity.getLat() + "--" +pushEntity.getLon());
+        giveorderTypeTv.setText(pushEntity.getService_type());
+        giveorderAddTv.setText(pushEntity.getOrder_Location());
         giveorderTimeTv.setText(pushEntity.getAppointment());
         giveorderCartypeTv.setText(pushEntity.getCar_style());
         giveorderRemarkTv.setText(pushEntity.getRemark());

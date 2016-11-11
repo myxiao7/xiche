@@ -72,7 +72,7 @@ public class BillByMonthActivity extends BaseActivity {
             }
         });
         month = this.getIntent().getStringExtra("month");
-        toolbarTv.setText(month + "账单");
+        toolbarTv.setText(month + "月账单");
         entity = DbUtils.getInstance().getPersonInfo();
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -120,7 +120,7 @@ public class BillByMonthActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
     }

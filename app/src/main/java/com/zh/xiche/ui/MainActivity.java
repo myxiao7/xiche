@@ -164,7 +164,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(BaseApplication.LOGOUT)){
-                ToastUtil.showShort("主界面注销");
+//                ToastUtil.showShort("主界面注销");
                 Intent intent1 = new Intent(activity, LoginActivity.class);
                 intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent1);

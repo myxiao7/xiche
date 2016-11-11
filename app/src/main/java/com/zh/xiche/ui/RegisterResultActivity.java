@@ -119,7 +119,7 @@ public class RegisterResultActivity extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 DialogUtils.stopProgress(activity);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
 

@@ -207,7 +207,7 @@ public class ModifyUserInfoActivity extends BaseActivity {
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
                 if(entity.isSuccee()){
-                    ToastUtil.showShort("提交成功");
+//                    ToastUtil.showShort("提交成功");
                     //去首页
                     Intent intent = new Intent(activity, MainActivity.class);
                     //更新信息
@@ -229,7 +229,7 @@ public class ModifyUserInfoActivity extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 DialogUtils.stopProgress(activity);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
     }
@@ -253,7 +253,7 @@ public class ModifyUserInfoActivity extends BaseActivity {
     @PermissionYes(101)
     private void getLocationYes() {
         // 申请权限成功，可以去做点什么了。
-        Toast.makeText(this, "获取定位权限成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "获取定位权限成功", Toast.LENGTH_SHORT).show();
         initLocaticon();
     }
 

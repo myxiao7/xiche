@@ -207,7 +207,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+                ToastUtil.showShort("网络错误");
             }
         });
 
@@ -231,7 +231,7 @@ public class RegisterActivity extends BaseActivity {
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
                 if(entity.isSuccee()){
-                    ToastUtil.showShort("注册成功");
+//                    ToastUtil.showShort("注册成功");
                     //完善资料
                     Intent intent = new Intent(activity, RegisterUserInfoActivity.class);
                     intent.putExtra("id", entity.getOperatorDTO().getId());
@@ -249,7 +249,7 @@ public class RegisterActivity extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 DialogUtils.stopProgress(activity);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
 
@@ -279,7 +279,7 @@ public class RegisterActivity extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 DialogUtils.stopProgress(activity);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
 

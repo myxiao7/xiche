@@ -101,11 +101,11 @@ public class ForgetActivity extends BaseActivity {
                     return;
                 }
                 if(TextUtils.isEmpty(forgetPwdEdit.getText().toString())){
-                    ToastUtil.showShort(R.string.login_phone_hint);
+                    ToastUtil.showShort(R.string.forget_pwd_hint);
                     return;
                 }
                 if(TextUtils.isEmpty(forgetPwd2Edit.getText().toString())){
-                    ToastUtil.showShort(R.string.forget_pwd_hint);
+                    ToastUtil.showShort(R.string.forget_pwd_hint2);
                     return;
                 }
                 if(!(forgetPwd2Edit.getText().toString().equals(forgetPwd2Edit.getText().toString()))){
@@ -156,7 +156,7 @@ public class ForgetActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
 
@@ -229,7 +229,7 @@ public class ForgetActivity extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 DialogUtils.stopProgress(activity);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
 

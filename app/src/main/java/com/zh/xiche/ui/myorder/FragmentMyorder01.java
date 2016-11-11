@@ -150,7 +150,7 @@ public class FragmentMyorder01 extends BaseFragment {
                             xlistview.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }else{
-                            ToastUtil.showShort("没有数据");
+//                            ToastUtil.showShort("没有数据");
                         }
                         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
                         String time = dateFormat.format(new Date());
@@ -178,7 +178,7 @@ public class FragmentMyorder01 extends BaseFragment {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
     }

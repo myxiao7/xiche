@@ -412,7 +412,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
     }
@@ -434,7 +434,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                 }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
                 if (resultEntity.isSuccee()) {
-                    ToastUtil.showShort("完成订单");
+//                    ToastUtil.showShort("完成订单");
                     getorderGetBtn.setText("已完成");
                     getorderGetBtn.setClickable(false);
                     getorderGetBtn.setBackgroundResource(R.drawable.border_gray);
@@ -452,7 +452,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
-                ToastUtil.showShort(ex.getMessage());
+//                ToastUtil.showShort(ex.getMessage());
             }
         });
     }
@@ -571,7 +571,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
     @PermissionYes(101)
     private void getLocationYes() {
         // 申请权限成功，可以去做点什么了。
-        ToastUtil.showShort("获取定位权限成功");
+//        ToastUtil.showShort("获取定位权限成功");
         initLocaticon();
     }
 

@@ -161,7 +161,7 @@ public class LoginActivity extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 super.onError(ex, isOnCallback);
                 DialogUtils.stopProgress(activity);
-                ToastUtil.showShort(ex.getMessage());
+                ToastUtil.showShort("网络错误");
             }
         });
 

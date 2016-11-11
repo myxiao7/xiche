@@ -213,7 +213,7 @@ public class MainFragment extends BaseFragment {
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
                 if(resultEntity.isSuccee()){
-                    ToastUtil.showShort("更新位置成功");
+//                    ToastUtil.showShort("更新位置成功");
                 }else{
                     ToastUtil.showShort("更新位置失败");
                 }
@@ -237,7 +237,7 @@ public class MainFragment extends BaseFragment {
     @PermissionYes(101)
     private void getLocationYes() {
         // 申请权限成功，可以去做点什么了。
-        ToastUtil.showShort("获取定位权限成功");
+//        ToastUtil.showShort("获取定位权限成功");
         initLocaticon();
     }
 
