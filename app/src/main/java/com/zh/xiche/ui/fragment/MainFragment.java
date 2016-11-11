@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +98,9 @@ public class MainFragment extends BaseFragment {
         mBaiduMap = bmapView.getMap();
         //初始化地图显示区域
         if(!TextUtils.isEmpty(SharedData.getCurrentlat()) && !TextUtils.isEmpty(SharedData.getCurrentlon())){
+            LogUtil.d(SharedData.getCurrentlat());
+            LogUtil.d(SharedData.getCurrentlon());
+            LogUtil.d(SharedData.getCurrentAdd());
             LatLng ll = new LatLng(Double.parseDouble(SharedData.getCurrentlat()),
                     Double.parseDouble(SharedData.getCurrentlon()));
             LogUtil.d(Double.parseDouble(SharedData.getCurrentlat()) + "," + Double.parseDouble(SharedData.getCurrentlon()));
@@ -149,7 +153,7 @@ public class MainFragment extends BaseFragment {
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(5 * 60 * 1000);
+        option.setScanSpan(2 * 60 * 1000);
         option.setAddrType("all");
         mLocClient.setLocOption(option);
         mLocClient.start();
@@ -189,6 +193,7 @@ public class MainFragment extends BaseFragment {
             //保存位置坐标
             SharedData.saveCurrentlat(location.getLatitude()+"");
             SharedData.saveCurrentlon(location.getLongitude()+"");
+            SharedData.saveCurrentAdd(location.getAddrStr()+"");
         }
 
         public void onReceivePoi(BDLocation poiLocation) {

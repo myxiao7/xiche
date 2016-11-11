@@ -16,6 +16,8 @@ import com.zh.xiche.entity.OrderEntity;
 import com.zh.xiche.utils.ImageLoaderHelper;
 import com.zh.xiche.utils.ToastUtil;
 
+import org.xutils.common.util.LogUtil;
+
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -91,7 +93,7 @@ public class MyOrderAdapter extends BaseAdapter {
             ImageLoaderHelper.getInstance().loadCirPic(holder.iconImg, entity.getAvartar());
         }
         //昵称 + 姓名
-        holder.nameTv.setText(entity.getUname() + "(" + entity.getName() + ")");
+        holder.nameTv.setText(entity.getName());
         if (!TextUtils.isEmpty(entity.getMobile())) {
             //手机号码
             holder.phoneTv.setText(entity.getMobile());
@@ -150,9 +152,9 @@ public class MyOrderAdapter extends BaseAdapter {
         } else {
             if (!TextUtils.isEmpty(entity.getAcceptdate())) {
                 holder.dateTv.setText(entity.getAcceptdate());
-
             }
         }
+
         if (!TextUtils.isEmpty(entity.getRemark())) {
             //备注
             holder.remarkTv.setText(entity.getRemark());

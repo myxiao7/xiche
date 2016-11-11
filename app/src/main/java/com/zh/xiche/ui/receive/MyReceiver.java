@@ -55,24 +55,28 @@ public class MyReceiver extends BroadcastReceiver{
                     case "1":
                         //审核信息
                         if(entity.getAudit_conclusion().equals("1")){
-                            MyNotificationManager.getInstance().showNotifiClick(context, "初小丁", "恭喜您，您的信息已经审核通过");
+                            MyNotificationManager.getInstance().showNotifiClick(context, "初小丁", "恭喜您，您的信息已经审核通过,点我去接单");
                         }
                         break;
-                    /*case "2":
+                    case "2":
                         //正常推送订单
                         MyNotificationManager.getInstance().showNotifi(context, "初小丁", "您有一条新的订单");
-                        break;
-                    case "3":
-                        //管理员派送单
-                        MyNotificationManager.getInstance().showNotifi(context, "初小丁", "系统给您派发了一条新的订单");
-                        Intent intent1 = new Intent(context, GiveOrderActivity.class);
+                        Intent intent1 = new Intent(context, GiveOrderNormalActivity.class);
                         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent1.putExtra("order", entity);
                         context.startActivity(intent1);
                         break;
+                    case "3":
+                        //管理员派送单
+                        MyNotificationManager.getInstance().showNotifi(context, "初小丁", "系统给您派发了一条新的订单");
+                        Intent intent2 = new Intent(context, GiveOrderActivity.class);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent2.putExtra("order", entity);
+                        context.startActivity(intent2);
+                        break;
                     case "4":
                         //自定义消息
-                        break;*/
+                        break;
                 }
             }
 

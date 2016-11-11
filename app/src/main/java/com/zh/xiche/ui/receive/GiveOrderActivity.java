@@ -215,7 +215,7 @@ public class GiveOrderActivity extends Activity {
         });
     }
     /**
-     * 据单
+     * 拒单
      */
     private void refuseOrder() {
         String path = HttpPath.getPath(HttpPath.ORDERREFUSER);

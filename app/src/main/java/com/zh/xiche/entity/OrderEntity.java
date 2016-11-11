@@ -53,7 +53,7 @@ public class OrderEntity implements Parcelable {
     private String carcolor;
     private String carno;
     private String carstyle;
-    private String finishDate;
+    private String finishdate;
     private double lat;
     private String location;
     private double lon;
@@ -149,11 +149,11 @@ public class OrderEntity implements Parcelable {
     }
 
     public String getFinishDate() {
-        return finishDate;
+        return finishdate;
     }
 
     public void setFinishDate(String finishDate) {
-        this.finishDate = finishDate;
+        this.finishdate = finishDate;
     }
 
     public double getLat() {
@@ -340,7 +340,7 @@ public class OrderEntity implements Parcelable {
         dest.writeString(this.carcolor);
         dest.writeString(this.carno);
         dest.writeString(this.carstyle);
-        dest.writeString(this.finishDate);
+        dest.writeString(this.finishdate);
         dest.writeDouble(this.lat);
         dest.writeString(this.location);
         dest.writeDouble(this.lon);
@@ -377,7 +377,7 @@ public class OrderEntity implements Parcelable {
         this.carcolor = in.readString();
         this.carno = in.readString();
         this.carstyle = in.readString();
-        this.finishDate = in.readString();
+        this.finishdate = in.readString();
         this.lat = in.readDouble();
         this.location = in.readString();
         this.lon = in.readDouble();

@@ -99,6 +99,7 @@ public class GiveOrderNormalActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_giveorder);
         ButterKnife.bind(this);
+        giveorderRefuseBtn.setText("关闭");
         userInfoEntity = DbUtils.getInstance().getPersonInfo();
         pushEntity = this.getIntent().getParcelableExtra("order");
         LogUtil.d("初始。。。。。" + pushEntity.getOrder_id());

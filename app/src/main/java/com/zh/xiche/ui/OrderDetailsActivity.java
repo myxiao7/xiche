@@ -263,7 +263,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
             ImageLoaderHelper.getInstance().loadCirPic(getorderIconImg, orderEntity.getAvartar());
         }
         //昵称 + 姓名
-        getorderNameTv.setText(orderEntity.getUname() + "(" + orderEntity.getName() + ")");
+        getorderNameTv.setText(orderEntity.getName());
         if (!TextUtils.isEmpty(orderEntity.getMobile())) {
             //手机号码
             getorderPhoneTv.setText(orderEntity.getMobile());

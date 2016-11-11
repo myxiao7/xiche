@@ -38,6 +38,10 @@ public class SharedData {
      * 纬度
      */
     public static final String CURRENTLAT = "CURRENTLAT";
+    /**
+     * 地址
+     */
+    public static final String CURRENTADD = "CURRENTADD";
 
 
     private static SharedPreferences sharedPreferences;
@@ -163,6 +167,25 @@ public class SharedData {
      */
     public static void saveCurrentlat(String lat) {
         getShare().edit().putString(CURRENTLAT, lat).commit();
+    }
+
+/**
+     * 获取当前地址
+     *
+     * @return
+     */
+    public static String getCurrentAdd() {
+        String host = getShare().getString(CURRENTADD, null);
+        return host;
+    }
+
+    /**
+     * 保存当前地址
+     *
+     * @return
+     */
+    public static void saveCurrentAdd(String add) {
+        getShare().edit().putString(CURRENTADD, add).commit();
     }
 
 }

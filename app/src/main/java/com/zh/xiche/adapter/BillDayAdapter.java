@@ -80,7 +80,7 @@ public class BillDayAdapter extends BaseAdapter {
             ImageLoaderHelper.getInstance().loadCirPic(holder.iconImg, entity.getAvartar());
         }
         //昵称 + 姓名
-        holder.nameTv.setText(entity.getUname() + "(" + entity.getName() + ")");
+        holder.nameTv.setText(entity.getName());
         if (!TextUtils.isEmpty(entity.getMobile())) {
             //手机号码
             holder.phoneTv.setText(entity.getMobile());

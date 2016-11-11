@@ -5,6 +5,7 @@ import android.app.Application;
 import com.baidu.mapapi.SDKInitializer;
 
 import org.xutils.DbManager;
+import org.xutils.common.util.LogUtil;
 import org.xutils.x;
 
 import cn.jpush.android.api.JPushInterface;
@@ -32,7 +33,7 @@ public class BaseApplication extends Application {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         x.Ext.init(this);
-        x.Ext.setDebug(true); // 是否输出debug日志
+        x.Ext.setDebug(false); // 是否输出debug日志
         //全局异常捕获
         CrashHandler.getInstance().init(this);
 
