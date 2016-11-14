@@ -93,16 +93,29 @@
                 />
         </LinearLayout>
 
-
-        <CheckBox
-            android:id="@+id/register_checkBox"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
-            android:checked="true"
-            android:text="@string/register_check"
-             />
+            android:gravity="center_vertical"
+            >
+            <CheckBox
+                android:id="@+id/register_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                />
+            <TextView
+                android:id="@+id/register_checkBox_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/register_check"
+                android:gravity="center_vertical"
+                />
+        </LinearLayout>
+
         <Button
             android:id="@+id/register_registe_btn"
             style="@style/base_btn"

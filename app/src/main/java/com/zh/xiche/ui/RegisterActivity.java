@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.baidu.location.b.e;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
@@ -29,10 +28,8 @@ import com.zh.xiche.config.HttpPath;
 import com.zh.xiche.entity.ResultEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
-import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.DialogUtils;
 import com.zh.xiche.utils.GsonUtil;
-import com.zh.xiche.utils.ImageLoaderHelper;
 import com.zh.xiche.utils.ToastUtil;
 
 import org.xutils.common.util.LogUtil;
@@ -72,6 +69,8 @@ public class RegisterActivity extends BaseActivity {
     EditText registerCodeEdit;
     @Bind(R.id.register_getcode_txt)
     TextView registerGetcodeTxt;
+    @Bind(R.id.register_checkBox_tv)
+    TextView registerCheckBoxTv;
 
 
     private List<String> urls = new ArrayList<>();
@@ -129,7 +128,7 @@ public class RegisterActivity extends BaseActivity {
             }
         });
         toolbarTv.setText("注册");
-        registerCheckBox.setText(Html.fromHtml(getResources().getString(R.string.register_check)));
+        registerCheckBoxTv.setText(Html.fromHtml(getResources().getString(R.string.register_check)));
         registerGetcodeTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,7 +158,7 @@ public class RegisterActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(isMobile(s.toString().trim())){
+                if (isMobile(s.toString().trim())) {
                    /* //检查用户名是否注册
                     ToastUtil.showShort("开始检查手机号");
                     checkUserName(s.toString().trim());*/
@@ -170,20 +169,22 @@ public class RegisterActivity extends BaseActivity {
 
     /**
      * 获取验证码
+     *
      * @param phone
      */
     private void getCode(String phone) {
         String url = HttpPath.getPath(HttpPath.GETCODE);
         RequestParams params = HttpUtil.params(url);
         params.addBodyParameter("mobile", phone);
-        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity) {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
                 LogUtil.d(result);
-                Type type = new TypeToken<ResultEntity>(){}.getType();
+                Type type = new TypeToken<ResultEntity>() {
+                }.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if(entity.isSuccee()){
+                if (entity.isSuccee()) {
                     ToastUtil.showShort("验证码以发送");
                     registerGetcodeTxt.setClickable(false);
                     downTimer = new CountDownTimer(60 * 1000, 1000) {
@@ -199,7 +200,7 @@ public class RegisterActivity extends BaseActivity {
                         }
                     };
                     downTimer.start();
-                }else{
+                } else {
                     ToastUtil.showShort("验证码获取失败，请检查手机号码");
                 }
             }
@@ -222,25 +223,26 @@ public class RegisterActivity extends BaseActivity {
         params.addBodyParameter("mobile", registerNameEdit.getText().toString());
         params.addBodyParameter("password", registerPwdEdit.getText().toString());
         params.addBodyParameter("code", registerCodeEdit.getText().toString());
-        HttpUtil.http().post(params, new RequestCallBack<String>(activity){
+        HttpUtil.http().post(params, new RequestCallBack<String>(activity) {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
                 DialogUtils.stopProgress(activity);
                 LogUtil.d(result);
-                Type type = new TypeToken<ResultEntity>(){}.getType();
+                Type type = new TypeToken<ResultEntity>() {
+                }.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if(entity.isSuccee()){
+                if (entity.isSuccee()) {
 //                    ToastUtil.showShort("注册成功");
                     //完善资料
                     Intent intent = new Intent(activity, RegisterUserInfoActivity.class);
                     intent.putExtra("id", entity.getOperatorDTO().getId());
-                    intent.putExtra("token",entity.getOperatorDTO().getTockens());
-                    intent.putExtra("userName",registerNameEdit.getText().toString());
-                    intent.putExtra("userPwd",registerPwdEdit.getText().toString());
+                    intent.putExtra("token", entity.getOperatorDTO().getTockens());
+                    intent.putExtra("userName", registerNameEdit.getText().toString());
+                    intent.putExtra("userPwd", registerPwdEdit.getText().toString());
                     startActivity(intent);
                     activity.finish();
-                }else{
+                } else {
                     ToastUtil.showShort("注册失败");
                 }
             }
@@ -267,7 +269,7 @@ public class RegisterActivity extends BaseActivity {
         params.addBodyParameter("page", "0");
         /*params.addBodyParameter("sidx", "");
         params.addBodyParameter("sord", "asc");*/
-        HttpUtil.http().get(params, new RequestCallBack<String>(activity){
+        HttpUtil.http().get(params, new RequestCallBack<String>(activity) {
             @Override
             public void onSuccess(String result) {
                 super.onSuccess(result);
@@ -322,6 +324,14 @@ public class RegisterActivity extends BaseActivity {
         }
         DialogUtils.showProgress(activity);
         register();
+    }
+
+    @OnClick(R.id.register_checkBox_tv)
+    public void onClick2() {
+        Intent intent = new Intent(activity, WebViewActivity.class);
+        intent.putExtra("title","服务协议");
+        intent.putExtra("url","http://xunmime.com/chuxiaodingTermsOfService.html");
+        startActivity(intent);
     }
 
 

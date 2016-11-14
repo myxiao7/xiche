@@ -80,11 +80,12 @@
     <TextView
         android:id="@+id/login_register_txt"
         android:layout_below="@id/login_login_btn"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:layout_centerHorizontal="true"
-        android:textSize="@dimen/sp16"
+        android:gravity="center"
+        android:textSize="@dimen/sp18"
         android:text="@string/login_register"
         android:textColor="@color/white"
         />

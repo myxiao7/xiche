@@ -147,6 +147,10 @@
             android:name=".ui.mybill.BillByDayActivity"
             />
 
+        <activity
+            android:name=".ui.WebViewActivity"
+            />
+
         <receiver
             android:name=".ui.receive.MyReceiver"
             android:enabled="true"

@@ -8,7 +8,7 @@
     <string name="network_fail">网络连接失败</string>
 
     <string name="login">登&#160;&#160;录</string>
-    <string name="login_register">注册成为车主></string>
+    <string name="login_register">注册</string>
     <string name="login_forget">忘记密码</string>
     <string name="login_phone_hint">请输入手机号</string>
     <string name="login_pwd_hint">请输入密码</string>
@@ -26,9 +26,9 @@
     <string name="finish">完&#160;&#160;成</string>
     <string name="goindex">去首页</string>
 
-    <string name="register">注册成为车主</string>
+    <string name="register">确认注册</string>
     <string name="register_check"><Data><![CDATA[同意<font color="#4F94CD">"服务条款"</font>和<font color="#4F94CD">"网络隐私保护权利"</font>]]></Data></string>
-    <string name="register_userinfo_notice">以下填写的个人详细信息资料，本公司绝对保证保密，不对外泄漏，如有任何疑问，请及时与我们联系，客服电话 %1$s</string>
+    <string name="register_userinfo_notice">以下填写的个人详细信息资料，本公司绝对保证保密，不对外泄漏，如有任何疑问，请及时与我们联系，客服电话 400-901-1326</string>
     <string name="register_locing">正在定位...</string>
     <string name="register_userinfo_city">请选择所在城市</string>
     <string name="register_userinfo_name">请输入您的真实姓名</string>
@@ -43,7 +43,7 @@
 
 
     <string name="today_order">今日接单</string>
-    <string name="today_money">今日车费</string>
+    <string name="today_money">我的收入</string>
 
     <string name="per_account">帐号管理</string>
     <string name="per_order">我的订单</string>

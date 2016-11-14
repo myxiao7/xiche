@@ -96,6 +96,8 @@ public class MainFragment extends BaseFragment {
         mMapView = SupportMapFragment.newInstance();
         // 地图初始化
         mBaiduMap = bmapView.getMap();
+        //卫星地图
+        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
         //初始化地图显示区域
         if(!TextUtils.isEmpty(SharedData.getCurrentlat()) && !TextUtils.isEmpty(SharedData.getCurrentlon())){
             LogUtil.d(SharedData.getCurrentlat());

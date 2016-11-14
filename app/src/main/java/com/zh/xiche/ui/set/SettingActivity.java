@@ -18,6 +18,7 @@ import com.zh.xiche.entity.UserInfoEntity;
 import com.zh.xiche.http.HttpUtil;
 import com.zh.xiche.http.RequestCallBack;
 import com.zh.xiche.ui.ForgetActivity;
+import com.zh.xiche.ui.WebViewActivity;
 import com.zh.xiche.utils.DbUtils;
 import com.zh.xiche.utils.DialogUtils;
 import com.zh.xiche.utils.GsonUtil;
@@ -84,6 +85,10 @@ public class SettingActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.set_about_tv:
+                Intent intent2 = new Intent(activity, WebViewActivity.class);
+                intent2.putExtra("title","关于我们");
+                intent2.putExtra("url","http://xunmime.com/chuxiaodingAboutUs.html");
+                startActivity(intent2);
                 break;
         }
     }

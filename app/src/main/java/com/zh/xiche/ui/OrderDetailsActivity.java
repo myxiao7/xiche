@@ -231,6 +231,8 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
         mMapView = (MapView) findViewById(R.id.mapView);
         // 地图初始化
         mBaiduMap = mMapView.getMap();
+        //卫星地图
+        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
         userInfoEntity = DbUtils.getInstance().getPersonInfo();
     }
 
