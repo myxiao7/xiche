@@ -108,7 +108,7 @@ public class SettingActivity extends BaseActivity {
                 Type type = new TypeToken<ResultEntity>() {
                 }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
-                if (resultEntity.isSuccee()) {
+                if (resultEntity.isSuccee(activity)) {
                     JPushInterface.setAlias(activity, "", new TagAliasCallback() {
                         @Override
                         public void gotResult(int i, String s, Set<String> set) {

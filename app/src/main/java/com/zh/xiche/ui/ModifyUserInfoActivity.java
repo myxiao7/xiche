@@ -206,7 +206,7 @@ public class ModifyUserInfoActivity extends BaseActivity {
                 LogUtil.d(result);
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if(entity.isSuccee()){
+                if(entity.isSuccee(activity)){
 //                    ToastUtil.showShort("提交成功");
                     //去首页
                     Intent intent = new Intent(activity, MainActivity.class);
@@ -221,7 +221,7 @@ public class ModifyUserInfoActivity extends BaseActivity {
 //                    startActivity(intent);
                     activity.finish();
                 }else{
-                    ToastUtil.showShort("提交失败");
+                    ToastUtil.showShort(entity.getError_desc());
                 }
             }
 

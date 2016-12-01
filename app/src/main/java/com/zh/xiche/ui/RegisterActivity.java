@@ -184,7 +184,7 @@ public class RegisterActivity extends BaseActivity {
                 Type type = new TypeToken<ResultEntity>() {
                 }.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if (entity.isSuccee()) {
+                if (entity.isSuccee(activity)) {
                     ToastUtil.showShort("验证码以发送");
                     registerGetcodeTxt.setClickable(false);
                     downTimer = new CountDownTimer(60 * 1000, 1000) {
@@ -201,7 +201,7 @@ public class RegisterActivity extends BaseActivity {
                     };
                     downTimer.start();
                 } else {
-                    ToastUtil.showShort("验证码获取失败，请检查手机号码");
+                    ToastUtil.showShort(entity.getError_desc());
                 }
             }
 
@@ -232,7 +232,7 @@ public class RegisterActivity extends BaseActivity {
                 Type type = new TypeToken<ResultEntity>() {
                 }.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if (entity.isSuccee()) {
+                if (entity.isSuccee(activity)) {
 //                    ToastUtil.showShort("注册成功");
                     //完善资料
                     Intent intent = new Intent(activity, RegisterUserInfoActivity.class);
@@ -243,7 +243,7 @@ public class RegisterActivity extends BaseActivity {
                     startActivity(intent);
                     activity.finish();
                 } else {
-                    ToastUtil.showShort("注册失败");
+                    ToastUtil.showShort(entity.getError_desc());
                 }
             }
 

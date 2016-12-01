@@ -156,11 +156,11 @@ public class GiveOrderActivity extends Activity {
                 Type type = new TypeToken<ResultEntity>() {
                 }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
-                if (resultEntity.isSuccee()) {
+                if (resultEntity.isSuccee(GiveOrderActivity.this)) {
                     ToastUtil.showShort("接单成功");
                     getOrderDetails();
                 } else {
-                    ToastUtil.showShort("接单失败...");
+                    ToastUtil.showShort(resultEntity.getError_desc());
                 }
                 GiveOrderActivity.this.finish();
             }
@@ -230,11 +230,11 @@ public class GiveOrderActivity extends Activity {
                 Type type = new TypeToken<ResultEntity>() {
                 }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
-                if (resultEntity.isSuccee()) {
+                if (resultEntity.isSuccee(GiveOrderActivity.this)) {
                     ToastUtil.showShort("拒单成功");
                     GiveOrderActivity.this.finish();
                 } else {
-                    ToastUtil.showShort("拒单失败");
+                    ToastUtil.showShort(resultEntity.getError_desc());
                 }
             }
 

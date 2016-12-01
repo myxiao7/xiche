@@ -120,7 +120,7 @@ public class CommonEdit extends BaseActivity {
                 LogUtil.d(result);
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if(entity.isSuccee()){
+                if(entity.isSuccee(activity)){
 //                    ToastUtil.showShort("修改成功");
                     Intent intent = new Intent();
                     intent.putExtra(REQTYPE,reqId);
@@ -130,7 +130,7 @@ public class CommonEdit extends BaseActivity {
                     DbUtils.getInstance().updateUserInfo(reqId,commoneditEdit.getText().toString());
                     activity.finish();
                 }else{
-                    ToastUtil.showShort("提交失败");
+                    ToastUtil.showShort(entity.getError_desc());
                 }
             }
 

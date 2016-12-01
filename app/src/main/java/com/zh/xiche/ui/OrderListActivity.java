@@ -147,6 +147,7 @@ public class OrderListActivity extends BaseActivity {
                 if(orderResultEntity.isSuccee()){
                     if(isRefresh){
                         list.clear();
+                        adapter.notifyDataSetChanged();
                         if(orderResultEntity.getDataList().size() > 0){
                             list = orderResultEntity.getDataList();
                             adapter = new OrderListAdapter(activity, list);

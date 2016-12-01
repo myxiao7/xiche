@@ -108,7 +108,7 @@ public class ForgetActivity extends BaseActivity {
                     ToastUtil.showShort(R.string.forget_pwd_hint2);
                     return;
                 }
-                if(!(forgetPwd2Edit.getText().toString().equals(forgetPwd2Edit.getText().toString()))){
+                if(!(forgetPwd2Edit.getText().toString().equals(forgetPwdEdit.getText().toString()))){
                     ToastUtil.showShort(R.string.forget_pwd_check);
                     return;
                 }
@@ -132,7 +132,7 @@ public class ForgetActivity extends BaseActivity {
                 LogUtil.d(result);
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if(entity.isSuccee()){
+                if(entity.isSuccee(activity)){
                     ToastUtil.showShort("验证码以发送");
                     forgetGetcodeTxt.setClickable(false);
                     downTimer = new CountDownTimer(60 * 1000, 1000) {
@@ -215,13 +215,13 @@ public class ForgetActivity extends BaseActivity {
                 LogUtil.d(result);
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if(entity.isSuccee()){
+                if(entity.isSuccee(activity)){
                     ToastUtil.showShort("修改成功");
                     SharedData.saveUserPwd(pwd);
                     activity.finish();
                     //修改密码
                 }else{
-                    ToastUtil.showShort("修改失败");
+                    ToastUtil.showShort(entity.getError_desc());
                 }
             }
 

@@ -254,7 +254,7 @@ public class RegisterUserInfoActivity extends BaseActivity implements OnAddressC
                 LogUtil.d(result);
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if(entity.isSuccee()){
+                if(entity.isSuccee(activity)){
 //                    ToastUtil.showShort("添加成功");
                     //去结果页面
                     Intent intent = new Intent(activity, RegisterResultActivity.class);
@@ -263,7 +263,7 @@ public class RegisterUserInfoActivity extends BaseActivity implements OnAddressC
                     startActivity(intent);
                     activity.finish();
                 }else{
-                    ToastUtil.showShort("添加失败");
+                    ToastUtil.showShort(entity.getError_desc());
                 }
             }
 

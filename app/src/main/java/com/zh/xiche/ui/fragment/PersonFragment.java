@@ -117,7 +117,7 @@ public class PersonFragment extends BaseFragment {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.per_account_re:
-                ToastUtil.showShort(R.string.per_account);
+//                ToastUtil.showShort(R.string.per_account);
                 intent = new Intent(activity, PersonInfo.class);
                 startActivity(intent);
                 break;

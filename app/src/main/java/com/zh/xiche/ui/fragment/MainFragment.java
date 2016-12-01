@@ -219,10 +219,10 @@ public class MainFragment extends BaseFragment {
                 super.onSuccess(result);
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
-                if(resultEntity.isSuccee()){
+                if(resultEntity.isSuccee(activity)){
 //                    ToastUtil.showShort("更新位置成功");
                 }else{
-                    ToastUtil.showShort("更新位置失败");
+                    ToastUtil.showShort(resultEntity.getError_desc());
                 }
             }
 

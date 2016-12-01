@@ -92,7 +92,7 @@ public class RegisterResultActivity extends BaseActivity {
                 LogUtil.d(result);
                 Type type = new TypeToken<ResultEntity>(){}.getType();
                 ResultEntity entity = GsonUtil.GsonToBean(result, type);
-                if(entity.isSuccee()){
+                if(entity.isSuccee(activity)){
                     ToastUtil.showShort("登录成功");
                     //保存用户信息
                     DbUtils.getInstance().clearPersonInfo();
@@ -111,7 +111,7 @@ public class RegisterResultActivity extends BaseActivity {
                     startActivity(intent);
                     activity.finish();
                 }else{
-                    ToastUtil.showShort("登录失败");
+                    ToastUtil.showShort(entity.getError_desc());
                 }
             }
 

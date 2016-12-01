@@ -396,7 +396,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                 Type type = new TypeToken<ResultEntity>() {
                 }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
-                if (resultEntity.isSuccee()) {
+                if (resultEntity.isSuccee(activity)) {
                     ToastUtil.showShort("接单成功，正在生成路线...");
                     orderType = 2;
                     getorderGetBtn.setText("完 成");
@@ -406,8 +406,8 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                             .from(stNode)
                             .to(enNode));
                 } else {
+                    ToastUtil.showShort(resultEntity.getError_desc());
                     activity.finish();
-                    ToastUtil.showShort("接单失败，刷新订单...");
                 }
             }
 
@@ -435,7 +435,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                 Type type = new TypeToken<ResultEntity>() {
                 }.getType();
                 ResultEntity resultEntity = GsonUtil.GsonToBean(result, type);
-                if (resultEntity.isSuccee()) {
+                if (resultEntity.isSuccee(activity)) {
 //                    ToastUtil.showShort("完成订单");
                     getorderGetBtn.setText("已完成");
                     getorderGetBtn.setClickable(false);
@@ -447,7 +447,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnGetRoutePlan
                     sendBroadcast(intent);
                     LogUtil.d("更新订单状态。。。。。。。。。。");
                 } else {
-                    ToastUtil.showShort("订单状态更新失败");
+                    ToastUtil.showShort(resultEntity.getError_desc());
                 }
             }
 
